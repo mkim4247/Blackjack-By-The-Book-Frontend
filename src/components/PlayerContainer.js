@@ -1,5 +1,7 @@
 import React from 'react'
-import Hand from './Hand'
+import PlayerHand from './PlayerHand'
+
+import { connect } from 'react-redux'
 
 class PlayerContainer extends React.Component {
 
@@ -7,10 +9,14 @@ class PlayerContainer extends React.Component {
     return(
       <div>
       Player Container
-      <Hand />
+      <PlayerHand cards={this.props.cards}/>
       </div>
     )
   }
 }
 
-export default PlayerContainer
+const mapStateToProps = state => {
+  return { cards: state.playerHand }
+}
+
+export default connect(mapStateToProps)(PlayerContainer)

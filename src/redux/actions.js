@@ -97,24 +97,18 @@ export const hitPlayerCards = cards => {
   return { type: "HIT_PLAYER_CARDS", cards }
 }
 
-export const dealingDealerCards = () => {
+export const dealingCards = () => {
   return (dispatch, getStore) => {
-    fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=2`)
+    fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=4`)
     .then(res => res.json())
     .then(deck => {
       console.log(deck.cards)
-      dispatch(dealDealerCards(deck.cards))
-    })
-  }
-}
-
-export const dealingPlayerCards = () => {
-  return (dispatch, getStore) => {
-    fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=2`)
-    .then(res => res.json())
-    .then(deck => {
-      console.log(deck.cards)
-      dispatch(dealPlayerCards(deck.cards))
+      let dealers = [deck.cards[0], deck.cards[1]]
+      console.log(dealers)
+      let players = [deck.cards[2], deck.cards[3]]
+      console.log(players)
+      dispatch(dealDealerCards(dealers))
+      dispatch(dealPlayerCards(players))
     })
   }
 }
@@ -124,6 +118,7 @@ export const hittingDealerCards = () => {
     fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=1`)
     .then(res => res.json())
     .then(deck => {
+      console.log(deck)
       dispatch(hitDealerCards(deck.cards))
     })
   }
@@ -134,7 +129,8 @@ export const hittingPlayerCards = () => {
     fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=1`)
     .then(res => res.json())
     .then(deck => {
-      dispatch(hitPlayerCards(deck.cards))
+      console.log(deck)
+      dispatch(hitPlayerCards(deck.cards[0]))
     })
   }
 }

@@ -1,5 +1,6 @@
 import React from 'react'
-import Hand from './Hand'
+import DealerHand from './DealerHand'
+import { connect } from 'react-redux'
 
 class DealerContainer extends React.Component {
 
@@ -7,10 +8,14 @@ class DealerContainer extends React.Component {
     return(
       <div>
       Dealer Container
-      <Hand />
+      <DealerHand cards={this.props.cards}/>
       </div>
     )
   }
 }
 
-export default DealerContainer
+const mapStateToProps = state => {
+  return { cards: state.dealerHand}
+}
+
+export default connect(mapStateToProps)(DealerContainer)
