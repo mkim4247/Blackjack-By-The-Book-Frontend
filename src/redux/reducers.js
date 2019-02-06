@@ -9,8 +9,18 @@ const userReducer = (state=null, action) => {
   }
 }
 
+const deckReducer = (state=null, action) => {
+  switch(action.type){
+    case "SET_DECK":
+      return action.deckId
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  deckId: deckReducer
 })
 
 export default rootReducer

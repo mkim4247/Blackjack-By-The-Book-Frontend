@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Route, Switch, Redirect, withRouter } from 'react-router'
-import { checkingToken } from './redux/actions'
+import { checkingToken, fetchingDeck } from './redux/actions'
 import Login from './components/Login'
 import Home from './components/Home'
 import Create from './components/Create'
@@ -11,6 +11,7 @@ class App extends Component {
     let token = localStorage.getItem('token')
     if(token){
       this.props.checkingToken(token)
+      this.props.fetchingDeck()
     }
   }
 
@@ -42,4 +43,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, { checkingToken })(App));
+export default withRouter(connect(mapStateToProps, { checkingToken, fetchingDeck })(App));

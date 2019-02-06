@@ -9,7 +9,7 @@ export const settingUser = user => {
       headers: {
         "Content-type": "application/json"
       },
-      body: JSON.stringify({user})
+      body: JSON.stringify(user)
     })
     .then( res => res.json() )
     .then( data => {
@@ -60,6 +60,35 @@ export const checkingToken = token => {
     .then(data => {
       console.log('Valid Token')
       dispatch(setUser(data.user))
+    })
+  }
+}
+
+export const fetchedDeck = deckId => {
+  return { type: "SET_DECK", deckId }
+}
+
+export const fetchingDeck = () => {
+  return dispatch => {
+    fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
+    .then(res => res.json())
+    .then(deck => {
+      console.log(`Deck fetched, ID: ${deck.deck_id}`)
+      dispatch(fetchedDeck(deck.deck_id))
+    })
+  }
+}
+
+export const dealCards = cards => {
+  return { type: "DEAL_CARDS", cards }
+}
+
+export const dealingCards = deckId, number => {
+  return dispatch => {
+    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=${number}`)
+    .then(res => res.json())
+    .then(deck => {
+      dispatch(dealCards(deck.cards))
     })
   }
 }

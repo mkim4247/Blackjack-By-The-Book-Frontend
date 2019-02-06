@@ -18,6 +18,7 @@ class Login extends React.Component {
   }
 
   handleSubmit = event => {
+    event.preventDefault()
     this.props.settingUser(this.state)
   }
 
@@ -25,7 +26,7 @@ class Login extends React.Component {
     return(
       <form onSubmit={this.handleSubmit}>
         <label htmlFor='name'> Username: </label>
-        <input type='text' name='name' onChange={this.handleChange}/>
+        <input type='text' name='username' onChange={this.handleChange}/>
 
         <label htmlFor='password'> Password: </label>
         <input type='password' name='password' onChange={this.handleChange}/>
