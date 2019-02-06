@@ -79,16 +79,62 @@ export const fetchingDeck = () => {
   }
 }
 
-export const dealCards = cards => {
-  return { type: "DEAL_CARDS", cards }
+////FIGURE OUT HOW TO REFACTOR LATER
+
+export const dealDealerCards = cards => {
+  return { type: "DEAL_DEALER_CARDS", cards }
 }
 
-export const dealingCards = deckId, number => {
-  return dispatch => {
-    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=${number}`)
+export const hitDealerCards = card => {
+  return { type: "HIT_DEALER_CARDS", card }
+}
+
+export const dealPlayerCards = cards => {
+  return { type: "DEAL_PLAYER_CARDS", cards }
+}
+
+export const hitPlayerCards = cards => {
+  return { type: "HIT_PLAYER_CARDS", cards }
+}
+
+export const dealingDealerCards = () => {
+  return (dispatch, getStore) => {
+    fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=2`)
     .then(res => res.json())
     .then(deck => {
-      dispatch(dealCards(deck.cards))
+      console.log(deck.cards)
+      dispatch(dealDealerCards(deck.cards))
+    })
+  }
+}
+
+export const dealingPlayerCards = () => {
+  return (dispatch, getStore) => {
+    fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=2`)
+    .then(res => res.json())
+    .then(deck => {
+      console.log(deck.cards)
+      dispatch(dealPlayerCards(deck.cards))
+    })
+  }
+}
+
+export const hittingDealerCards = () => {
+  return (dispatch, getStore) => {
+    fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=1`)
+    .then(res => res.json())
+    .then(deck => {
+      dispatch(hitDealerCards(deck.cards))
+    })
+  }
+}
+
+export const hittingPlayerCards = () => {
+  return (dispatch, getStore) => {
+    fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=1`)
+    .then(res => res.json())
+    .then(deck => {
+      dispatch(hitPlayerCards(deck.cards))
     })
   }
 }

@@ -18,9 +18,33 @@ const deckReducer = (state=null, action) => {
   }
 }
 
+const dealerHandReducer = (state=[], action) => {
+  switch(action.type){
+    case "DEAL_DEALER_CARDS":
+      return action.cards
+    case "HIT_DEALER_CARDS":
+      return [...state, action.cards]
+    default:
+      return state
+  }
+}
+
+const playerHandReducer = (state=[], action) => {
+  switch(action.type){
+    case "DEAL_PLAYER_CARDS":
+      return action.cards
+    case "HIT_PLAYER_CARDS":
+      return [...state, action.cards]
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
   user: userReducer,
-  deckId: deckReducer
+  deckId: deckReducer,
+  dealerHand: dealerHandReducer,
+  playerHand: playerHandReducer
 })
 
 export default rootReducer
