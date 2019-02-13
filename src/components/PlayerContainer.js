@@ -9,14 +9,18 @@ class PlayerContainer extends React.Component {
     return(
       <div>
       Player Container
-      <PlayerHand cards={this.props.cards}/>
+      {this.props.playerHand.map( (hand, index) => {
+        return <PlayerHand hand={hand} key={index} />
+      })}
       </div>
     )
   }
 }
 
 const mapStateToProps = state => {
-  return { cards: state.playerHand }
+  return {
+    playerHand: state.playerHand
+  }
 }
 
 export default connect(mapStateToProps)(PlayerContainer)

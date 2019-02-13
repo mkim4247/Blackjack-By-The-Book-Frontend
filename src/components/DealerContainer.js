@@ -8,14 +8,18 @@ class DealerContainer extends React.Component {
     return(
       <div>
       Dealer Container
-      <DealerHand cards={this.props.cards}/>
+      <DealerHand dealerHand={this.props.dealerHand}/>
+        <div> {this.props.dealerHand.score} </div>
       </div>
     )
   }
 }
 
 const mapStateToProps = state => {
-  return { cards: state.dealerHand}
+  return {
+    dealerHand: state.dealerHand,
+    dealerScore: state.dealerScore
+  }
 }
 
 export default connect(mapStateToProps)(DealerContainer)

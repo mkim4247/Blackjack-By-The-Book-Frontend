@@ -18,23 +18,79 @@ const deckReducer = (state=null, action) => {
   }
 }
 
-const dealerHandReducer = (state=[], action) => {
+const dealerHandReducer = (state={ cards: [], score: null }, action) => {
   switch(action.type){
     case "DEAL_DEALER_CARDS":
-      return action.cards
+      return { cards: action.cards, score: assignHandValue(action.cards) }
     case "HIT_DEALER_CARDS":
-      return [...state, action.cards]
+      return { cards: action.cards, score: assignHandValue(action.cards) }
     default:
       return state
   }
 }
 
-const playerHandReducer = (state=[], action) => {
+const playerHandReducer = (state=[{ cards: [], score: null }], action) => {
   switch(action.type){
     case "DEAL_PLAYER_CARDS":
-      return action.cards
+      return [{cards: action.cards, score: assignHandValue(action.cards)}]
     case "HIT_PLAYER_CARDS":
-      return [...state, action.cards]
+      let copy = [...state]
+      copy[action.index] = {cards: action.cards, score: assignHandValue(action.cards)}
+      return copy
+    case "SPLIT_PLAYER_CARDS":
+      let firstHalf = state.slice(0, action.index)
+      let secondHalf = state.slice( action.index + 1)
+      let split = [{ cards: action.cards[0], score: assignHandValue(action.cards[0])}, { cards: action.cards[1], score: assignHandValue(action.cards[1])}]
+      return firstHalf.concat(split).concat(secondHalf)
+    default:
+      return state
+  }
+}
+
+const playerActionReducer = (state=null, action) => {
+  switch(action.type){
+    case "DEAL":
+      return "deal"
+    case "STAY":
+      return "stay"
+    case "DOUBLE":
+      return "double"
+    case "SPLIT":
+      return "split"
+    default:
+      return state
+  }
+}
+
+const currentHandReducer = (state=0, action) => {
+  let next;
+
+  switch(action.type){
+    case "DEAL":
+      return 0
+    case "STAY":
+      next = ++state
+      return next
+    case "BUST":
+      next = ++state
+      return next
+    default:
+      return state
+  }
+}
+
+const roundResultReducer = (state=null, action) => {
+  switch(action.type){
+    case "DEALER_WINS":
+      return "Dealer Wins"
+    case "PLAYER_WINS":
+      return "Player Wins"
+    case "PUSH":
+      return "Push"
+    case "DEAL":
+      return null
+    case "BUST":
+      return "Bust"
     default:
       return state
   }
@@ -44,7 +100,44 @@ const rootReducer = combineReducers({
   user: userReducer,
   deckId: deckReducer,
   dealerHand: dealerHandReducer,
-  playerHand: playerHandReducer
+  playerHand: playerHandReducer,
+  currentHandIndex: currentHandReducer,
+  playerAction: playerActionReducer,
+  roundResult: roundResultReducer
 })
 
 export default rootReducer
+
+
+/* CONVENIENCE METHOD FOR ASSIGNING HAND VALUE */
+const assignHandValue = cards => {
+  let aceCount = 0
+  let handValue = 0
+
+  cards.forEach( card => {
+    switch(card.value){
+        case "KING":
+          handValue += 10
+          break
+        case "QUEEN":
+          handValue += 10
+          break
+        case "JACK":
+          handValue += 10
+          break
+        case "ACE":
+          handValue += 11
+          aceCount++
+          break
+        default:
+          handValue += parseInt(card.value)
+          break
+      }
+  })
+
+  while(handValue > 21 && aceCount > 0){
+    handValue -= 10
+    aceCount--
+  }
+  return handValue
+}

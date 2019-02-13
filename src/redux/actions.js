@@ -1,3 +1,4 @@
+/* USER RELATED ACTIONS*/
 export const setUser = user => {
   return { type: "SET_USER", user }
 }
@@ -64,7 +65,8 @@ export const checkingToken = token => {
   }
 }
 
-export const fetchedDeck = deckId => {
+/* FETCHING API AND ASSIGNING DECK ACTIONS */
+const fetchedDeck = deckId => {
   return { type: "SET_DECK", deckId }
 }
 
@@ -79,58 +81,188 @@ export const fetchingDeck = () => {
   }
 }
 
-////FIGURE OUT HOW TO REFACTOR LATER
-
-export const dealDealerCards = cards => {
+/* DEALING RELATED ACTIONS */
+/* "cards" is an array  */
+const dealDealerCards = cards => {
   return { type: "DEAL_DEALER_CARDS", cards }
 }
 
-export const hitDealerCards = card => {
-  return { type: "HIT_DEALER_CARDS", card }
-}
-
-export const dealPlayerCards = cards => {
+/* "cards" is an array  */
+const dealPlayerCards = cards => {
   return { type: "DEAL_PLAYER_CARDS", cards }
-}
-
-export const hitPlayerCards = cards => {
-  return { type: "HIT_PLAYER_CARDS", cards }
 }
 
 export const dealingCards = () => {
   return (dispatch, getStore) => {
-    fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=4`)
+    let deckId = getStore().deckId
+
+    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`)
     .then(res => res.json())
     .then(deck => {
-      console.log(deck.cards)
-      let dealers = [deck.cards[0], deck.cards[1]]
-      console.log(dealers)
-      let players = [deck.cards[2], deck.cards[3]]
-      console.log(players)
-      dispatch(dealDealerCards(dealers))
-      dispatch(dealPlayerCards(players))
+      console.log("Dealing cards...")
+
+      /* split up cards returned from fetch to API */
+      let dealerCards = [deck.cards[0], deck.cards[1]]
+      let playerCards = [deck.cards[2], deck.cards[3]]
+
+      dispatch({ type: "DEAL" })
+      dispatch(dealDealerCards(dealerCards))
+      dispatch(dealPlayerCards(playerCards))
     })
   }
 }
 
-export const hittingDealerCards = () => {
-  return (dispatch, getStore) => {
-    fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=1`)
-    .then(res => res.json())
-    .then(deck => {
-      console.log(deck)
-      dispatch(hitDealerCards(deck.cards))
-    })
-  }
+/* HITTING RELATED ACTIONS */
+/* cards is an array */
+const hitPlayerCards = (cards, index) => {
+  return { type: "HIT_PLAYER_CARDS", cards, index }
 }
 
 export const hittingPlayerCards = () => {
   return (dispatch, getStore) => {
-    fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=1`)
+    let deckId = getStore().deckId
+
+    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
     .then(res => res.json())
     .then(deck => {
-      console.log(deck)
-      dispatch(hitPlayerCards(deck.cards[0]))
+      console.log('Player hits...')
+
+      /* passing all cards (old hand plus new card) */
+      let index = getStore().currentHandIndex
+      let cards = getStore().playerHand[index].cards.slice()
+      cards.push(deck.cards[0])
+
+      dispatch(hitPlayerCards(cards, index))
+      dispatch(checkPlayerBust())
     })
   }
 }
+
+const checkPlayerBust = () => {
+  return (dispatch, getStore) => {
+    let index = getStore().currentHandIndex
+    let hand = getStore().playerHand
+    let playerScore = getStore().playerHand[index].score
+
+    if(playerScore > 21 && hand[index + 1]){
+      dispatch({ type: "BUST" })
+    } else {
+      dispatch(dealerMove())
+    }
+  }
+}
+
+const hitDealerCards = cards => {
+  return { type: "HIT_DEALER_CARDS", cards }
+}
+
+export const hittingDealerCards = () => {
+  return (dispatch, getStore) => {
+    let deckId = getStore().deckId
+
+    let dealerScore = getStore().dealerHand.score
+    let playerScore = getStore().playerScore
+    if(dealerScore <= playerScore && dealerScore < 17){
+      fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+      .then(res => res.json())
+      .then(deck => {
+        let cards = getStore().dealerHand.slice()
+        cards.push(deck.cards[0])
+        dispatch(hitDealerCards(cards))
+      })
+    }
+  }
+}
+
+export const playerStay = () => {
+  return (dispatch, getStore) => {
+    let hand = getStore().playerHand
+    let index = getStore().currentHandIndex
+    if(index < hand.length - 1){
+      dispatch({ type: "STAY" })
+    }
+    else {
+      dispatch(dealerMove())
+    }
+  }
+}
+
+export const dealerMove = () => {
+  return {type: "BUST" }
+}
+
+export const dealersMove = () => {
+  return (dispatch, getStore) => {
+    let dealerScore = getStore().dealerHand.score
+    let index = getStore().currentHandIndex
+    let playerScore = getStore().playerHand[index].score
+
+    if(playerScore > 21){
+      dispatch({ type: "DEALER_WINS" })
+    }
+    else if(dealerScore <= playerScore && dealerScore < 17){
+      setTimeout( () => {
+        dispatch(hittingDealerCards())
+        dispatch(dealerMove())
+      }, 1000)
+    } else if(dealerScore === playerScore){
+        dispatch({ type: "PUSH" })
+    } else if(playerScore > dealerScore || dealerScore > 21){
+        dispatch({ type: "PLAYER_WINS" })
+    } else if(dealerScore > playerScore && dealerScore < 21){
+        dispatch({ type: "DEALER_WINS" })
+    }
+  }
+}
+
+export const doublingPlayer = () => {
+  return (dispatch, getStore) => {
+    dispatch(hittingPlayerCards())
+    dispatch(dealerMove())
+  }
+}
+
+const splitPlayerCards = (cards, index) => {
+  return { type: "SPLIT_PLAYER_CARDS", cards, index }
+}
+
+export const splittingPlayerCards = () => {
+  return (dispatch, getStore) => {
+    fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=2`)
+    .then( res => res.json() )
+    .then( deck => {
+      console.log('Player splits...')
+      let index = getStore().currentHandIndex
+      let hand = getStore().playerHand.slice()
+      let oldHand = hand[index].cards
+      console.log(oldHand)
+
+      let splitHand1 = [oldHand[0], deck.cards[0]]
+      let splitHand2 = [oldHand[1], deck.cards[1]]
+      let cards = [splitHand1, splitHand2]
+      dispatch(splitPlayerCards( cards, index ))
+    })
+  }
+}
+
+/*
+DEAL =>
+DEALER: ONE CARD & SCORE HIDDEN
+USER: CALCULATE SCORE, CHECK FOR SPLIT, HIT, STAY, or DOUBLE
+
+HIT =>
+USER: RECALC SCORE, CHECK FOR BUST, HIT OR STAY, LOOP UNTIL STAY
+
+DOUBLE =>
+USER: RECALC SCORE, CHECK FOR BUST, STAY
+
+SPLIT =>
+USER: GIVE TWO MORE CARDS/MAKE TWO HANDS, CHECK FOR SPLIT, FIRST HAND, HIT STAY OR DOUBLE; SECOND HAND, HIT STAY OR DOUBLE, LOOP UNTIL STAY
+
+
+STAY =>
+USER: REVEAL DEALER CARDS & SCORE, CHECK PLAYER SCORE AGAINST DEALER, IF PLAYER SCORE > DEALER SCORE && DEALER SCORE < 17, HIT DEALER then RECHECK DEALER
+
+
+
+*/

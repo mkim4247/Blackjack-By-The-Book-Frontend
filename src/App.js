@@ -7,6 +7,7 @@ import Home from './components/Home'
 import Create from './components/Create'
 
 class App extends Component {
+
   componentDidMount(){
     let token = localStorage.getItem('token')
     if(token){
