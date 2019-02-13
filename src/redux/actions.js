@@ -18,7 +18,7 @@ export const settingUser = user => {
         alert('Incorrect username and/or password')
       }
       else{
-        console.log('Login Successful', data.user_info)
+        console.log('Login Successful')
         dispatch(setUser(data.user_info))
         localStorage.setItem('token', data.token)
       }
@@ -75,7 +75,7 @@ export const fetchingDeck = () => {
     fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
     .then(res => res.json())
     .then(deck => {
-      console.log(`Deck fetched, ID: ${deck.deck_id}`)
+      console.log(`Deck fetched; ID: ${deck.deck_id}`)
       dispatch(fetchedDeck(deck.deck_id))
     })
   }
@@ -153,9 +153,9 @@ const hitDealerCards = cards => {
 export const hittingDealerCards = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
-
     let dealerScore = getStore().dealerHand.score
     let playerScore = getStore().playerHand[0].score
+
     if(dealerScore <= playerScore && dealerScore < 17){
       fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
       .then(res => res.json())
@@ -204,9 +204,23 @@ export const dealerMove = () => {
 
 export const doublingPlayer = () => {
   return (dispatch, getStore) => {
-    dispatch(hittingPlayerCards())
-    dispatch({ type: "DOUBLE" })
-    dispatch(dealerMove())
+    let deckId = getStore().deckId
+
+    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+    .then(res => res.json())
+    .then(deck => {
+      console.log('Player hits...')
+
+      /* passing all cards (old hand plus new card) */
+      let index = getStore().currentHandIndex
+      let cards = getStore().playerHand[index].cards.slice()
+      cards.push(deck.cards[0])
+
+      dispatch(hitPlayerCards(cards, index))
+      dispatch({ type: "DOUBLE" })
+      dispatch(checkPlayerBust())
+      dispatch(dealerMove())
+    })
   }
 }
 
@@ -231,6 +245,12 @@ export const splittingPlayerCards = () => {
   }
 }
 
+const countingCards = cards => {
+  return (dispatch, getStore) => {
+    
+  }
+}
+
 /*
 DEAL =>
 DEALER: ONE CARD & SCORE HIDDEN
@@ -244,7 +264,6 @@ USER: RECALC SCORE, CHECK FOR BUST, STAY
 
 SPLIT =>
 USER: GIVE TWO MORE CARDS/MAKE TWO HANDS, CHECK FOR SPLIT, FIRST HAND, HIT STAY OR DOUBLE; SECOND HAND, HIT STAY OR DOUBLE, LOOP UNTIL STAY
-
 
 STAY =>
 USER: REVEAL DEALER CARDS & SCORE, CHECK PLAYER SCORE AGAINST DEALER, IF PLAYER SCORE > DEALER SCORE && DEALER SCORE < 17, HIT DEALER then RECHECK DEALER

@@ -95,6 +95,16 @@ const roundResultReducer = (state=null, action) => {
   }
 }
 
+const countReducer = (state=0, action) => {
+  switch(action.type){
+    case "COUNT":
+      let newCount = state += action.count
+      return newCount
+    default:
+      return 0
+  }
+}
+
 const rootReducer = combineReducers({
   user: userReducer,
   deckId: deckReducer,
@@ -102,7 +112,8 @@ const rootReducer = combineReducers({
   playerHand: playerHandReducer,
   currentHandIndex: currentHandReducer,
   playerAction: playerActionReducer,
-  roundResult: roundResultReducer
+  roundResult: roundResultReducer,
+  count: countReducer
 })
 
 export default rootReducer
