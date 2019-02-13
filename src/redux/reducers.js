@@ -98,10 +98,9 @@ const roundResultReducer = (state=null, action) => {
 const countReducer = (state=0, action) => {
   switch(action.type){
     case "COUNT":
-      let newCount = state += action.count
-      return newCount
+      return action.count
     default:
-      return 0
+      return state
   }
 }
 

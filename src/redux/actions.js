@@ -245,10 +245,63 @@ export const splittingPlayerCards = () => {
   }
 }
 
-const countingCards = cards => {
+export const countingCards = () => {
   return (dispatch, getStore) => {
-    
+    let currentCount = getStore().count
+    let dealerCards = getStore().dealerHand.cards
+    let playerCards = getStore().playerHand.map( hand => {
+      return hand.cards
+    }).flat()
+
+    let count = currentCount + getCountFromHand(playerCards) + getCountFromHand(dealerCards)
+    dispatch(countCards(count))
   }
+}
+
+export const countCards = count => {
+  return { type: "COUNT", count }
+}
+
+/* Convenience method to count cards in hand */
+const getCountFromHand = cards => {
+  let count = 0
+  cards.forEach( card => {
+    switch(card.value){
+      case "KING":
+        count--
+        break
+      case "QUEEN":
+        count--
+        break
+      case "JACK":
+        count--
+        break
+      case "ACE":
+        count--
+        break
+      case "10":
+        count--
+        break
+      case "6":
+        count++
+        break
+      case "5":
+        count++
+        break
+      case "4":
+        count++
+        break
+      case "3":
+        count++
+        break
+      case "2":
+        count++
+        break
+      default:
+        break
+    }
+  })
+  return count
 }
 
 /*

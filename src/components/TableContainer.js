@@ -4,6 +4,8 @@ import PlayerContainer from './PlayerContainer'
 import Controls from './Controls'
 import { connect } from 'react-redux'
 
+import {countingCards} from '../redux/actions'
+
 import Strategy from './Strategy'
 
 class TableContainer extends React.Component {
@@ -21,6 +23,7 @@ class TableContainer extends React.Component {
         : null
         }
         <Strategy/>
+        <button onClick={this.props.countingCards}>Count</button>
       </div>
     )
   }
@@ -34,4 +37,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(TableContainer)
+export default connect(mapStateToProps, {countingCards})(TableContainer)
