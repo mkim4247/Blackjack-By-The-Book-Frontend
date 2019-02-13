@@ -49,7 +49,7 @@ const playerHandReducer = (state=[{ cards: [], score: null }], action) => {
 
 const playerActionReducer = (state=null, action) => {
   switch(action.type){
-    case "DEAL":
+    case "DEAL_PLAYER_CARDS":
       return "deal"
     case "STAY":
       return "stay"
@@ -64,9 +64,8 @@ const playerActionReducer = (state=null, action) => {
 
 const currentHandReducer = (state=0, action) => {
   let next;
-
   switch(action.type){
-    case "DEAL":
+    case "DEAL_PLAYER_CARDS":
       return 0
     case "STAY":
       next = ++state
@@ -87,7 +86,7 @@ const roundResultReducer = (state=null, action) => {
       return "Player Wins"
     case "PUSH":
       return "Push"
-    case "DEAL":
+    case "DEAL_PLAYER_CARDS":
       return null
     case "BUST":
       return "Bust"

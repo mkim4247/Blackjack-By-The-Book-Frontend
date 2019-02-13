@@ -18,7 +18,7 @@ export const settingUser = user => {
         alert('Incorrect username and/or password')
       }
       else{
-        console.log('Login Successful')
+        console.log('Login Successful', data.user_info)
         dispatch(setUser(data.user_info))
         localStorage.setItem('token', data.token)
       }
@@ -82,12 +82,10 @@ export const fetchingDeck = () => {
 }
 
 /* DEALING RELATED ACTIONS */
-/* "cards" is an array  */
 const dealDealerCards = cards => {
   return { type: "DEAL_DEALER_CARDS", cards }
 }
 
-/* "cards" is an array  */
 const dealPlayerCards = cards => {
   return { type: "DEAL_PLAYER_CARDS", cards }
 }
@@ -105,7 +103,6 @@ export const dealingCards = () => {
       let dealerCards = [deck.cards[0], deck.cards[1]]
       let playerCards = [deck.cards[2], deck.cards[3]]
 
-      dispatch({ type: "DEAL" })
       dispatch(dealDealerCards(dealerCards))
       dispatch(dealPlayerCards(playerCards))
     })
@@ -113,7 +110,6 @@ export const dealingCards = () => {
 }
 
 /* HITTING RELATED ACTIONS */
-/* cards is an array */
 const hitPlayerCards = (cards, index) => {
   return { type: "HIT_PLAYER_CARDS", cards, index }
 }
@@ -144,10 +140,8 @@ const checkPlayerBust = () => {
     let hand = getStore().playerHand
     let playerScore = getStore().playerHand[index].score
 
-    if(playerScore > 21 && hand[index + 1]){
+    if(playerScore > 21){
       dispatch({ type: "BUST" })
-    } else {
-      dispatch(dealerMove())
     }
   }
 }
@@ -161,12 +155,12 @@ export const hittingDealerCards = () => {
     let deckId = getStore().deckId
 
     let dealerScore = getStore().dealerHand.score
-    let playerScore = getStore().playerScore
+    let playerScore = getStore().playerHand[0].score
     if(dealerScore <= playerScore && dealerScore < 17){
       fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
       .then(res => res.json())
       .then(deck => {
-        let cards = getStore().dealerHand.slice()
+        let cards = getStore().dealerHand.cards.slice()
         cards.push(deck.cards[0])
         dispatch(hitDealerCards(cards))
       })
@@ -178,7 +172,8 @@ export const playerStay = () => {
   return (dispatch, getStore) => {
     let hand = getStore().playerHand
     let index = getStore().currentHandIndex
-    if(index < hand.length - 1){
+
+    if(index < hand.length - 1 ){
       dispatch({ type: "STAY" })
     }
     else {
@@ -188,19 +183,11 @@ export const playerStay = () => {
 }
 
 export const dealerMove = () => {
-  return {type: "BUST" }
-}
-
-export const dealersMove = () => {
   return (dispatch, getStore) => {
     let dealerScore = getStore().dealerHand.score
     let index = getStore().currentHandIndex
-    let playerScore = getStore().playerHand[index].score
-
-    if(playerScore > 21){
-      dispatch({ type: "DEALER_WINS" })
-    }
-    else if(dealerScore <= playerScore && dealerScore < 17){
+    let playerScore = getStore().playerHand[0].score
+    if(dealerScore <= playerScore && dealerScore < 17){
       setTimeout( () => {
         dispatch(hittingDealerCards())
         dispatch(dealerMove())
@@ -209,7 +196,7 @@ export const dealersMove = () => {
         dispatch({ type: "PUSH" })
     } else if(playerScore > dealerScore || dealerScore > 21){
         dispatch({ type: "PLAYER_WINS" })
-    } else if(dealerScore > playerScore && dealerScore < 21){
+    } else if(dealerScore > playerScore || playerScore > 21){
         dispatch({ type: "DEALER_WINS" })
     }
   }
@@ -218,6 +205,7 @@ export const dealersMove = () => {
 export const doublingPlayer = () => {
   return (dispatch, getStore) => {
     dispatch(hittingPlayerCards())
+    dispatch({ type: "DOUBLE" })
     dispatch(dealerMove())
   }
 }
@@ -235,8 +223,6 @@ export const splittingPlayerCards = () => {
       let index = getStore().currentHandIndex
       let hand = getStore().playerHand.slice()
       let oldHand = hand[index].cards
-      console.log(oldHand)
-
       let splitHand1 = [oldHand[0], deck.cards[0]]
       let splitHand2 = [oldHand[1], deck.cards[1]]
       let cards = [splitHand1, splitHand2]
@@ -262,7 +248,5 @@ USER: GIVE TWO MORE CARDS/MAKE TWO HANDS, CHECK FOR SPLIT, FIRST HAND, HIT STAY 
 
 STAY =>
 USER: REVEAL DEALER CARDS & SCORE, CHECK PLAYER SCORE AGAINST DEALER, IF PLAYER SCORE > DEALER SCORE && DEALER SCORE < 17, HIT DEALER then RECHECK DEALER
-
-
 
 */

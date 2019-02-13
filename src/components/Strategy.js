@@ -569,7 +569,7 @@ class Strategy extends React.Component {
         '2': 'Hit'
       }
     }
-    
+
     let currentHand = this.props.playerHand[this.props.index]
     let dealerCard = this.props.dealerHand.cards[0]
 
@@ -590,7 +590,7 @@ class Strategy extends React.Component {
   render(){
     return(
       <div> {
-       this.props.playerHand[this.props.index].cards.length > 0 ?
+       this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0 ?
         this.checkTable() : null
 
       } </div>
