@@ -8,8 +8,11 @@ class DealerContainer extends React.Component {
     return(
       <div>
       Dealer Container
-      <DealerHand dealerHand={this.props.dealerHand}/>
-        <div> {this.props.dealerHand.score} </div>
+      <DealerHand />
+        {this.props.showDealer ?
+          <div> {this.props.dealerHand.score} </div>
+          : null
+        }
       </div>
     )
   }
@@ -18,7 +21,7 @@ class DealerContainer extends React.Component {
 const mapStateToProps = state => {
   return {
     dealerHand: state.dealerHand,
-    dealerScore: state.dealerScore
+    showDealer: state.showDealer
   }
 }
 

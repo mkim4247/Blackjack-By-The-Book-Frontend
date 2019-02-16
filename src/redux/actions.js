@@ -105,6 +105,8 @@ export const dealingCards = () => {
 
       dispatch(dealDealerCards(dealerCards))
       dispatch(dealPlayerCards(playerCards))
+      dispatch(countingCards(deck.cards))
+      dispatch(checkPlayerBlackJack())
     })
   }
 }
@@ -130,6 +132,7 @@ export const hittingPlayerCards = () => {
 
       dispatch(hitPlayerCards(cards, index))
       dispatch(checkPlayerBust())
+      dispatch(countingCards(deck.cards))
     })
   }
 }
@@ -137,7 +140,6 @@ export const hittingPlayerCards = () => {
 const checkPlayerBust = () => {
   return (dispatch, getStore) => {
     let index = getStore().currentHandIndex
-    let hand = getStore().playerHand
     let playerScore = getStore().playerHand[index].score
 
     if(playerScore > 21){
@@ -145,6 +147,20 @@ const checkPlayerBust = () => {
     }
   }
 }
+
+const checkPlayerBlackJack = () => {
+  return (dispatch, getStore) => {
+    let index = getStore().currentHandIndex
+    let playerHand = getStore().playerHand[index].cards
+    let playerScore = getStore().playerHand[index].score
+
+    if(playerHand.includes( card => card.value === "ACE") && playerScore === 21){
+      dispatch({ type: "BLACKJACK"} )
+    }
+  }
+}
+
+
 
 const hitDealerCards = cards => {
   return { type: "HIT_DEALER_CARDS", cards }
@@ -163,6 +179,7 @@ export const hittingDealerCards = () => {
         let cards = getStore().dealerHand.cards.slice()
         cards.push(deck.cards[0])
         dispatch(hitDealerCards(cards))
+        dispatch(countingCards(deck.cards))
       })
     }
   }
@@ -177,9 +194,14 @@ export const playerStay = () => {
       dispatch({ type: "STAY" })
     }
     else {
+      dispatch(showDealer())
       dispatch(dealerMove())
     }
   }
+}
+
+const showDealer = () => {
+  return { type: "DEALER_MOVE" }
 }
 
 export const dealerMove = () => {
@@ -196,6 +218,7 @@ export const dealerMove = () => {
         dispatch({ type: "PUSH" })
     } else if(playerScore > dealerScore || dealerScore > 21){
         dispatch({ type: "PLAYER_WINS" })
+        dispatch(playerWins())
     } else if(dealerScore > playerScore || playerScore > 21){
         dispatch({ type: "DEALER_WINS" })
     }
@@ -219,6 +242,7 @@ export const doublingPlayer = () => {
       dispatch(hitPlayerCards(cards, index))
       dispatch({ type: "DOUBLE" })
       dispatch(checkPlayerBust())
+      dispatch(countingCards(deck.cards))
       dispatch(dealerMove())
     })
   }
@@ -241,25 +265,60 @@ export const splittingPlayerCards = () => {
       let splitHand2 = [oldHand[1], deck.cards[1]]
       let cards = [splitHand1, splitHand2]
       dispatch(splitPlayerCards( cards, index ))
+      dispatch(countingCards(deck.cards))
     })
   }
 }
 
-export const countingCards = () => {
+export const countingCards = cards => {
   return (dispatch, getStore) => {
-    let currentCount = getStore().count
-    let dealerCards = getStore().dealerHand.cards
-    let playerCards = getStore().playerHand.map( hand => {
-      return hand.cards
-    }).flat()
-
-    let count = currentCount + getCountFromHand(playerCards) + getCountFromHand(dealerCards)
+    let count = getCountFromHand(cards)
     dispatch(countCards(count))
   }
 }
 
 export const countCards = count => {
   return { type: "COUNT", count }
+}
+
+export const placeBet = bet => {
+  return { type: "BET", bet }
+}
+
+export const playerWins = () => {
+  return (dispatch, getStore) => {
+    let bet = getStore().bet
+    let user = getStore().user
+    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({ pot: user.pot + bet })
+    })
+    .then( res => res.json() )
+    .then( user => {
+      dispatch(setUser(user))
+    })
+  }
+}
+
+export const playerLoses = () => {
+  return (dispatch, getStore) => {
+    let bet = getStore().bet
+    let user = getStore().user
+    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({ pot: user.pot - bet })
+    })
+    .then( res => res.json() )
+    .then( user => {
+      dispatch(setUser(user))
+    })
+  }
 }
 
 /* Convenience method to count cards in hand */

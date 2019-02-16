@@ -50,13 +50,17 @@ const playerHandReducer = (state=[{ cards: [], score: null }], action) => {
 const playerActionReducer = (state=null, action) => {
   switch(action.type){
     case "DEAL_PLAYER_CARDS":
-      return "deal"
+      return null
+    case "HIT_PLAYER_CARDS":
+      return "hit"
     case "STAY":
       return "stay"
     case "DOUBLE":
       return "double"
     case "SPLIT":
       return "split"
+    case "BLACKJACK":
+      return "blackjack"
     default:
       return state
   }
@@ -73,12 +77,15 @@ const currentHandReducer = (state=0, action) => {
     case "BUST":
       next = ++state
       return next
+    case "BLACKJACK":
+      next = ++state
+      return next
     default:
       return state
   }
 }
 
-const roundResultReducer = (state=null, action) => {
+const roundResultReducer = (state="start", action) => {
   switch(action.type){
     case "DEALER_WINS":
       return "Dealer Wins"
@@ -86,6 +93,8 @@ const roundResultReducer = (state=null, action) => {
       return "Player Wins"
     case "PUSH":
       return "Push"
+    case "BLACKJACK":
+      return "Blackjack"
     case "DEAL_PLAYER_CARDS":
       return null
     case "BUST":
@@ -98,7 +107,28 @@ const roundResultReducer = (state=null, action) => {
 const countReducer = (state=0, action) => {
   switch(action.type){
     case "COUNT":
-      return action.count
+      let newCount = state + action.count
+      return newCount
+    default:
+      return state
+  }
+}
+
+const betReducer = (state=0, action) => {
+  switch(action.type){
+    case "BET":
+      return action.bet
+    default:
+      return state
+  }
+}
+
+const showDealerReducer = (state=false, action) => {
+  switch(action.type){
+    case "DEAL_PLAYER_CARDS":
+      return false
+    case "DEALER_MOVE":
+      return true
     default:
       return state
   }
@@ -112,7 +142,9 @@ const rootReducer = combineReducers({
   currentHandIndex: currentHandReducer,
   playerAction: playerActionReducer,
   roundResult: roundResultReducer,
-  count: countReducer
+  count: countReducer,
+  bet: betReducer,
+  showDealer: showDealerReducer
 })
 
 export default rootReducer

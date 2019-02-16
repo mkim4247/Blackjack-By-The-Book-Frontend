@@ -3,10 +3,8 @@ import DealerContainer from './DealerContainer'
 import PlayerContainer from './PlayerContainer'
 import Controls from './Controls'
 import { connect } from 'react-redux'
-
-import {countingCards} from '../redux/actions'
-
 import Strategy from './Strategy'
+import Bet from './Bet'
 
 class TableContainer extends React.Component {
 
@@ -18,12 +16,12 @@ class TableContainer extends React.Component {
       <Controls />
       <PlayerContainer />
 
-        {this.props.roundResult ?
-        <div> {this.props.roundResult} </div>
-        : null
+        {this.props.roundResult !== "start" ?
+          <div> {this.props.roundResult} </div>
+          : null
         }
         <Strategy/>
-        <button onClick={this.props.countingCards}>Count</button>
+        <Bet />
       </div>
     )
   }
@@ -37,4 +35,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, {countingCards})(TableContainer)
+export default connect(mapStateToProps)(TableContainer)
