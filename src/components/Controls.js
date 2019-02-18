@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { connect } from 'react-redux'
-import { dealingCards, hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards } from '../redux/actions'
+import { dealingCards, hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards, takeInsurance, passInsurance } from '../redux/actions'
 
 
 class Controls extends React.Component {
@@ -41,6 +41,12 @@ class Controls extends React.Component {
 
           <button onClick={this.splitPlayer}> Split </button>
 
+        {this.props.insurance === 'ask' ?
+          <div>
+          <button onClick={this.props.takeInsurance}> Take Insurance </button>
+          <button onClick={this.props.passInsurance}> Pass Insurance </button>
+          </div>
+          : null}
         </div> : null }
       </div>
     )
@@ -51,8 +57,9 @@ const mapStateToProps = state => {
   return {
     playerHand: state.playerHand,
     playerAction: state.playerAction,
-    roundResult: state.roundResult
+    roundResult: state.roundResult,
+    insurance: state.insurance
   }
 }
 
-export default connect(mapStateToProps, {dealingCards, hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards })(Controls)
+export default connect(mapStateToProps, {dealingCards, hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards, takeInsurance, passInsurance })(Controls)

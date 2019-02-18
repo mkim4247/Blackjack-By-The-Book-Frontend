@@ -134,6 +134,21 @@ const showDealerReducer = (state=false, action) => {
   }
 }
 
+const insuranceReducer = (state=null, action) => {
+  switch(action.type){
+    case "ASK_PLAYER":
+      return 'ask'
+    case "TAKE_INSURANCE":
+      return 'take'
+    case "PASS_INSURANCE":
+      return 'pass'
+    case "DEAL_PLAYER_CARDS":
+      return null 
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
   user: userReducer,
   deckId: deckReducer,
@@ -144,7 +159,8 @@ const rootReducer = combineReducers({
   roundResult: roundResultReducer,
   count: countReducer,
   bet: betReducer,
-  showDealer: showDealerReducer
+  showDealer: showDealerReducer,
+  insurance: insuranceReducer
 })
 
 export default rootReducer
