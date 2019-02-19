@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -28,5 +28,22 @@
   }
   to {
     transform: rotate(360deg);
+  }
+} */
+
+#home {
+  display: grid;
+}
+
+#table {
+  background-color: green;
+}
+
+@keyframes deal-card {
+  from {
+  
+  }
+  to {
+
   }
 }

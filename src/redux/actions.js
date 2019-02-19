@@ -181,7 +181,7 @@ const checkPlayerBust = () => {
   }
 }
 
-/* NEED TO DO DEALER CHECK FOR BLACKJACK HERE AND MAKE IT A PUSH */
+/* CHECK PLAYER FOR BLACKJACK; WIN UNLESS DEALER ALSO HAS BLACKJACK */
 const checkPlayerBlackJack = () => {
   return (dispatch, getStore) => {
     /* check current hand */
@@ -189,8 +189,16 @@ const checkPlayerBlackJack = () => {
     let playerHand = getStore().playerHand[index].cards
     let playerScore = getStore().playerHand[index].score
 
+    let dealerHand = getStore().dealerHand.cards
+    let dealerScore = getStore().dealerHand.score
+
     if(playerHand.find( card => card.value === "ACE") && playerScore === 21){
-      dispatch({ type: "BLACKJACK" })
+      if(dealerHand.find( card => card.value === "ACE") && dealerScore === 21){
+        dispatch({ type: "DEALER_MOVE" })
+        dispatch({ type: "PUSH" })
+      } else {
+        dispatch({ type: "BLACKJACK" })
+      }
     }
   }
 }
@@ -322,7 +330,7 @@ export const doublingPlayer = () => {
       dispatch({ type: "DOUBLE" })
       dispatch(checkPlayerBust())
       dispatch(countingCards(deck.cards))
-      dispatch(dealerMove())
+      dispatch(playerStay())
     })
   }
 }

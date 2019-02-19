@@ -118,6 +118,9 @@ const betReducer = (state=0, action) => {
   switch(action.type){
     case "BET":
       return action.bet
+    case "DOUBLE":
+      let doubledBet = state * 2
+      return doubledBet
     default:
       return state
   }
@@ -143,7 +146,7 @@ const insuranceReducer = (state=null, action) => {
     case "PASS_INSURANCE":
       return 'pass'
     case "DEAL_PLAYER_CARDS":
-      return null 
+      return null
     default:
       return state
   }

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Route, Switch, Redirect, withRouter } from 'react-router'
 import { checkingToken, fetchingDeck } from './redux/actions'
+import './App.css';
+import 'semantic-ui-css/semantic.min.css'
 import Login from './components/Login'
 import Home from './components/Home'
 import Create from './components/Create'
