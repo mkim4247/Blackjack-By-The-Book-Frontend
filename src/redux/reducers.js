@@ -114,13 +114,18 @@ const countReducer = (state=0, action) => {
   }
 }
 
+/* NEED TO CHANGE THIS */
 const betReducer = (state=0, action) => {
   switch(action.type){
     case "BET":
-      return action.bet
+      let newBet = state + action.bet
+      return newBet
     case "DOUBLE":
       let doubledBet = state * 2
       return doubledBet
+    case "SPLIT":
+      let splitBet = state * 2
+      return splitBet
     default:
       return state
   }

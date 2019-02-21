@@ -4,7 +4,7 @@ import { placeBet } from '../redux/actions'
 
 class Bet extends React.Component {
 
-  bet = event => {
+  increaseBet = event => {
     let bet = parseInt(event.currentTarget.value)
     this.props.placeBet(bet)
   }
@@ -14,13 +14,13 @@ class Bet extends React.Component {
       <div>
       {this.props.roundResult ?
         <div>
-        <button onClick={this.bet} value='5'> 5 </button>
-        <button onClick={this.bet} value='10'> 10 </button>
-        <button onClick={this.bet} value='25'> 25 </button>
-        <button onClick={this.bet} value='50'> 50 </button>
-        <button onClick={this.bet} value='100'> 100 </button>
+        <button onClick={this.increaseBet} value='5'> 5 </button>
+        <button onClick={this.increaseBet} value='10'> 10 </button>
+        <button onClick={this.increaseBet} value='25'> 25 </button>
+        <button onClick={this.increaseBet} value='50'> 50 </button>
+        <button onClick={this.increaseBet} value='100'> 100 </button>
         </div>
-        : null 
+        : null
       }
       </div>
     )

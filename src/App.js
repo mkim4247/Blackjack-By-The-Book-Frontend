@@ -7,6 +7,7 @@ import 'semantic-ui-css/semantic.min.css'
 import Login from './components/Login'
 import Home from './components/Home'
 import Create from './components/Create'
+import Rules from './components/Rules'
 
 class App extends Component {
 
@@ -33,6 +34,9 @@ class App extends Component {
             <Route exact path='/new' render={ () => (
                 this.props.user ?
                 <Redirect to='/' /> : <Create />
+              )} />
+            <Route exact path='/rules' render={ () => (
+                <Rules />
               )} />
         </Switch>
       </div>

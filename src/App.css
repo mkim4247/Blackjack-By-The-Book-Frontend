@@ -31,17 +31,31 @@
   }
 } */
 
-#home {
-  display: grid;
-}
-
 #table {
   background-color: green;
 }
 
+#facedown {
+
+}
+
+#player-hand {
+  border: 1px solid black;
+  margin: 0 auto;
+}
+
+#dealer-hand {
+  border: 1px solid red;
+}
+
+.cards {
+  height: 100px;
+  width: 70px;
+}
+
 @keyframes deal-card {
   from {
-  
+
   }
   to {
 

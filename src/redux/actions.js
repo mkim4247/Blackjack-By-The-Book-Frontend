@@ -106,6 +106,7 @@ export const dealingCards = () => {
       dispatch(dealDealerCards(dealerCards))
       dispatch(dealPlayerCards(playerCards))
       /* check cards and add to count*/
+      dispatch(subtractBetFromPot())
       dispatch(countingCards(deck.cards))
       /* check player and dealer for blackjack */
       dispatch(checkPlayerBlackJack())
@@ -290,24 +291,35 @@ const showDealer = () => {
   return { type: "DEALER_MOVE" }
 }
 
+
+/////////* NEED TO CHECK DEALER HAND AGAINST EACH PLAYER HAND */////////
 export const dealerMove = () => {
   return (dispatch, getStore) => {
     let dealerScore = getStore().dealerHand.score
     let index = getStore().currentHandIndex
+    let playerHand = getStore().playerHand
     let playerScore = getStore().playerHand[0].score
+
     /* dealer only hits if losing to player and not at 17 */
-    if(dealerScore <= playerScore && dealerScore < 17){
+    if(playerHand.find( hand => hand.score >= dealerScore && hand.score <= 21) && dealerScore < 17){
       setTimeout( () => {
         dispatch(hittingDealerCards())
         dispatch(dealerMove())
       }, 1000)
-    } else if(dealerScore === playerScore){
-        dispatch({ type: "PUSH" })
-    } else if(playerScore > dealerScore || dealerScore > 21){
-        dispatch({ type: "PLAYER_WINS" })
-        dispatch(playerWins())
-    } else if(dealerScore > playerScore || playerScore > 21){
-        dispatch({ type: "DEALER_WINS" })
+    }
+    else {
+      playerHand.forEach( hand => {
+        if(hand.score === dealerScore){
+          dispatch({ type: "PUSH" })
+        }
+        else if(hand.score > dealerScore || dealerScore > 21){
+          dispatch({ type: "PLAYER_WINS" })
+          dispatch(playerWins())
+        }
+        else if(hand.score < dealerScore || hand.score > 21){
+          dispatch({ type: "DEALER_WINS" })
+        }
+      })
     }
   }
 }
@@ -327,6 +339,7 @@ export const doublingPlayer = () => {
       cards.push(deck.cards[0])
       /* give player new card and then end turn */
       dispatch(hitPlayerCards(cards, index))
+      dispatch(subtractBetFromPot())
       dispatch({ type: "DOUBLE" })
       dispatch(checkPlayerBust())
       dispatch(countingCards(deck.cards))
@@ -354,6 +367,7 @@ export const splittingPlayerCards = () => {
       let splitHand2 = [oldHand[1], deck.cards[1]]
       let cards = [splitHand1, splitHand2]
       dispatch(splitPlayerCards( cards, index ))
+      dispatch(subtractBetFromPot())
       dispatch(countingCards(deck.cards))
     })
   }
@@ -375,27 +389,9 @@ export const placeBet = bet => {
   return { type: "BET", bet }
 }
 
-/* saves player's winnings */
-export const playerWins = () => {
-  return (dispatch, getStore) => {
-    let bet = getStore().bet
-    let user = getStore().user
-    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify({ pot: user.pot + bet })
-    })
-    .then( res => res.json() )
-    .then( user => {
-      dispatch(setUser(user))
-    })
-  }
-}
 
 /* saves player's losings */
-export const playerLoses = () => {
+export const subtractBetFromPot = () => {
   return (dispatch, getStore) => {
     let bet = getStore().bet
     let user = getStore().user
@@ -405,6 +401,26 @@ export const playerLoses = () => {
         "Content-type": "application/json"
       },
       body: JSON.stringify({ pot: user.pot - bet })
+    })
+    .then( res => res.json() )
+    .then( user => {
+      dispatch(setUser(user))
+    })
+  }
+}
+
+
+/* saves player's winnings */
+export const playerWins = () => {
+  return (dispatch, getStore) => {
+    let winnings = (getStore().bet * 2)
+    let user = getStore().user
+    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({ pot: user.pot + winnings })
     })
     .then( res => res.json() )
     .then( user => {
