@@ -97,21 +97,30 @@ export const dealingCards = () => {
     fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`)
     .then(res => res.json())
     .then(deck => {
-      console.log("Dealing cards...")
+        console.log("Dealing cards...")
 
-      /* split up cards returned from fetch to API */
-      let dealerCards = [deck.cards[0], deck.cards[1]]
-      let playerCards = [deck.cards[2], deck.cards[3]]
-      /* give cards to dealer and player  */
-      dispatch(dealDealerCards(dealerCards))
-      dispatch(dealPlayerCards(playerCards))
-      /* check cards and add to count*/
-      dispatch(subtractBetFromPot())
-      dispatch(countingCards(deck.cards))
-      /* check player and dealer for blackjack */
-      dispatch(checkPlayerBlackJack())
-      dispatch(checkDealerFaceDown())
-      dispatch(checkDealerFaceUp())
+        /* split up cards returned from fetch to API */
+        let dealerCards = [deck.cards[0], deck.cards[1]]
+        let playerCards = [deck.cards[2], deck.cards[3]]
+        /* give cards to dealer and player  */
+        dispatch(dealDealerCards(dealerCards))
+        dispatch(dealPlayerCards(playerCards))
+        /* check cards and add to count*/
+        dispatch(subtractBetFromPot())
+        dispatch(countingCards(deck.cards))
+        /* check player and dealer for blackjack */
+        dispatch(checkPlayerBlackJack())
+        dispatch(checkDealerFaceDown())
+        dispatch(checkDealerFaceUp())
+
+        if(deck.remaining < 150){
+          fetch(`https://deckofcardsapi.com/api/deck/${deckId}/shuffle/`)
+          .then(res => res.json())
+          .then(deck => {
+            console.log('Deck shuffled')
+          })
+        }
+
     })
   }
 }
@@ -143,7 +152,6 @@ export const hittingPlayerCards = () => {
     })
   }
 }
-
 
 const hitDealerCards = cards => {
   return { type: "HIT_DEALER_CARDS", cards }
@@ -209,10 +217,15 @@ const checkDealerFaceDown = () => {
     /* auto ends if dealer has facedown blackjack */
     let dealerHand = getStore().dealerHand.cards
     let dealerScore = getStore().dealerHand.score
-
+    let playerHand = getStore().playerHand[0].cards
     if(dealerHand[1].value === "ACE" && dealerScore === 21){
-      dispatch({ type: "DEALER_MOVE" })
-      dispatch({ type: "DEALER_WINS" })
+      if(playerHand.find( card => card.value === "ACE" ) && playerHand.score === 21){
+        dispatch({ type: "PUSH" })
+      }
+      else {
+        dispatch({ type: "DEALER_MOVE" })
+        dispatch({ type: "DEALER_WINS" })
+      }
     }
   }
 }
@@ -238,6 +251,8 @@ export const takeInsurance = () => {
     dispatch(resolveDealerAce())
   }
 }
+
+///INSURANCE IS HALF OF ORIGINAL BET ///////
 
 export const passInsurance = () => {
   return dispatch => {
@@ -291,7 +306,6 @@ const showDealer = () => {
   return { type: "DEALER_MOVE" }
 }
 
-
 /////////* NEED TO CHECK DEALER HAND AGAINST EACH PLAYER HAND */////////
 export const dealerMove = () => {
   return (dispatch, getStore) => {
@@ -312,11 +326,18 @@ export const dealerMove = () => {
         if(hand.score === dealerScore){
           dispatch({ type: "PUSH" })
         }
-        else if(hand.score > dealerScore || dealerScore > 21){
+        else if(dealerScore > 21){
           dispatch({ type: "PLAYER_WINS" })
           dispatch(playerWins())
         }
-        else if(hand.score < dealerScore || hand.score > 21){
+        else if(hand.score > 21){
+          dispatch({ type: "DEALER_WINS" })
+        }
+        else if(hand.score > dealerScore && hand.score <= 21){
+          dispatch({ type: "PLAYER_WINS" })
+          dispatch(playerWins())
+        }
+        else if(hand.score < dealerScore){
           dispatch({ type: "DEALER_WINS" })
         }
       })
@@ -388,6 +409,7 @@ export const countCards = count => {
 export const placeBet = bet => {
   return { type: "BET", bet }
 }
+
 
 
 /* saves player's losings */

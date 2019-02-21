@@ -5,6 +5,7 @@ import Controls from './Controls'
 import { connect } from 'react-redux'
 import Strategy from './Strategy'
 import Bet from './Bet'
+import Pot from './Pot'
 
 class TableContainer extends React.Component {
 
@@ -14,6 +15,7 @@ class TableContainer extends React.Component {
       Table Container
       <DealerContainer />
       <Controls />
+      <Pot />
       <PlayerContainer />
 
         {this.props.roundResult !== "start" ?

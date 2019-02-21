@@ -31,8 +31,25 @@
   }
 } */
 
+#home {
+  height: 100vh;
+  width: 100vw;
+}
+
 #table {
+  display: grid;
+  border: 10px solid black;
   background-color: green;
+  height: 100vh;
+  width: 100vw;
+}
+
+#controls {
+  border: 3px solid blue;
+}
+
+#bet-box {
+  border: 3px solid blue;
 }
 
 #facedown {
@@ -48,16 +65,19 @@
   border: 1px solid red;
 }
 
+@keyframes deal {
+  0% {
+    transform: translateY(-100%)
+  }
+  100% {
+    transform: translateY(0%)
+  }
+}
+
 .cards {
   height: 100px;
   width: 70px;
-}
-
-@keyframes deal-card {
-  from {
-
-  }
-  to {
-
-  }
+  animation-name: deal;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
 }

@@ -2,6 +2,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 class Strategy extends React.Component {
+  /* local state for showing advice and count */
+  state = {
+    showStrategy: false,
+    showCount: false
+  }
+
+  toggleStrategy = event => {
+    this.setState({ showStrategy: !this.state.showStrategy })
+  }
+
+  toggleCount = event => {
+    this.setState({ showCount: !this.state.showCount })
+  }
 
   checkTable = () => {
     let hardTotal = {
@@ -589,11 +602,25 @@ class Strategy extends React.Component {
 
   render(){
     return(
-      <div> {
-       this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0 ?
-        this.checkTable() : null
-
-      } </div>
+      <div>
+        <button onClick={this.toggleStrategy}> Advice </button>
+        {this.state.showStrategy ?
+          <div>
+            {
+              this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0 ?
+                this.checkTable() : null
+            }
+          </div>
+          : null
+        }
+        <button onClick={this.toggleCount}> Count </button>
+        <div>
+          {this.state.showCount ?
+            <div> Count: {this.props.count} </div>
+            : null
+          }
+        </div>
+      </div>
     )
   }
 }
@@ -602,7 +629,8 @@ const mapStateToProps = state => {
   return {
     index: state.currentHandIndex,
     playerHand: state.playerHand,
-    dealerHand: state.dealerHand
+    dealerHand: state.dealerHand,
+    count: state.count
   }
 }
 
