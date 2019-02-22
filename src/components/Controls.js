@@ -9,20 +9,13 @@ class Controls extends React.Component {
     return(
       <div id='controls'>
       Controls
-      {
-        this.props.playerHand[0].cards.length > 0 ?
-      <div>
+
       <button onClick={this.props.dealingCards}>Deal</button>
         <div>
-          {
-            !this.props.roundResult ?
             <div>
               <button onClick={this.props.hittingPlayerCards}>Hit</button>
               <button onClick={this.props.playerStay}>Stay</button>
             </div>
-            : null
-          }
-
 
           {
             this.props.playerHand[this.props.index].cards.length < 3 && this.props.playerHand[this.props.index].cards.length > 0 ?
@@ -46,10 +39,6 @@ class Controls extends React.Component {
         }
         </div>
       </div>
-       : null
-     }
-    </div>
-
     )
   }
 }

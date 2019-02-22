@@ -19,7 +19,10 @@ class TableContainer extends React.Component {
       <PlayerContainer />
 
         {this.props.roundResult !== "start" ?
-          <div> {this.props.roundResult} </div>
+          <div>
+            {this.props.roundResult}
+            <button> Deal </button>
+          </div>
           : null
         }
         <Strategy/>
