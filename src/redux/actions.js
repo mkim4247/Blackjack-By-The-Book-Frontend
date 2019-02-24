@@ -98,43 +98,44 @@ export const dealingCards = () => {
     fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`)
     .then(res => res.json())
     .then(deck => {
-        if(deck.remaining < 150){
-          fetch(`https://deckofcardsapi.com/api/deck/${deckId}/shuffle/`)
+      if(deck.remaining < 150){
+        fetch(`https://deckofcardsapi.com/api/deck/${deckId}/shuffle/`)
+        .then(res => res.json())
+        .then(deck => {
+          console.log('Deck shuffled')
+          fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`)
           .then(res => res.json())
           .then(deck => {
-            console.log('Deck shuffled')
-
-            fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`)
-            .then(res => res.json())
-            .then(deck => {
           /* split up cards returned from fetch to API */
-              let dealerCards = [deck.cards[0], deck.cards[1]]
-              let cards = [deck.cards[2], deck.cards[3]]
-              /* give cards to dealer and player  */
-              dispatch(dealDealerCards(dealerCards))
-              dispatch(dealPlayerCards(cards, bet))
-              /* check cards and add to count*/
-              dispatch(subtractBetFromPot())
-              dispatch(countingCards(deck.cards))
-              /* check player and dealer for blackjack */
-              dispatch(checkPlayerBlackJack())
-              dispatch(checkDealerFaceDown())
-              dispatch(checkDealerFaceUp())
-            })
+
+            /* player's cards */
+            let cards = [deck.cards[0], deck.cards[1]]
+            let dealerCards = [deck.cards[2], deck.cards[3]]
+            /* give cards to dealer and player  */
+            dispatch(dealDealerCards(dealerCards))
+            dispatch(dealPlayerCards(cards, bet))
+            /* check cards and add to count*/
+            dispatch(subtractBetFromPot())
+            dispatch(countingCards(deck.cards.slice(0, 3)))
+            /* check player and dealer for blackjack */
+            dispatch(checkPlayerBlackJack())
+            dispatch(checkDealerFaceDown())
+            dispatch(checkDealerFaceUp())
           })
-        }
-        else {
-          let dealerCards = [deck.cards[0], deck.cards[1]]
-          let cards = [deck.cards[2], deck.cards[3]]
-          dispatch(dealDealerCards(dealerCards))
-          dispatch(dealPlayerCards(cards, bet))
-          dispatch(subtractBetFromPot())
-          dispatch(countingCards(deck.cards))
-          dispatch(checkPlayerBlackJack())
-          dispatch(checkDealerFaceDown())
-          dispatch(checkDealerFaceUp())
-        }
-      })
+        })
+      }
+      else {
+        let cards = [deck.cards[0], deck.cards[1]]
+        let dealerCards = [deck.cards[2], deck.cards[3]]
+        dispatch(dealDealerCards(dealerCards))
+        dispatch(dealPlayerCards(cards, bet))
+        dispatch(subtractBetFromPot())
+        dispatch(countingCards(deck.cards.slice(0, 3)))
+        dispatch(checkPlayerBlackJack())
+        dispatch(checkDealerFaceDown())
+        dispatch(checkDealerFaceUp())
+      }
+    })
   }
 }
 
@@ -216,12 +217,12 @@ const checkPlayerBlackJack = () => {
 
     if(playerHand.find( card => card.value === "ACE") && playerScore === 21){
       if(dealerHand.find( card => card.value === "ACE") && dealerScore === 21){
-        dispatch({ type: "DEALER_MOVE" })
+        dispatch(showDealer())
         dispatch(playerPush())
         dispatch({ type: "RESET_BET" })
       } else {
         dispatch(winningBlackJack())
-        dispatch({ type: "DEALER_MOVE" })
+        dispatch(showDealer())
         dispatch({ type: "RESET_BET" })
         dispatch({ type: "BLACKJACK" })
       }
@@ -261,7 +262,7 @@ const checkDealerFaceDown = () => {
         dispatch(playerPush())
       }
       else {
-        dispatch({ type: "DEALER_MOVE" })
+        dispatch(showDealer())
         dispatch({ type: "DEALER_WINS" })
       }
     }
@@ -284,9 +285,25 @@ export const askForInsurance = () => {
 
 /* player options for insurance */
 export const takeInsurance = () => {
-  return dispatch => {
-    dispatch({ type: "TAKE_INSURANCE" })
-    dispatch(resolveDealerAce())
+  return (dispatch, getStore) => {
+    let index = getStore().currentHandIndex
+    let playerHand = getStore().playerHand[index]
+    let insurance = (playerHand.bet/2)
+    let user = getStore().user
+
+    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({ pot: user.pot - insurance })
+    })
+    .then( res => res.json() )
+    .then( user => {
+      dispatch(setUser(user))
+      dispatch({ type: "TAKE_INSURANCE" })
+      dispatch(resolveDealerAce())
+    })
   }
 }
 
@@ -308,19 +325,41 @@ export const resolveDealerAce = () => {
     /* check if dealer has blackjack and if player took insurance to resolve */
     if(dealerHand[0].value === "ACE" && dealerScore === 21){
       if(insurance === 'take'){
-        dispatch({ type: "INSURANCE_WIN" })
-        dispatch({ type: "DEALER_MOVE" })
+        dispatch(insuranceWon())
+        dispatch(showDealer())
         dispatch({ type: "DEALER_WINS" })
       }
       else {
         dispatch({ type: "INSURANCE_LOST" })
-        dispatch({ type: "DEALER_MOVE" })
+        dispatch(showDealer())
         dispatch({ type: "DEALER_WINS" })
       }
     }
     else {
       dispatch({ type: "INSURANCE_LOST" })
     }
+  }
+}
+
+const insuranceWon = () => {
+  return (dispatch, getStore) => {
+    let index = getStore().currentHandIndex
+    let playerHand = getStore().playerHand[index]
+    let winnings = playerHand.bet
+    let user = getStore().user
+
+    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({ pot: user.pot + winnings })
+    })
+    .then( res => res.json() )
+    .then( user => {
+      dispatch(setUser(user))
+      dispatch({ type: "INSURANCE_WON" })
+    })
   }
 }
 
@@ -343,7 +382,12 @@ export const playerStay = () => {
 
 /* reveals dealer facedown and score */
 const showDealer = () => {
-  return { type: "DEALER_MOVE" }
+  return (dispatch, getStore) => {
+    let dealerHand = getStore().dealerHand.cards
+    let uncountedCard = [dealerHand[1]]
+    dispatch(countingCards(uncountedCard))
+    dispatch({ type: "DEALER_MOVE" })
+  }
 }
 
 /////////* NEED TO CHECK DEALER HAND AGAINST EACH PLAYER HAND */////////
