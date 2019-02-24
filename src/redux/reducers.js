@@ -127,6 +127,8 @@ const roundResultReducer = (state="Start", action) => {
       return "Deal"
     case "BUST":
       return "Bust"
+    case "SURRENDER":
+      return "Surrender"
     default:
       return state
   }

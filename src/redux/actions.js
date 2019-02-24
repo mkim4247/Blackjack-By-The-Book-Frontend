@@ -363,7 +363,30 @@ const insuranceWon = () => {
   }
 }
 
-/* ADD AN INSURANCE LOST AND WON ACTION HERE */
+export const surrenderingPlayer = () => {
+  return (dispatch, getStore) => {
+    let user = getStore().user
+    let amount = (getStore().bet/2)
+
+    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({ pot: user.pot + amount })
+    })
+    .then( res => res.json() )
+    .then( user => {
+      dispatch(setUser(user))
+      dispatch(surrenderedPlayer())
+      dispatch({ type: "RESET_BET" })
+    })
+  }
+}
+
+export const surrenderedPlayer = () => {
+  return { type: "SURRENDER" }
+}
 
 export const playerStay = () => {
   return (dispatch, getStore) => {

@@ -11,6 +11,17 @@ class Strategy extends React.Component {
     this.setState({ showInfo: !this.state.showInfo })
   }
 
+  renderInfo = () => {
+    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
+      return (
+        <div>
+          <div> Count: {this.props.count} </div>
+          <div> {this.checkTable()} </div>
+        </div>
+      )
+    }
+  }
+
   checkTable = () => {
     let hardTotal = {
         '2': {
@@ -599,21 +610,13 @@ class Strategy extends React.Component {
     return(
       <div>
         <button onClick={this.toggleInfo}>
-          {this.state.showInfo ?
-            "Hide Info" : "Show Info"
+          {
+            this.state.showInfo ?
+              "Hide Info" : "Show Info"
           }
         </button>
         {this.state.showInfo ?
-          <div>
-            {
-              this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0 ?
-                <div>
-                  <div> Count: {this.props.count} </div>
-                  <div> {this.checkTable()} </div>
-                </div>
-                 : null
-            }
-          </div> : null
+          this.renderInfo() : null
         }
       </div>
     )

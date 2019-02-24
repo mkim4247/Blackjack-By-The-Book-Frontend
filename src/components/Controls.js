@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { connect } from 'react-redux'
-import { dealingCards, hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards, takeInsurance, passInsurance } from '../redux/actions'
+import { dealingCards, hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards, takeInsurance, passInsurance, surrenderingPlayer } from '../redux/actions'
 
 class Controls extends React.Component {
 
@@ -32,6 +32,14 @@ class Controls extends React.Component {
     }
   }
 
+  showSurrender = () => {
+    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2){
+      return (
+        <button onClick={this.props.surrenderingPlayer}> Surrender </button>
+      )
+    }
+  }
+
   render(){
     return(
       <div id='controls'>
@@ -47,18 +55,33 @@ class Controls extends React.Component {
           {this.showHitAndStay()}
           {this.showDouble()}
           {this.showSplit()}
-
+          {this.showSurrender()}
         {
           this.props.insurance === 'ask' ?
             <div>
-              <button onClick={this.props.takeInsurance}> Take Insurance </button>
-              <button onClick={this.props.passInsurance}> Pass Insurance </button>
+              Take Insurance?
+              <div>
+                This will cost {this.props.bet/2}.
+              </div>
+              <button onClick={this.props.takeInsurance}> Take </button>
+              <button onClick={this.props.passInsurance}> Pass </button>
             </div>
             : null
         }
         </div>
         : null
       }
+
+      <div style={{border: '1px solid yellow'}}>
+        Dummy buttons (remove later)
+        <button onClick={this.props.dealingCards}>Deal</button>
+        {this.showHitAndStay()}
+        {this.showDouble()}
+        {this.showSplit()}
+        {this.showSurrender()}
+        <button onClick={this.props.takeInsurance}> Take </button>
+        <button onClick={this.props.passInsurance}> Pass </button>
+      </div>
 
       </div>
     )
@@ -85,7 +108,8 @@ const mapDispatchToProps = dispatch => {
     doublingPlayer: () => dispatch(doublingPlayer()),
     splittingPlayerCards: () => dispatch(splittingPlayerCards()),
     takeInsurance: () => dispatch(takeInsurance()),
-    passInsurance: () => dispatch(passInsurance())
+    passInsurance: () => dispatch(passInsurance()),
+    surrenderingPlayer: () => dispatch(surrenderingPlayer())
   }
 }
 
