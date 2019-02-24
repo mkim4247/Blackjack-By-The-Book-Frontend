@@ -5,29 +5,48 @@ import { dealingCards, hittingPlayerCards, playerStay, doublingPlayer, splitting
 
 class Controls extends React.Component {
 
+  showHitAndStay = () => {
+    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
+      return (
+        <div>
+          <button onClick={this.props.hittingPlayerCards}>Hit</button>
+          <button onClick={this.props.playerStay}>Stay</button>
+        </div>
+      )
+    }
+  }
+
+  showDouble = () => {
+    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2){
+      return (
+        <button onClick={this.props.doublingPlayer}>Double</button>
+      )
+    }
+  }
+
+  showSplit = () => {
+    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2){
+      return (
+        <button onClick={this.props.splittingPlayerCards}> Split </button>
+      )
+    }
+  }
+
   render(){
     return(
       <div id='controls'>
       Controls
-
-      <button onClick={this.props.dealingCards}>Deal</button>
+      {this.props.bet > 0 ?
+        <button onClick={this.props.dealingCards}>Deal</button>
+        :
+        <div> Place your bets </div>
+      }
+      {
+        !this.props.dealerMove && !this.props.roundResult ?
         <div>
-            <div>
-              <button onClick={this.props.hittingPlayerCards}>Hit</button>
-              <button onClick={this.props.playerStay}>Stay</button>
-            </div>
-
-          {
-            this.props.playerHand[this.props.index].cards.length < 3 && this.props.playerHand[this.props.index].cards.length > 0 ?
-            <button onClick={this.props.doublingPlayer}>Double</button>
-            : null
-          }
-          /* currently cant' split face cards and tens */
-          {
-            this.props.playerHand[this.props.index].cards.length > 0 && this.props.playerHand[this.props.index].cards.length < 3 && this.props.playerHand[this.props.index].cards[0].value === this.props.playerHand[this.props.index].cards[1].value ?
-            <button onClick={this.props.splittingPlayerCards}> Split </button>
-            : null
-          }
+          {this.showHitAndStay()}
+          {this.showDouble()}
+          {this.showSplit()}
 
         {
           this.props.insurance === 'ask' ?
@@ -38,6 +57,9 @@ class Controls extends React.Component {
             : null
         }
         </div>
+        : null
+      }
+
       </div>
     )
   }
@@ -49,7 +71,9 @@ const mapStateToProps = state => {
     playerAction: state.playerAction,
     roundResult: state.roundResult,
     insurance: state.insurance,
-    index: state.currentHandIndex
+    index: state.currentHandIndex,
+    bet: state.bet,
+    dealerMove: state.dealerMove
   }
 }
 

@@ -35,30 +35,41 @@ const dealerHandReducer = (state={ cards: [], score: null }, action) => {
   }
 }
 
-const playerHandReducer = (state=[{ cards: [], score: null }], action) => {
+const playerHandReducer = (state=[{ cards: [], score: null, bet: null }], action) => {
   switch(action.type){
     case "DEAL_PLAYER_CARDS":
       return [{
         cards: action.cards,
-        score: assignHandValue(action.cards)
+        score: assignHandValue(action.cards),
+        bet: action.bet
       }]
     case "HIT_PLAYER_CARDS":
       let copy = [...state]
-      copy[action.index] = {
+      copy[action.index] = { ...state[action.index],
         cards: action.cards,
         score: assignHandValue(action.cards)
       }
       return copy
+    case "DOUBLE_PLAYER":
+      let double = [...state]
+      double[action.index] = { ...state[action.index],
+        cards: action.cards,
+        score: assignHandValue(action.cards),
+        bet: action.bet
+      }
+      return double
     case "SPLIT_PLAYER_CARDS":
       let firstHalf = state.slice(0, action.index)
       let secondHalf = state.slice( action.index + 1)
       let split = [{
           cards: action.cards[0],
-          score: assignHandValue(action.cards[0])
+          score: assignHandValue(action.cards[0]),
+          bet: action.bet
         },
         {
           cards: action.cards[1],
-          score: assignHandValue(action.cards[1])
+          score: assignHandValue(action.cards[1]),
+          bet: action.bet
         }]
       return firstHalf.concat(split).concat(secondHalf)
     default:
@@ -78,8 +89,6 @@ const playerActionReducer = (state=null, action) => {
       return "double"
     case "SPLIT":
       return "split"
-    case "BLACKJACK":
-      return "blackjack"
     default:
       return state
   }
@@ -136,15 +145,15 @@ const countReducer = (state=0, action) => {
 /* NEED TO CHANGE THIS */
 const betReducer = (state=0, action) => {
   switch(action.type){
-    case "BET":
+    case "PLACE_BET":
       let newBet = state + action.bet
       return newBet
-    case "DOUBLE":
-      let doubledBet = state * 2
-      return doubledBet
-    case "SPLIT":
-      let splitBet = state * 2
-      return splitBet
+    case "DOUBLE_PLAYER":
+      return action.bet
+    case "RESET_BET":
+      return 0
+    case "SPLIT_PLAYER_CARDS":
+      return action.bet
     default:
       return state
   }

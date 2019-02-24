@@ -4,16 +4,11 @@ import { connect } from 'react-redux'
 class Strategy extends React.Component {
   /* local state for showing advice and count */
   state = {
-    showStrategy: false,
-    showCount: false
+    showInfo: false
   }
 
-  toggleStrategy = event => {
-    this.setState({ showStrategy: !this.state.showStrategy })
-  }
-
-  toggleCount = event => {
-    this.setState({ showCount: !this.state.showCount })
+  toggleInfo = event => {
+    this.setState({ showInfo: !this.state.showInfo })
   }
 
   checkTable = () => {
@@ -603,23 +598,23 @@ class Strategy extends React.Component {
   render(){
     return(
       <div>
-        <button onClick={this.toggleStrategy}> Advice </button>
-        {this.state.showStrategy ?
+        <button onClick={this.toggleInfo}>
+          {this.state.showInfo ?
+            "Hide Info" : "Show Info"
+          }
+        </button>
+        {this.state.showInfo ?
           <div>
             {
               this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0 ?
-                this.checkTable() : null
+                <div>
+                  <div> Count: {this.props.count} </div>
+                  <div> {this.checkTable()} </div>
+                </div>
+                 : null
             }
-          </div>
-          : null
+          </div> : null
         }
-        <button onClick={this.toggleCount}> Count </button>
-        <div>
-          {this.state.showCount ?
-            <div> Count: {this.props.count} </div>
-            : null
-          }
-        </div>
       </div>
     )
   }

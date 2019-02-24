@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 class DealerHand extends React.Component {
 
   render(){
-    console.log(this.props)
     return(
       <div id='dealer-hand'>
         {this.props.dealerHand.cards.length > 0 && this.props.showDealer ?

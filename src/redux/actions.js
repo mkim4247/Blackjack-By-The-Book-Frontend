@@ -59,7 +59,7 @@ export const checkingToken = token => {
     })
     .then(res => res.json())
     .then(data => {
-      console.log('Valid Token')
+      console.log(`Welcome Back, ${data.user.username}`)
       dispatch(setUser(data.user))
     })
   }
@@ -75,7 +75,7 @@ export const fetchingDeck = () => {
     fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
     .then(res => res.json())
     .then(deck => {
-      console.log(`Deck fetched; ID: ${deck.deck_id}`)
+      console.log(`Deck ID: ${deck.deck_id}`)
       dispatch(fetchedDeck(deck.deck_id))
     })
   }
@@ -86,42 +86,55 @@ const dealDealerCards = cards => {
   return { type: "DEAL_DEALER_CARDS", cards }
 }
 
-const dealPlayerCards = cards => {
-  return { type: "DEAL_PLAYER_CARDS", cards }
+const dealPlayerCards = (cards, bet) => {
+  return { type: "DEAL_PLAYER_CARDS", cards, bet }
 }
 
 export const dealingCards = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
+    let bet = getStore().bet
 
     fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`)
     .then(res => res.json())
     .then(deck => {
-        console.log("Dealing cards...")
-
-        /* split up cards returned from fetch to API */
-        let dealerCards = [deck.cards[0], deck.cards[1]]
-        let playerCards = [deck.cards[2], deck.cards[3]]
-        /* give cards to dealer and player  */
-        dispatch(dealDealerCards(dealerCards))
-        dispatch(dealPlayerCards(playerCards))
-        /* check cards and add to count*/
-        dispatch(subtractBetFromPot())
-        dispatch(countingCards(deck.cards))
-        /* check player and dealer for blackjack */
-        dispatch(checkPlayerBlackJack())
-        dispatch(checkDealerFaceDown())
-        dispatch(checkDealerFaceUp())
-
         if(deck.remaining < 150){
           fetch(`https://deckofcardsapi.com/api/deck/${deckId}/shuffle/`)
           .then(res => res.json())
           .then(deck => {
             console.log('Deck shuffled')
+
+            fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`)
+            .then(res => res.json())
+            .then(deck => {
+          /* split up cards returned from fetch to API */
+              let dealerCards = [deck.cards[0], deck.cards[1]]
+              let cards = [deck.cards[2], deck.cards[3]]
+              /* give cards to dealer and player  */
+              dispatch(dealDealerCards(dealerCards))
+              dispatch(dealPlayerCards(cards, bet))
+              /* check cards and add to count*/
+              dispatch(subtractBetFromPot())
+              dispatch(countingCards(deck.cards))
+              /* check player and dealer for blackjack */
+              dispatch(checkPlayerBlackJack())
+              dispatch(checkDealerFaceDown())
+              dispatch(checkDealerFaceUp())
+            })
           })
         }
-
-    })
+        else {
+          let dealerCards = [deck.cards[0], deck.cards[1]]
+          let cards = [deck.cards[2], deck.cards[3]]
+          dispatch(dealDealerCards(dealerCards))
+          dispatch(dealPlayerCards(cards, bet))
+          dispatch(subtractBetFromPot())
+          dispatch(countingCards(deck.cards))
+          dispatch(checkPlayerBlackJack())
+          dispatch(checkDealerFaceDown())
+          dispatch(checkDealerFaceUp())
+        }
+      })
   }
 }
 
@@ -138,7 +151,6 @@ export const hittingPlayerCards = () => {
     .then(res => res.json())
     .then(deck => {
       console.log('Player hits...')
-
       /* passing all cards (old hand plus new card) */
       let index = getStore().currentHandIndex
       let cards = getStore().playerHand[index].cards.slice()
@@ -167,6 +179,7 @@ export const hittingDealerCards = () => {
       fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
       .then(res => res.json())
       .then(deck => {
+        console.log("Dealer Hits")
         let cards = getStore().dealerHand.cards.slice()
         cards.push(deck.cards[0])
         /* give dealer new card */
@@ -204,11 +217,36 @@ const checkPlayerBlackJack = () => {
     if(playerHand.find( card => card.value === "ACE") && playerScore === 21){
       if(dealerHand.find( card => card.value === "ACE") && dealerScore === 21){
         dispatch({ type: "DEALER_MOVE" })
-        dispatch({ type: "PUSH" })
+        dispatch(playerPush())
+        dispatch({ type: "RESET_BET" })
       } else {
+        dispatch(winningBlackJack())
+        dispatch({ type: "DEALER_MOVE" })
+        dispatch({ type: "RESET_BET" })
         dispatch({ type: "BLACKJACK" })
       }
     }
+  }
+}
+
+const winningBlackJack = () => {
+  return (dispatch, getStore) => {
+    let user = getStore().user
+    let index = getStore().currentHandIndex
+    let bet = getStore().playerHand[index].bet
+    let winnings = bet * 1.5
+
+    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({ pot: user.pot + winnings })
+    })
+    .then( res => res.json() )
+    .then( user => {
+      dispatch(setUser(user))
+    })
   }
 }
 
@@ -220,7 +258,7 @@ const checkDealerFaceDown = () => {
     let playerHand = getStore().playerHand[0].cards
     if(dealerHand[1].value === "ACE" && dealerScore === 21){
       if(playerHand.find( card => card.value === "ACE" ) && playerHand.score === 21){
-        dispatch({ type: "PUSH" })
+        dispatch(playerPush())
       }
       else {
         dispatch({ type: "DEALER_MOVE" })
@@ -271,10 +309,12 @@ export const resolveDealerAce = () => {
     if(dealerHand[0].value === "ACE" && dealerScore === 21){
       if(insurance === 'take'){
         dispatch({ type: "INSURANCE_WIN" })
+        dispatch({ type: "DEALER_MOVE" })
         dispatch({ type: "DEALER_WINS" })
       }
       else {
         dispatch({ type: "INSURANCE_LOST" })
+        dispatch({ type: "DEALER_MOVE" })
         dispatch({ type: "DEALER_WINS" })
       }
     }
@@ -309,10 +349,9 @@ const showDealer = () => {
 /////////* NEED TO CHECK DEALER HAND AGAINST EACH PLAYER HAND */////////
 export const dealerMove = () => {
   return (dispatch, getStore) => {
+    let dealerHand = getStore().dealerHand.cards
     let dealerScore = getStore().dealerHand.score
-    let index = getStore().currentHandIndex
     let playerHand = getStore().playerHand
-    let playerScore = getStore().playerHand[0].score
 
     /* dealer only hits if losing to player and not at 17 */
     if(playerHand.find( hand => hand.score >= dealerScore && hand.score <= 21) && dealerScore < 17){
@@ -324,21 +363,26 @@ export const dealerMove = () => {
     else {
       playerHand.forEach( hand => {
         if(hand.score === dealerScore){
-          dispatch({ type: "PUSH" })
+          dispatch({ type: "RESET_BET" })
+          dispatch(playerPush())
         }
         else if(dealerScore > 21){
           dispatch({ type: "PLAYER_WINS" })
+          dispatch({ type: "RESET_BET" })
           dispatch(playerWins())
         }
         else if(hand.score > 21){
           dispatch({ type: "DEALER_WINS" })
+          dispatch({ type: "RESET_BET" })
         }
         else if(hand.score > dealerScore && hand.score <= 21){
           dispatch({ type: "PLAYER_WINS" })
+          dispatch({ type: "RESET_BET" })
           dispatch(playerWins())
         }
         else if(hand.score < dealerScore){
           dispatch({ type: "DEALER_WINS" })
+          dispatch({ type: "RESET_BET" })
         }
       })
     }
@@ -348,6 +392,7 @@ export const dealerMove = () => {
 export const doublingPlayer = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
+    let bet = getStore().bet * 2
 
     fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
     .then(res => res.json())
@@ -359,9 +404,8 @@ export const doublingPlayer = () => {
       let cards = getStore().playerHand[index].cards.slice()
       cards.push(deck.cards[0])
       /* give player new card and then end turn */
-      dispatch(hitPlayerCards(cards, index))
+      dispatch(doublePlayer(cards, index, bet))
       dispatch(subtractBetFromPot())
-      dispatch({ type: "DOUBLE" })
       dispatch(checkPlayerBust())
       dispatch(countingCards(deck.cards))
       dispatch(playerStay())
@@ -369,12 +413,19 @@ export const doublingPlayer = () => {
   }
 }
 
-const splitPlayerCards = (cards, index) => {
-  return { type: "SPLIT_PLAYER_CARDS", cards, index }
+export const doublePlayer = (cards, index, bet) => {
+  return { type: "DOUBLE_PLAYER", cards, index, bet }
 }
 
+const splitPlayerCards = (cards, index, bet) => {
+  return { type: "SPLIT_PLAYER_CARDS", cards, index, bet }
+}
+
+////NEED TO CHECK FOR BLACKJACK AFTER SPLITTING
 export const splittingPlayerCards = () => {
   return (dispatch, getStore) => {
+    let bet = getStore().bet
+
     fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=2`)
     .then( res => res.json() )
     .then( deck => {
@@ -387,7 +438,7 @@ export const splittingPlayerCards = () => {
       let splitHand1 = [oldHand[0], deck.cards[0]]
       let splitHand2 = [oldHand[1], deck.cards[1]]
       let cards = [splitHand1, splitHand2]
-      dispatch(splitPlayerCards( cards, index ))
+      dispatch(splitPlayerCards( cards, index, bet ))
       dispatch(subtractBetFromPot())
       dispatch(countingCards(deck.cards))
     })
@@ -407,10 +458,8 @@ export const countCards = count => {
 
 /* assigns bet amount */
 export const placeBet = bet => {
-  return { type: "BET", bet }
+  return { type: "PLACE_BET", bet }
 }
-
-
 
 /* saves player's losings */
 export const subtractBetFromPot = () => {
@@ -431,11 +480,33 @@ export const subtractBetFromPot = () => {
   }
 }
 
+export const playerPush = () => {
+  return (dispatch, getStore) => {
+    let index = getStore().currentHandIndex
+    let bet = getStore().playerHand[index].bet
+    let user = getStore().user
+
+    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({ pot: user.pot + bet })
+    })
+    .then( res => res.json() )
+    .then( user => {
+      dispatch(setUser(user))
+      dispatch({ type: "PUSH" })
+    })
+  }
+}
 
 /* saves player's winnings */
 export const playerWins = () => {
   return (dispatch, getStore) => {
-    let winnings = (getStore().bet * 2)
+    let index = getStore().currentHandIndex
+    let hand = getStore().playerHand[index]
+    let winnings = hand.bet * 2
     let user = getStore().user
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
