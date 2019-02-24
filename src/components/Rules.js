@@ -1,12 +1,19 @@
 import React from 'react'
 import Nav from './Nav'
+import { Header } from 'semantic-ui-react'
 
 class Rules extends React.Component {
   render(){
     return(
       <div>
       <Nav />
-        Rules
+
+      <Header size='medium'>
+        How to Play:
+      </Header>
+      <div>
+
+      </div>
 
         It is a comparing card game between usually several players and a dealer, where each player in turn competes against the dealer, but players do not play against each other. It is played with one or more decks of 52 cards, and is the most widely played casino banking game in the world.[2]:342 The objective of the game is to beat the dealer in one of the following ways:
 

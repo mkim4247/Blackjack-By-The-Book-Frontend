@@ -5,8 +5,13 @@ import { placeBet } from '../redux/actions'
 class Bet extends React.Component {
 
   increaseBet = event => {
-    let bet = parseInt(event.currentTarget.value)
-    this.props.placeBet(bet)
+    let amount = parseInt(event.currentTarget.value)
+    if(this.props.user.pot >= (this.props.bet + amount)){
+      this.props.placeBet(amount)
+    }
+    else {
+      console.log('Insufficient Funds')
+    }
   }
 
   render(){
@@ -30,7 +35,8 @@ class Bet extends React.Component {
 const mapStateToProps = state => {
   return {
     user: state.user,
-    roundResult: state.roundResult
+    roundResult: state.roundResult,
+    bet: state.bet
   }
 }
 
