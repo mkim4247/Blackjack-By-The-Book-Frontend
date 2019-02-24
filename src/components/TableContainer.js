@@ -18,7 +18,7 @@ class TableContainer extends React.Component {
         <Grid.Row columns={3}>
           <Grid.Column width={4}>
             <div>
-                Placeholder 
+                Placeholder
             </div>
           </Grid.Column>
           <Grid.Column width={8}>
@@ -28,7 +28,7 @@ class TableContainer extends React.Component {
             <PlayerContainer />
             <Bet />
             <div>
-              {this.props.roundResult !== "start" ?
+              {this.props.roundResult !== "Start" || this.props.roundResult !== "Deal" ?
                 <div>
                   {this.props.roundResult}
                 </div>

@@ -113,7 +113,7 @@ const currentHandReducer = (state=0, action) => {
   }
 }
 
-const roundResultReducer = (state="start", action) => {
+const roundResultReducer = (state="Start", action) => {
   switch(action.type){
     case "DEALER_WINS":
       return "Dealer Wins"
@@ -124,7 +124,7 @@ const roundResultReducer = (state="start", action) => {
     case "BLACKJACK":
       return "Blackjack"
     case "DEAL_PLAYER_CARDS":
-      return null
+      return "Deal"
     case "BUST":
       return "Bust"
     default:

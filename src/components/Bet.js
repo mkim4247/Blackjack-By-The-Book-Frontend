@@ -12,7 +12,7 @@ class Bet extends React.Component {
   render(){
     return(
       <div id='bet-box'>
-      {this.props.roundResult ?
+      {this.props.roundResult !== "Deal" ?
         <div>
         <button onClick={this.increaseBet} value='5'> 5 </button>
         <button onClick={this.increaseBet} value='10'> 10 </button>

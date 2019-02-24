@@ -36,13 +36,13 @@ class Controls extends React.Component {
     return(
       <div id='controls'>
       Controls
-      {this.props.bet > 0 ?
+      {this.props.bet > 0 && this.props.roundResult !== "Deal" ?
         <button onClick={this.props.dealingCards}>Deal</button>
         :
         <div> Place your bets </div>
       }
       {
-        !this.props.dealerMove && !this.props.roundResult ?
+        !this.props.showDealer && this.props.roundResult === "Deal" ?
         <div>
           {this.showHitAndStay()}
           {this.showDouble()}
@@ -73,7 +73,7 @@ const mapStateToProps = state => {
     insurance: state.insurance,
     index: state.currentHandIndex,
     bet: state.bet,
-    dealerMove: state.dealerMove
+    showDealer: state.showDealer
   }
 }
 
