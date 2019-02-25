@@ -143,18 +143,40 @@ export const addStreakSubtractBet = () => {
   return (dispatch, getStore) => {
     let bet = getStore().bet
     let user = getStore().user
+    let newStreak = user.current_streak + 1
 
-    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify({ pot: user.pot - bet, longest_streak: user.longest_streak + 1 })
-    })
-    .then( res => res.json() )
-    .then( user => {
-      dispatch(setUser(user))
-    })
+    if(newStreak > user.longest_streak){
+      fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+          pot: user.pot - bet,
+          current_streak: newStreak,
+          longest_streak: newStreak })
+      })
+      .then( res => res.json() )
+      .then( user => {
+        dispatch(setUser(user))
+      })
+    }
+    else if(newStreak <= user.longest_streak){
+      fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+          pot: user.pot - bet,
+          current_streak: newStreak
+        })
+      })
+      .then( res => res.json() )
+      .then( user => {
+        dispatch(setUser(user))
+      })
+    }
   }
 }
 

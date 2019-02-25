@@ -12,6 +12,14 @@ class Stats extends React.Component {
         <div>
           Largest Pot: {this.props.user.largest_pot}
         </div>
+        <hr/>
+
+        <div>
+          Pot: {this.props.user.pot}
+        </div>
+        <div>
+          Current Streak: {this.props.user.current_streak}
+        </div>
       </div>
     )
   }

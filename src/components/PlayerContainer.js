@@ -16,10 +16,6 @@ class PlayerContainer extends React.Component {
           })
         : null
       }
-        <div>
-          {this.props.user.pot}
-        </div>
-
       </div>
     )
   }

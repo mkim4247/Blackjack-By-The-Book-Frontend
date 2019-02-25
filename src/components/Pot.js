@@ -10,12 +10,48 @@ class Pot extends React.Component {
   //   }, 0)
   // }
 
+  decBetButtons = () => {
+    if(this.props.bet >= 50){
+      return (
+      <div>
+      <button onClick={() => this.props.placeBet(-50)}> Dec 50 </button>
+      <button onClick={() => this.props.placeBet(-25)}> Dec 25 </button>
+      <button onClick={() => this.props.placeBet(-10)}> Dec 10 </button>
+      <button onClick={() => this.props.placeBet(-5)}> Dec 5 </button>
+      </div>
+      )
+    } else if(this.props.bet >= 25 && this.props.bet < 50){
+      return (
+      <div>
+      <button onClick={() => this.props.placeBet(-25)}> Dec 25 </button>
+      <button onClick={() => this.props.placeBet(-10)}> Dec 10 </button>
+      <button onClick={() => this.props.placeBet(-5)}> Dec 5 </button>
+      </div>
+      )
+    } else if(this.props.bet >= 10 && this.props.bet < 25){
+      return (
+      <div>
+      <button onClick={() => this.props.placeBet(-10)}> Dec 10 </button>
+      <button onClick={() => this.props.placeBet(-5)}> Dec 5 </button>
+      </div>
+      )
+    }
+    else if(this.props.bet >= 5){
+      return (
+        <div>
+        <button onClick={() => this.props.placeBet(-5)}> Dec 5 </button>
+      </div>
+      )
+    }
+  }
+
   render(){
     return(
-      <div onClick={() => this.props.placeBet(-5)} style={{border: '1px solid red'}}> Decrease Bet
+      <div>
         <div>
           {this.props.bet}
         </div>
+        {this.decBetButtons()}
       </div>
     )
   }

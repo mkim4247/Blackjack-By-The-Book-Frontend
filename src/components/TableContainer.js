@@ -29,7 +29,7 @@ class TableContainer extends React.Component {
             <PlayerContainer />
             <Bet />
             <div>
-              {this.props.roundResult !== "Start" || this.props.roundResult !== "Deal" ?
+              {this.props.roundResult !== "Start" && this.props.roundResult !== "Deal" ?
                 <div>
                   {this.props.roundResult}
                 </div>
