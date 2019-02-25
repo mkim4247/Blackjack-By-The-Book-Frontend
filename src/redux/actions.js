@@ -114,14 +114,13 @@ export const dealingCards = () => {
             /* give cards to dealer and player  */
             dispatch(dealDealerCards(dealerCards))
             dispatch(dealPlayerCards(cards, bet))
+            dispatch(addStreakSubtractBet())
             /* check cards and add to count*/
-            dispatch(subtractBetFromPot())
             dispatch(countingCards(deck.cards.slice(0, 3)))
             /* check player and dealer for blackjack */
             dispatch(checkPlayerBlackJack())
             dispatch(checkDealerFaceDown())
             dispatch(checkDealerFaceUp())
-            dispatch(addToStreak())
           })
         })
       }
@@ -130,35 +129,30 @@ export const dealingCards = () => {
         let dealerCards = [deck.cards[2], deck.cards[3]]
         dispatch(dealDealerCards(dealerCards))
         dispatch(dealPlayerCards(cards, bet))
-        dispatch(subtractBetFromPot())
+        dispatch(addStreakSubtractBet())
         dispatch(countingCards(deck.cards.slice(0, 3)))
         dispatch(checkPlayerBlackJack())
         dispatch(checkDealerFaceDown())
         dispatch(checkDealerFaceUp())
-        dispatch(addToStreak())
       }
     })
   }
 }
 
-
-
-/* NEED TO ADD ACTIONS FOR ADDING TO STREAK AND CHECKING HOW MANY WINS/LOSSES */
-/* THINK OF OTHER USER STATS WORTH TRACKING */
-
-const addToStreak = () => {
+export const addStreakSubtractBet = () => {
   return (dispatch, getStore) => {
+    let bet = getStore().bet
     let user = getStore().user
+
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-type": "application/json"
       },
-      body: JSON.stringify({ longest_streak: user.longest_streak + 1 })
+      body: JSON.stringify({ pot: user.pot - bet, longest_streak: user.longest_streak + 1 })
     })
     .then( res => res.json() )
     .then( user => {
-      console.log(user)
       dispatch(setUser(user))
     })
   }
@@ -225,7 +219,7 @@ const checkPlayerBust = () => {
 
     if(playerScore > 21){
       dispatch({ type: "BUST" })
-      dispatch({ type: "RESET_BET" })
+      dispatch(resetBet())
     }
   }
 }
@@ -270,7 +264,7 @@ const winningBlackJack = () => {
     .then( res => res.json() )
     .then( user => {
       dispatch(setUser(user))
-      dispatch({ type: "RESET_BET" })
+      dispatch(resetBet())
       dispatch({ type: "BLACKJACK" })
     })
   }
@@ -404,7 +398,7 @@ export const surrenderingPlayer = () => {
     .then( user => {
       dispatch(setUser(user))
       dispatch(surrenderedPlayer())
-      dispatch({ type: "RESET_BET" })
+      dispatch(resetBet())
     })
   }
 }
@@ -441,7 +435,6 @@ const showDealer = () => {
 /////////* NEED TO CHECK DEALER HAND AGAINST EACH PLAYER HAND */////////
 export const dealerMove = () => {
   return (dispatch, getStore) => {
-    let dealerHand = getStore().dealerHand.cards
     let dealerScore = getStore().dealerHand.score
     let playerHand = getStore().playerHand
 
@@ -462,14 +455,14 @@ export const dealerMove = () => {
         }
         else if(hand.score > 21){
           dispatch({ type: "DEALER_WINS" })
-          dispatch({ type: "RESET_BET" })
+          dispatch(resetBet())
         }
         else if(hand.score > dealerScore && hand.score <= 21){
           dispatch(playerWins())
         }
         else if(hand.score < dealerScore){
           dispatch({ type: "DEALER_WINS" })
-          dispatch({ type: "RESET_BET" })
+          dispatch(resetBet())
         }
       })
     }
@@ -548,18 +541,22 @@ export const placeBet = bet => {
   return { type: "PLACE_BET", bet }
 }
 
+const resetBet = () => {
+  return { type: "RESET_BET" }
+}
+
 /* saves player's losings */
 export const subtractBetFromPot = () => {
   return (dispatch, getStore) => {
     let bet = getStore().bet
     let user = getStore().user
-    let newPot = user.pot - bet
+
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-type": "application/json"
       },
-      body: JSON.stringify({ pot: newPot })
+      body: JSON.stringify({ pot: user.pot - bet })
     })
     .then( res => res.json() )
     .then( user => {
@@ -585,7 +582,7 @@ export const playerPush = () => {
     .then( user => {
       dispatch(setUser(user))
       dispatch({ type: "PUSH" })
-      dispatch({ type: "RESET_BET" })
+      dispatch(resetBet())
     })
   }
 }
@@ -611,7 +608,7 @@ export const playerWins = () => {
       .then( user => {
         dispatch(setUser(user))
         dispatch({ type: "PLAYER_WINS" })
-        dispatch({ type: "RESET_BET" })
+        dispatch(resetBet())
       })
     }
     else if(newPot < user.largest_pot){
@@ -626,7 +623,7 @@ export const playerWins = () => {
       .then( user => {
         dispatch(setUser(user))
         dispatch({ type: "PLAYER_WINS" })
-        dispatch({ type: "RESET_BET" })
+        dispatch(resetBet())
       })
     }
   }
