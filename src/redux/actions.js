@@ -114,7 +114,7 @@ export const dealingCards = () => {
             /* give cards to dealer and player  */
             dispatch(dealDealerCards(dealerCards))
             dispatch(dealPlayerCards(cards, bet))
-            dispatch(addStreakSubtractBet())
+            dispatch(addToStreak())
             /* check cards and add to count*/
             dispatch(countingCards(deck.cards.slice(0, 3)))
             /* check player and dealer for blackjack */
@@ -129,7 +129,7 @@ export const dealingCards = () => {
         let dealerCards = [deck.cards[2], deck.cards[3]]
         dispatch(dealDealerCards(dealerCards))
         dispatch(dealPlayerCards(cards, bet))
-        dispatch(addStreakSubtractBet())
+        dispatch(addToStreak())
         dispatch(countingCards(deck.cards.slice(0, 3)))
         dispatch(checkPlayerBlackJack())
         dispatch(checkDealerFaceDown())
@@ -139,9 +139,8 @@ export const dealingCards = () => {
   }
 }
 
-export const addStreakSubtractBet = () => {
+export const addToStreak = () => {
   return (dispatch, getStore) => {
-    let bet = getStore().bet
     let user = getStore().user
     let newStreak = user.current_streak + 1
 
@@ -152,7 +151,6 @@ export const addStreakSubtractBet = () => {
           "Content-type": "application/json"
         },
         body: JSON.stringify({
-          pot: user.pot - bet,
           current_streak: newStreak,
           longest_streak: newStreak })
       })
@@ -168,7 +166,6 @@ export const addStreakSubtractBet = () => {
           "Content-type": "application/json"
         },
         body: JSON.stringify({
-          pot: user.pot - bet,
           current_streak: newStreak
         })
       })
@@ -407,7 +404,9 @@ const insuranceWon = () => {
 export const surrenderingPlayer = () => {
   return (dispatch, getStore) => {
     let user = getStore().user
-    let amount = (getStore().bet/2)
+    let index = getStore().currentHandIndex
+    let playerHand = getStore().playerHand[index]
+    let amount = (playerHand.bet/2)
 
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
@@ -494,7 +493,6 @@ export const dealerMove = () => {
 export const doublingPlayer = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
-    let bet = getStore().bet * 2
 
     fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
     .then(res => res.json())
@@ -503,11 +501,14 @@ export const doublingPlayer = () => {
 
       /* passing all cards (old hand plus new card) */
       let index = getStore().currentHandIndex
-      let cards = getStore().playerHand[index].cards.slice()
+      let playerHand = getStore().playerHand[index]
+      let currentBet = playerHand.bet
+      let bet = (currentBet * 2)
+      let cards = playerHand.cards.slice()
       cards.push(deck.cards[0])
       /* give player new card and then end turn */
       dispatch(doublePlayer(cards, index, bet))
-      dispatch(subtractBetFromPot())
+      dispatch(placingBet(currentBet))
       dispatch(checkPlayerBust())
       dispatch(countingCards(deck.cards))
       dispatch(playerStay())
@@ -526,14 +527,16 @@ const splitPlayerCards = (cards, index, bet) => {
 ////NEED TO CHECK FOR BLACKJACK AFTER SPLITTING
 export const splittingPlayerCards = () => {
   return (dispatch, getStore) => {
-    let bet = getStore().bet
+    let deckId = getStore().deckId
 
-    fetch(`https://deckofcardsapi.com/api/deck/${getStore().deckId}/draw/?count=2`)
+    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`)
     .then( res => res.json() )
     .then( deck => {
       console.log('Player splits...')
       /* copy cards at current index in array */
       let index = getStore().currentHandIndex
+      let currentBet = getStore().playerHand[index].bet
+      let bet = (currentBet * 2)
       let hand = getStore().playerHand.slice()
       let oldHand = hand[index].cards
       /* split up current hand into two and add cards */
@@ -541,7 +544,7 @@ export const splittingPlayerCards = () => {
       let splitHand2 = [oldHand[1], deck.cards[1]]
       let cards = [splitHand1, splitHand2]
       dispatch(splitPlayerCards( cards, index, bet ))
-      dispatch(subtractBetFromPot())
+      dispatch(placingBet(currentBet))
       dispatch(countingCards(deck.cards))
     })
   }
@@ -559,32 +562,33 @@ export const countCards = count => {
 }
 
 /* assigns bet amount */
-export const placeBet = bet => {
-  return { type: "PLACE_BET", bet }
-}
-
-const resetBet = () => {
-  return { type: "RESET_BET" }
-}
-
-/* saves player's losings */
-export const subtractBetFromPot = () => {
+export const placingBet = bet => {
   return (dispatch, getStore) => {
-    let bet = getStore().bet
     let user = getStore().user
+    let newPot = user.pot - bet
+
+    dispatch(placeBet(bet))
 
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-type": "application/json"
       },
-      body: JSON.stringify({ pot: user.pot - bet })
+      body: JSON.stringify({ pot: newPot })
     })
     .then( res => res.json() )
     .then( user => {
       dispatch(setUser(user))
     })
   }
+}
+
+export const placeBet = bet => {
+  return { type: "PLACE_BET", bet }
+}
+
+const resetBet = () => {
+  return { type: "RESET_BET" }
 }
 
 export const playerPush = () => {

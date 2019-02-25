@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { placeBet } from '../redux/actions'
+import { placingBet } from '../redux/actions'
 
 class Bet extends React.Component {
 
   increaseBet = event => {
     let amount = parseInt(event.currentTarget.value)
-    if(this.props.user.pot >= (this.props.bet + amount)){
-      this.props.placeBet(amount)
+    if(this.props.user.pot >= amount){
+      this.props.placingBet(amount)
     }
     else {
       console.log('Insufficient Funds')
@@ -40,4 +40,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { placeBet })(Bet)
+export default connect(mapStateToProps, { placingBet })(Bet)

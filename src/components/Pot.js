@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { placeBet } from '../redux/actions'
+import { placingBet } from '../redux/actions'
 
 class Pot extends React.Component {
 
@@ -14,32 +14,32 @@ class Pot extends React.Component {
     if(this.props.bet >= 50){
       return (
       <div>
-      <button onClick={() => this.props.placeBet(-50)}> Dec 50 </button>
-      <button onClick={() => this.props.placeBet(-25)}> Dec 25 </button>
-      <button onClick={() => this.props.placeBet(-10)}> Dec 10 </button>
-      <button onClick={() => this.props.placeBet(-5)}> Dec 5 </button>
+      <button onClick={() => this.props.placingBet(-50)}> Dec 50 </button>
+      <button onClick={() => this.props.placingBet(-25)}> Dec 25 </button>
+      <button onClick={() => this.props.placingBet(-10)}> Dec 10 </button>
+      <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
       </div>
       )
     } else if(this.props.bet >= 25 && this.props.bet < 50){
       return (
       <div>
-      <button onClick={() => this.props.placeBet(-25)}> Dec 25 </button>
-      <button onClick={() => this.props.placeBet(-10)}> Dec 10 </button>
-      <button onClick={() => this.props.placeBet(-5)}> Dec 5 </button>
+      <button onClick={() => this.props.placingBet(-25)}> Dec 25 </button>
+      <button onClick={() => this.props.placingBet(-10)}> Dec 10 </button>
+      <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
       </div>
       )
     } else if(this.props.bet >= 10 && this.props.bet < 25){
       return (
       <div>
-      <button onClick={() => this.props.placeBet(-10)}> Dec 10 </button>
-      <button onClick={() => this.props.placeBet(-5)}> Dec 5 </button>
+      <button onClick={() => this.props.placingBet(-10)}> Dec 10 </button>
+      <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
       </div>
       )
     }
     else if(this.props.bet >= 5){
       return (
         <div>
-        <button onClick={() => this.props.placeBet(-5)}> Dec 5 </button>
+        <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
       </div>
       )
     }
@@ -64,4 +64,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { placeBet })(Pot)
+export default connect(mapStateToProps, { placingBet })(Pot)
