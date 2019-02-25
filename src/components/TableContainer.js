@@ -35,6 +35,14 @@ class TableContainer extends React.Component {
                 : null
               }
             </div>
+            <div>
+              {this.props.insurance === 'LOST' || this.props.insurance === 'WON' ?
+                <div>
+                  Insurance {this.props.insurance}
+                </div>
+                : null
+              }
+            </div>
           </Grid.Column>
           <Grid.Column width={4}>
             <Strategy/>
@@ -50,7 +58,8 @@ class TableContainer extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    roundResult: state.roundResult
+    roundResult: state.roundResult,
+    insurance: state.insurance
   }
 }
 

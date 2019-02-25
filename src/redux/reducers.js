@@ -144,7 +144,6 @@ const countReducer = (state=0, action) => {
   }
 }
 
-/* NEED TO CHANGE THIS */
 const betReducer = (state=0, action) => {
   switch(action.type){
     case "PLACE_BET":
@@ -182,6 +181,10 @@ const insuranceReducer = (state=null, action) => {
       return 'pass'
     case "DEAL_PLAYER_CARDS":
       return null
+    case "INSURANCE_LOST":
+      return 'LOST'
+    case "INSURANCE_WON":
+      return 'WON'
     default:
       return state
   }
