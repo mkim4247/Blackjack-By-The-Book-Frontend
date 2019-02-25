@@ -643,7 +643,7 @@ class Strategy extends React.Component {
 
   render(){
     return(
-      <div>
+      <div id='strategy-box'>
         <button onClick={this.toggleInfo}>
           {
             this.state.showInfo ?

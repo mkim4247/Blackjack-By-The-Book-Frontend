@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import Strategy from './Strategy'
 import Bet from './Bet'
 import Pot from './Pot'
+import Stats from './Stats'
 import { Grid } from 'semantic-ui-react'
 
 class TableContainer extends React.Component {
@@ -18,7 +19,7 @@ class TableContainer extends React.Component {
         <Grid.Row columns={3}>
           <Grid.Column width={4}>
             <div>
-                Placeholder
+              <Stats />
             </div>
           </Grid.Column>
           <Grid.Column width={8}>

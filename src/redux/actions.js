@@ -611,7 +611,7 @@ export const playerWins = () => {
         dispatch(resetBet())
       })
     }
-    else if(newPot < user.largest_pot){
+    else if(newPot <= user.largest_pot){
       fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
         method: "PATCH",
         headers: {

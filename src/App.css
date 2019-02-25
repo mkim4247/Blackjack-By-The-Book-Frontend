@@ -55,6 +55,10 @@
 
 }
 
+#strategy-box {
+  border: 1px solid white;
+}
+
 #player-hand {
   border: 1px solid black;
   margin: 0 auto;
