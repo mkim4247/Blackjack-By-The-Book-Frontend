@@ -77,23 +77,6 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null }], action
   }
 }
 
-const playerActionReducer = (state=null, action) => {
-  switch(action.type){
-    case "DEAL_PLAYER_CARDS":
-      return null
-    case "HIT_PLAYER_CARDS":
-      return "hit"
-    case "STAY":
-      return "stay"
-    case "DOUBLE":
-      return "double"
-    case "SPLIT":
-      return "split"
-    default:
-      return state
-  }
-}
-
 const currentHandReducer = (state=0, action) => {
   let next;
   switch(action.type){
@@ -192,7 +175,6 @@ const rootReducer = combineReducers({
   dealerHand: dealerHandReducer,
   playerHand: playerHandReducer,
   currentHandIndex: currentHandReducer,
-  playerAction: playerActionReducer,
   roundResult: roundResultReducer,
   count: countReducer,
   bet: betReducer,

@@ -91,7 +91,6 @@ class Controls extends React.Component {
 const mapStateToProps = state => {
   return {
     playerHand: state.playerHand,
-    playerAction: state.playerAction,
     roundResult: state.roundResult,
     insurance: state.insurance,
     index: state.currentHandIndex,
