@@ -507,8 +507,8 @@ export const doublingPlayer = () => {
       let cards = playerHand.cards.slice()
       cards.push(deck.cards[0])
       /* give player new card and then end turn */
-      dispatch(doublePlayer(cards, index, bet))
       dispatch(placingBet(currentBet))
+      dispatch(doublePlayer(cards, index, bet))
       dispatch(checkPlayerBust())
       dispatch(countingCards(deck.cards))
       dispatch(playerStay())
@@ -535,16 +535,15 @@ export const splittingPlayerCards = () => {
       console.log('Player splits...')
       /* copy cards at current index in array */
       let index = getStore().currentHandIndex
-      let currentBet = getStore().playerHand[index].bet
-      let bet = (currentBet * 2)
+      let bet = getStore().playerHand[index].bet
       let hand = getStore().playerHand.slice()
       let oldHand = hand[index].cards
       /* split up current hand into two and add cards */
       let splitHand1 = [oldHand[0], deck.cards[0]]
       let splitHand2 = [oldHand[1], deck.cards[1]]
       let cards = [splitHand1, splitHand2]
+      dispatch(placingBet(bet))
       dispatch(splitPlayerCards( cards, index, bet ))
-      dispatch(placingBet(currentBet))
       dispatch(countingCards(deck.cards))
     })
   }

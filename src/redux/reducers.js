@@ -149,12 +149,8 @@ const betReducer = (state=0, action) => {
     case "PLACE_BET":
       let newBet = state + action.bet
       return newBet
-    case "DOUBLE_PLAYER":
-      return action.bet
     case "RESET_BET":
       return 0
-    case "SPLIT_PLAYER_CARDS":
-      return action.bet
     default:
       return state
   }
