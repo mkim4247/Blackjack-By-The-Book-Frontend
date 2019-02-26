@@ -488,14 +488,14 @@ export const dealerMove = () => {
           dispatch(playerPush())
         }
         else if(dealerScore > 21){
-          dispatch(playerWins())
+          dispatch(playerWins(hand))
         }
         else if(hand.score > 21){
           dispatch({ type: "DEALER_WINS" })
           dispatch(resetBet())
         }
         else if(hand.score > dealerScore && hand.score <= 21){
-          dispatch(playerWins())
+          dispatch(playerWins(hand))
         }
         else if(hand.score < dealerScore){
           dispatch({ type: "DEALER_WINS" })
@@ -506,6 +506,7 @@ export const dealerMove = () => {
   }
 }
 
+/* DOUBLE DOWN RELATED ACTIONS */
 export const doublingPlayer = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
@@ -515,18 +516,23 @@ export const doublingPlayer = () => {
     .then(deck => {
       console.log('Player hits...')
 
-      /* passing all cards (old hand plus new card) */
+      /* SIMILAR TO HIT ACTION; COPY CURRENT HAND AND ADD NEW CARD, THEN PASS NEW HAND THROUGH */
       let index = getStore().currentHandIndex
       let playerHand = getStore().playerHand[index]
-      let currentBet = playerHand.bet
-      let bet = (currentBet * 2)
       let cards = playerHand.cards.slice()
       cards.push(deck.cards[0])
-      /* give player new card and then end turn */
+
+      /* GET CURRENT BET AND DOUBLE IT */
+      let currentBet = playerHand.bet
+      let bet = (currentBet * 2)
+
+      /* SUBTRACT DOUBLE DOWN BET FROM POT, PASS THROUGH NEW DOUBLED BET THROUGH TO REDUCER TO ASSIGN TO HAND */
       dispatch(placingBet(currentBet))
       dispatch(doublePlayer(cards, index, bet))
+      /* CHECK FOR BUST AND ADD TO COUNT */
       dispatch(checkPlayerBust())
       dispatch(countingCards(deck.cards))
+      /* PLAYER ONLY GETS ONE CARD WHEN DOUBLING, SO MAKE STAY AFTER */
       dispatch(playerStay())
     })
   }
@@ -540,7 +546,9 @@ const splitPlayerCards = (cards, index, bet) => {
   return { type: "SPLIT_PLAYER_CARDS", cards, index, bet }
 }
 
-////NEED TO CHECK FOR BLACKJACK AFTER SPLITTING
+
+/* ON INITIAL SPLIT NEED TO CHECK BOTH HANDS TO SEE IF EITHER RESULTED IN BLACKJACK */
+
 export const splittingPlayerCards = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
@@ -564,26 +572,30 @@ export const splittingPlayerCards = () => {
     })
   }
 }
-/* uses convenience method to find count of cards */
+
+/* COUNTING CARD RELATED ACTIONS */
 export const countingCards = cards => {
   return (dispatch, getStore) => {
+    /* USE CONVENIENCE METHOD TO COUNT CARDS */
     let count = getCountFromHand(cards)
     dispatch(countCards(count))
   }
 }
-/* assigns new count total */
+
+/* PASSES THROUGH COUNT OF CARDS LOOKING AT NOW TO ADD TO STATE */
 export const countCards = count => {
   return { type: "COUNT", count }
 }
 
-/* assigns bet amount */
+/* PLACES INITIAL BET AMOUNT, THEN GETS ASSIGNED TO EACH HAND */
 export const placingBet = bet => {
   return (dispatch, getStore) => {
     let user = getStore().user
     let newPot = user.pot - bet
 
+    /* PASSES THROUGH TO INITIAL BET STATE */
     dispatch(placeBet(bet))
-
+    /* UPDATE USER'S POT */
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
       headers: {
@@ -591,8 +603,8 @@ export const placingBet = bet => {
       },
       body: JSON.stringify({ pot: newPot })
     })
-    .then( res => res.json() )
-    .then( user => {
+    .then(res => res.json())
+    .then(user => {
       dispatch(setUser(user))
     })
   }
@@ -602,10 +614,12 @@ export const placeBet = bet => {
   return { type: "PLACE_BET", bet }
 }
 
+/* RESET INITIAL BET TO 0 AT END OF EACH ROUND */
 const resetBet = () => {
   return { type: "RESET_BET" }
 }
 
+/* HANDLE TIES, GIVE PLAYER BACK INITIAL BET */
 export const playerPush = () => {
   return (dispatch, getStore) => {
     let index = getStore().currentHandIndex
@@ -619,8 +633,8 @@ export const playerPush = () => {
       },
       body: JSON.stringify({ pot: user.pot + bet })
     })
-    .then( res => res.json() )
-    .then( user => {
+    .then(res => res.json())
+    .then(user => {
       dispatch(setUser(user))
       dispatch({ type: "PUSH" })
       dispatch(resetBet())
@@ -628,13 +642,20 @@ export const playerPush = () => {
   }
 }
 
-/* saves player's winnings */
-export const playerWins = () => {
+/* HANDLE PLAYER WINNING; SINCE POT DECREASED AT DEAL, NEED TO GET 2X BET BACK */
+  /* V1 ISSUE =>
+    WHEN SPLITTING, NOT GETTING PAID WHEN BOTH HANDS WIN; SINCE USING currentHandIndex, IT GETS TICKED TO LAST HAND INDEX, SO ONLY GETTING THAT WINNING, NOT ACTUALLY CHECKING EACH HAND
+      => V2: WILL REFACTOR TO PASS IN HAND OBJECT SINCE USING THIS FUNCTION IN A MAP
+  */
+
+
+export const playerWins = hand => {
   return (dispatch, getStore) => {
-    let index = getStore().currentHandIndex
-    let hand = getStore().playerHand[index]
-    let winnings = hand.bet * 2
     let user = getStore().user
+    /* removed in v2 per above */
+    // let index = getStore().currentHandIndex
+    // let hand = getStore().playerHand[index]
+    let winnings = (hand.bet * 2)
     let newPot = user.pot + winnings
 
     if(newPot > user.largest_pot){
@@ -645,8 +666,8 @@ export const playerWins = () => {
         },
         body: JSON.stringify({ pot: newPot, largest_pot: newPot })
       })
-      .then( res => res.json() )
-      .then( user => {
+      .then(res => res.json())
+      .then(user => {
         dispatch(setUser(user))
         dispatch({ type: "PLAYER_WINS" })
         dispatch(resetBet())
@@ -660,8 +681,8 @@ export const playerWins = () => {
         },
         body: JSON.stringify({ pot: newPot })
       })
-      .then( res => res.json() )
-      .then( user => {
+      .then(res => res.json())
+      .then(user => {
         dispatch(setUser(user))
         dispatch({ type: "PLAYER_WINS" })
         dispatch(resetBet())
@@ -670,7 +691,7 @@ export const playerWins = () => {
   }
 }
 
-/* Convenience method to count cards in hand; takes in an array of cards */
+/* CONVENIENCE METHOD FOR COUNTING CARDS, TAKES IN AN ARRAY */
 const getCountFromHand = cards => {
   let count = 0
   cards.forEach( card => {
@@ -713,6 +734,8 @@ const getCountFromHand = cards => {
 }
 
 /*
+GAME LOGIC:
+
 DEAL =>
 DEALER: ONE CARD & SCORE HIDDEN
 USER: CALCULATE SCORE, CHECK FOR SPLIT, HIT, STAY, or DOUBLE
@@ -728,5 +751,4 @@ USER: GIVE TWO MORE CARDS/MAKE TWO HANDS, CHECK FOR SPLIT, FIRST HAND, HIT STAY 
 
 STAY =>
 USER: REVEAL DEALER CARDS & SCORE, CHECK PLAYER SCORE AGAINST DEALER, IF PLAYER SCORE > DEALER SCORE && DEALER SCORE < 17, HIT DEALER then RECHECK DEALER
-
 */
