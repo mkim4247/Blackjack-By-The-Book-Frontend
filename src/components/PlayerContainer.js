@@ -9,11 +9,10 @@ class PlayerContainer extends React.Component {
     return(
       <div>
       Player Container
-      {
-        this.props.playerHand[0].cards.length > 0 ?
-          this.props.playerHand.map( (hand, index) => {
+      {this.props.playerHand[0].cards.length > 0 ?
+        this.props.playerHand.map( (hand, index) => {
           return <PlayerHand hand={hand} key={index} />
-          })
+        })
         : null
       }
       </div>

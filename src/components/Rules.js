@@ -36,21 +36,27 @@ class Rules extends React.Component {
         </p>
 
         <p>
-          The value of each card from 2 through 10 is their numerical value. Facecards (Jack, Queen, and King) are each worth 10, while Aces can be worth either 1 or 11.
+          The value of each card from 2 through 10 is their numerical value. Facecards (Jack, Queen, and King) are each worth 10, while Aces can be worth either 1 or 11. The value of a player's hand is the sum of these card values.
         </p>
 
         <p>
-          The value of a player's hand is the sum of these card values. After the cards have been dealt, players have the option to hit to draw additional cards to improve their hands, or to stay and not draw additional cards, thus ending their turn.
+           After the initial cards have been dealt, players have several options:
+        </p>
+        <p>
+          Hit: Draw another card to improve your hand. (Usually signaled by tapping the table with your finger or waving your hand toward your body).
+        </p>
+        <p>
+          Stand/Stay: Choose not to take any additional cards. End your turn. (Usually signaled by waving your hand horizontally)
+        </p>
+        <p>
+          Double down: You may increase your initial bet by up to 100%
         </p>
       </div>
 
-      After receiving an initial two cards, the player has up to four standard options: "hit", "stand", "double down", or "split". Each option has a corresponding hand signal. Some games give the player a fifth option, "surrender".
+       "hit", "stand", "double down", or "split". Each option has a corresponding hand signal. Some games give the player a fifth option, "surrender".
 
-      Hit: Take another card from the dealer.
-      Signal: Scrape cards against table (in handheld games); tap the table with finger or wave hand toward body (in games dealt face up).
-      Stand: Take no more cards, also known as "stand pat", "stick", or "stay".
-      Signal: Slide cards under chips (in handheld games); wave hand horizontally (in games dealt face up).
-      Double down: The player is allowed to increase the initial bet by up to 100% in exchange for committing to stand after receiving exactly one more card. The additional bet is placed in the betting box next to the original bet. Some games do not permit the player to increase the bet by amounts other than 100%. Non-controlling players may double their wager or decline to do so, but they are bound by the controlling player's decision to take only one card.
+       The player is allowed to increase the initial bet by up to 100% in exchange for committing to stand after receiving exactly one more card. The additional bet is placed in the betting box next to the original bet. Some games do not permit the player to increase the bet by amounts other than 100%. Non-controlling players may double their wager or decline to do so, but they are bound by the controlling player's decision to take only one card.
+
       Signal: Place additional chips beside the original bet outside the betting box, and point with one finger.
       Split: If the first two cards of a hand have the same value, the player can split them into two hands, by moving a second bet equal to the first into an area outside the betting box. The dealer separates the two cards and draws an additional card on each, placing one bet with each hand. The player then plays out the two separate hands in turn; except for a few restrictions, the hands are treated as independent new hands, with the player winning or losing their wager separately for each hand. Occasionally, in the case of ten-valued cards, some casinos allow splitting only when the cards have the identical ranks; for instance, a hand of 10-10 may be split, but not one of 10-king. However, usually all 10-value cards are treated the same. Doubling and further splitting of post-split hands may be restricted, and an ace and ten value card after a split are counted as a non-blackjack 21. Hitting split aces is usually not allowed. Non-controlling players may follow the controlling player by putting down an additional bet or decline to do so, instead associating their existing wager with one of the two post-split hands. In that case they must choose which hand to play behind before the second cards are drawn. Some casinos do not give non-controlling players this option, and require that the wager of a player not electing to split remains with the first of the two post-split hands.
       Signal: Place additional chips next to the original bet outside the betting box; point with two fingers spread into a V formation.
@@ -76,7 +82,7 @@ A hand with an ace valued as 11 is called "soft", meaning that the hand will not
 
 Once all the players have completed their hands, it is the dealer’s turn. The dealer hand will not be completed if all players have either busted or received blackjacks. The dealer then reveals the hidden card and must hit until the cards total 17 or more points. (At most tables the dealer also hits on a "soft" 17, i.e. a hand containing an ace and one or more other cards totaling six.) Players win by not busting and having a total higher than the dealer, or not busting and having the dealer bust, or getting a blackjack without the dealer getting a blackjack. If the player and dealer have the same total (not counting blackjacks), this is called a "push", and the player typically does not win or lose money on that hand. Otherwise, the dealer wins.
         Blackjack is usually played with one or more decks of 52 cards.
-        
+
       </div>
     )
   }

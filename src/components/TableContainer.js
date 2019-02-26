@@ -14,42 +14,40 @@ class TableContainer extends React.Component {
   render(){
     return(
       <div id='table'>
-      Table Container
-      <Grid>
-        <Grid.Row columns={3}>
-          <Grid.Column width={4}>
-            <div>
+        Table Container
+        <Grid>
+          <Grid.Row columns={3}>
+            <Grid.Column width={4}>
               <Stats />
-            </div>
-          </Grid.Column>
-          <Grid.Column width={8}>
-            <DealerContainer />
-            <Pot />
-            <Controls />
-            <PlayerContainer />
-            <Bet />
-            <div>
-              {this.props.roundResult !== "Start" && this.props.roundResult !== "Deal" ?
-                <div>
-                  {this.props.roundResult}
-                </div>
-                : null
-              }
-            </div>
-            <div>
-              {this.props.insurance === 'LOST' || this.props.insurance === 'WON' ?
-                <div>
-                  Insurance {this.props.insurance}
-                </div>
-                : null
-              }
-            </div>
-          </Grid.Column>
-          <Grid.Column width={4}>
-            <Strategy/>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <DealerContainer />
+              <Pot />
+              <Controls />
+              <PlayerContainer />
+              <Bet />
+              <div>
+                {this.props.roundResult !== "Start" && this.props.roundResult !== "Deal" ?
+                  <div>
+                    {this.props.roundResult}
+                  </div>
+                  : null
+                }
+              </div>
+              <div>
+                {this.props.insurance === 'LOST' || this.props.insurance === 'WON' ?
+                  <div>
+                    Insurance {this.props.insurance}
+                  </div>
+                  : null
+                }
+              </div>
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <Strategy/>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>
     )
   }

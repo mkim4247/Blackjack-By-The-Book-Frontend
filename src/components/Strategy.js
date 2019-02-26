@@ -17,7 +17,9 @@ class Strategy extends React.Component {
         <div>
           <div>
             The current count is {this.props.count}
-            {this.checkCount()}
+            <div>
+              {this.checkCount()}
+            </div>
           </div>
 
           <div>
@@ -645,9 +647,8 @@ class Strategy extends React.Component {
     return(
       <div id='strategy-box'>
         <button onClick={this.toggleInfo}>
-          {
-            this.state.showInfo ?
-              "Hide Info" : "Show Info"
+          {this.state.showInfo ?
+            "Hide Info" : "Show Info"
           }
         </button>
         {this.state.showInfo ?

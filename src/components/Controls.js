@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { connect } from 'react-redux'
 import { dealingCards, hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards, takeInsurance, passInsurance, surrenderingPlayer } from '../redux/actions'
 
@@ -43,32 +42,30 @@ class Controls extends React.Component {
   render(){
     return(
       <div id='controls'>
-      Controls
-      {this.props.bet > 0 && this.props.roundResult !== "Deal" ?
-        <button onClick={this.props.dealingCards}>Deal</button>
-        :
-        <div> Place your bets </div>
-      }
-      {
-        !this.props.showDealer && this.props.roundResult === "Deal" ?
-        <div>
-          {this.showHitAndStay()}
-          {this.showDouble()}
-          {this.showSplit()}
-          {this.showSurrender()}
-        {
-          this.props.insurance === 'ask' ?
-            <div>
-              Take Insurance?
-              <div>
-                This will cost {this.props.bet/2}.
-              </div>
-              <button onClick={this.props.takeInsurance}> Take </button>
-              <button onClick={this.props.passInsurance}> Pass </button>
-            </div>
-            : null
+        {this.props.bet > 0 && this.props.roundResult !== "Deal" ?
+          <button onClick={this.props.dealingCards}>Deal</button>
+          :
+          <div> Place your bets </div>
         }
-        </div>
+        {
+        !this.props.showDealer && this.props.roundResult === "Deal" ?
+          <div>
+            {this.showHitAndStay()}
+            {this.showDouble()}
+            {this.showSplit()}
+            {this.showSurrender()}
+            {this.props.insurance === 'ask' ?
+              <div>
+                Take Insurance?
+                <div>
+                  This will cost {this.props.bet/2}.
+                </div>
+                <button onClick={this.props.takeInsurance}> Take </button>
+                <button onClick={this.props.passInsurance}> Pass </button>
+              </div>
+              : null
+            }
+          </div>
         : null
       }
 

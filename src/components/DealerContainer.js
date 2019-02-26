@@ -1,6 +1,6 @@
 import React from 'react'
-import DealerHand from './DealerHand'
 import { connect } from 'react-redux'
+import DealerHand from './DealerHand'
 
 class DealerContainer extends React.Component {
 

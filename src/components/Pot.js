@@ -13,34 +13,36 @@ class Pot extends React.Component {
   decBetButtons = () => {
     if(this.props.bet >= 50){
       return (
-      <div>
-      <button onClick={() => this.props.placingBet(-50)}> Dec 50 </button>
-      <button onClick={() => this.props.placingBet(-25)}> Dec 25 </button>
-      <button onClick={() => this.props.placingBet(-10)}> Dec 10 </button>
-      <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
-      </div>
+        <div>
+          <button onClick={() => this.props.placingBet(-50)}> Dec 50 </button>
+          <button onClick={() => this.props.placingBet(-25)}> Dec 25 </button>
+          <button onClick={() => this.props.placingBet(-10)}> Dec 10 </button>
+          <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
+        </div>
       )
-    } else if(this.props.bet >= 25 && this.props.bet < 50){
+    }
+    else if(this.props.bet >= 25 && this.props.bet < 50){
       return (
-      <div>
-      <button onClick={() => this.props.placingBet(-25)}> Dec 25 </button>
-      <button onClick={() => this.props.placingBet(-10)}> Dec 10 </button>
-      <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
-      </div>
+        <div>
+          <button onClick={() => this.props.placingBet(-25)}> Dec 25 </button>
+          <button onClick={() => this.props.placingBet(-10)}> Dec 10 </button>
+          <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
+        </div>
       )
-    } else if(this.props.bet >= 10 && this.props.bet < 25){
+    }
+    else if(this.props.bet >= 10 && this.props.bet < 25){
       return (
-      <div>
-      <button onClick={() => this.props.placingBet(-10)}> Dec 10 </button>
-      <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
-      </div>
+        <div>
+          <button onClick={() => this.props.placingBet(-10)}> Dec 10 </button>
+          <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
+        </div>
       )
     }
     else if(this.props.bet >= 5){
       return (
         <div>
-        <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
-      </div>
+          <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
+        </div>
       )
     }
   }
@@ -48,9 +50,7 @@ class Pot extends React.Component {
   render(){
     return(
       <div>
-        <div>
-          {this.props.bet}
-        </div>
+        <div> {this.props.bet} </div>
         {this.decBetButtons()}
       </div>
     )
