@@ -261,8 +261,8 @@ const checkPlayerBlackJack = () => {
     let dealerScore = getStore().dealerHand.score
 
     /* CHECK IF PLAYER HAS BLACKJACK AND IF DEALER HAS BLACKJACK */
-    if(playerHand.find( card => card.value === "ACE") && playerScore === 21){
-      if(dealerHand.find( card => card.value === "ACE") && dealerScore === 21){
+    if(playerHand.find( card => card.value === "ACE" ) && playerScore === 21){
+      if(dealerHand.find( card => card.value === "ACE" ) && dealerScore === 21){
         /* TIE IF BOTH HAVE BLACKJACK */
         dispatch(showDealer())
         dispatch(playerPush())
@@ -447,7 +447,7 @@ export const playerStay = () => {
     let hand = getStore().playerHand
     let index = getStore().currentHandIndex
     /* CHECK HAND ARRAY; IF NOTHING AT NEXT INDEX, THEN DEALER's TURN, O/W PLAY NEXT HAND */
-    if(index < hand.length - 1 ){
+    if(index < hand.length - 1){
       dispatch({ type: "STAY" })
     }
     else {
@@ -568,6 +568,7 @@ export const splittingPlayerCards = () => {
       let cards = [splitHand1, splitHand2]
       dispatch(placingBet(bet))
       dispatch(splitPlayerCards( cards, index, bet ))
+
       dispatch(countingCards(deck.cards))
     })
   }
@@ -652,12 +653,12 @@ export const playerPush = () => {
 export const playerWins = hand => {
   return (dispatch, getStore) => {
     let user = getStore().user
-    /* removed in v2 per above */
     // let index = getStore().currentHandIndex
     // let hand = getStore().playerHand[index]
     let winnings = (hand.bet * 2)
     let newPot = user.pot + winnings
-
+    console.log('winnings:', winnings)
+    console.log('newpot:', newPot)
     if(newPot > user.largest_pot){
       fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
         method: "PATCH",
