@@ -51,7 +51,9 @@ class Pot extends React.Component {
     return(
       <div>
         <div> {this.props.bet} </div>
-        {this.decBetButtons()}
+        {this.props.roundResult !== 'Deal' ?
+          this.decBetButtons() : null
+        }
       </div>
     )
   }
@@ -60,6 +62,7 @@ class Pot extends React.Component {
 const mapStateToProps = state => {
   return {
     // playerHand: state.playerHand
+    roundResult: state.roundResult,
     bet: state.bet
   }
 }

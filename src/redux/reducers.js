@@ -35,21 +35,30 @@ const dealerHandReducer = (state={ cards: [], score: null }, action) => {
   }
 }
 
-const playerHandReducer = (state=[{ cards: [], score: null, bet: null }], action) => {
+const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: null }], action) => {
   switch(action.type){
     case "DEAL_PLAYER_CARDS":
       return [{
         cards: action.cards,
         score: assignHandValue(action.cards),
-        bet: action.bet
+        bet: action.bet,
+        result: null
       }]
     case "HIT_PLAYER_CARDS":
       let copy = [...state]
-      copy[action.index] = { ...state[action.index],
+      copy[action.index] = {
+        ...state[action.index],
         cards: action.cards,
         score: assignHandValue(action.cards)
       }
       return copy
+    case "PLAYER_BUST":
+      let hand = [...state]
+      hand[action.index] = {
+        ...state[action.index],
+        result: action.result
+      }
+      return hand
     case "DOUBLE_PLAYER":
       let double = [...state]
       double[action.index] = { ...state[action.index],
@@ -66,8 +75,7 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null }], action
           score: assignHandValue(action.cards[0]),
           bet: action.bet
         },
-        {
-          cards: action.cards[1],
+        {cards: action.cards[1],
           score: assignHandValue(action.cards[1]),
           bet: action.bet
         }]
@@ -192,22 +200,22 @@ const assignHandValue = cards => {
 
   cards.forEach( card => {
     switch(card.value){
-        case "KING":
-          handValue += 10
-          break
-        case "QUEEN":
-          handValue += 10
-          break
-        case "JACK":
-          handValue += 10
-          break
-        case "ACE":
-          handValue += 11
-          aceCount++
-          break
-        default:
-          handValue += parseInt(card.value)
-          break
+      case "KING":
+        handValue += 10
+        break
+      case "QUEEN":
+        handValue += 10
+        break
+      case "JACK":
+        handValue += 10
+        break
+      case "ACE":
+        handValue += 11
+        aceCount++
+        break
+      default:
+        handValue += parseInt(card.value)
+        break
       }
   })
 

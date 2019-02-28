@@ -245,10 +245,22 @@ const checkPlayerBust = () => {
 
     if(playerScore > 21){
       dispatch({ type: "BUST" })
+
+
+      dispatch({ type: "PLAYER_BUST", result: "Bust" })
+
+
+
       dispatch(resetBet())
     }
   }
 }
+
+// 
+// WORKING OUT CHECKING BJ ON BOTH HANDS AFTER A SPLIT RIGHT AWAY AND RESOLVING
+//
+
+
 
 /* CHECK PLAYER FOR BLACKJACK; WIN UNLESS DEALER ALSO HAS BLACKJACK */
 const checkPlayerBlackJack = () => {
