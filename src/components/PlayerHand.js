@@ -10,10 +10,9 @@ class PlayerHand extends React.Component {
 
   render(){
     return(
-      <div id='player-hand'>
+      <span id='player-hand'>
         {this.showCards()}
-        <div> {this.props.hand.score} </div>
-      </div>
+      </span>
     )
   }
 }

@@ -7,8 +7,7 @@ class PlayerContainer extends React.Component {
 
   render(){
     return(
-      <div>
-      Player Container
+      <div id='player-container'>
       {this.props.playerHand[0].cards.length > 0 ?
         this.props.playerHand.map( (hand, index) => {
           return <PlayerHand hand={hand} key={index} />

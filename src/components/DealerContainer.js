@@ -6,8 +6,7 @@ class DealerContainer extends React.Component {
 
   render(){
     return(
-      <div>
-      Dealer Container
+      <div id='dealer-container'>
       <DealerHand />
         {this.props.showDealer ?
           <div> {this.props.dealerHand.score} </div>

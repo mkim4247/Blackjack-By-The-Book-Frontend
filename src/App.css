@@ -34,12 +34,12 @@
 #home {
   height: 100vh;
   width: 100vw;
+  background-color: green;
 }
 
 #table {
-  border: 10px solid black;
   background-color: green;
-  height: 100vh;
+  height: 80vh;
   width: 100vw;
   background-image: url('./blackjacktable.svg');
   background-repeat: no-repeat;
@@ -50,27 +50,47 @@
 
 #controls {
   border: 3px solid blue;
+  position: fixed;
+  bottom: 10%
 }
 
 #bet-box {
   border: 3px solid blue;
+  position: fixed;
+  bottom: 5%;
 }
 
 #facedown {
 
 }
 
+#stats-box {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+}
+
 #strategy-box {
   border: 1px solid white;
 }
 
-#player-hand {
+#player-container {
   border: 1px solid black;
-  margin: 0 auto;
+  vertical-align: middle;
+  text-align: center;
+}
+
+#player-hand {
+  padding: 10px;
+}
+
+#dealer-container {
+  border: 1px solid red;
+  vertical-align: middle;
+  text-align: center;
 }
 
 #dealer-hand {
-  border: 1px solid red;
 }
 
 @keyframes deal {
@@ -83,8 +103,9 @@
 }
 
 .cards {
-  height: 100px;
-  width: 70px;
+  height: 90px;
+  width: 60px;
+  padding: 2px;
   animation-name: deal;
   animation-duration: 2s;
   animation-timing-function: ease-in-out;

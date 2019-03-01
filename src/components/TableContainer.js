@@ -14,7 +14,6 @@ class TableContainer extends React.Component {
   render(){
     return(
       <div id='table'>
-        Table Container
         <Grid>
           <Grid.Row columns={3}>
             <Grid.Column width={4}>
@@ -22,10 +21,30 @@ class TableContainer extends React.Component {
             </Grid.Column>
             <Grid.Column width={8}>
               <DealerContainer />
-              <Pot />
-              <Controls />
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <Strategy/>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={1}>
+            <Grid.Column>
               <PlayerContainer />
-              <Bet />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={3}>
+            <Grid.Column width={4}>
+              <Pot />
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <Controls />
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <div>
+              </div>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={3}>
+            <Grid.Column width={4}>
               <div>
                 {this.props.roundResult !== "Start" && this.props.roundResult !== "Deal" ?
                   <div>
@@ -34,6 +53,11 @@ class TableContainer extends React.Component {
                   : null
                 }
               </div>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <Bet />
+            </Grid.Column>
+            <Grid.Column width={4}>
               <div>
                 {this.props.insurance === 'LOST' || this.props.insurance === 'WON' ?
                   <div>
@@ -42,9 +66,6 @@ class TableContainer extends React.Component {
                   : null
                 }
               </div>
-            </Grid.Column>
-            <Grid.Column width={4}>
-              <Strategy/>
             </Grid.Column>
           </Grid.Row>
         </Grid>

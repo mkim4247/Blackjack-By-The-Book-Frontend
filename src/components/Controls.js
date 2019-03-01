@@ -47,7 +47,7 @@ class Controls extends React.Component {
         {this.props.bet > 0 && this.props.roundResult !== "Deal" ?
           <button onClick={this.props.dealingCards}>Deal</button>
           :
-          <div> Place your bets </div>
+          null
         }
         {
         !this.props.showDealer && this.props.roundResult === "Deal" && this.props.insurance !== 'ask'?

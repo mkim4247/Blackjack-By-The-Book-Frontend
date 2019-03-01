@@ -50,7 +50,12 @@ class Pot extends React.Component {
   render(){
     return(
       <div>
-        <div> {this.props.bet} </div>
+        {this.props.bet > 0 ?
+          <div> {this.props.bet} </div>
+          :
+          <div> Place Your Bets </div>
+        }
+
         {this.props.roundResult !== 'Deal' ?
           this.decBetButtons() : null
         }
