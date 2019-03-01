@@ -42,6 +42,16 @@
 }
 
 #table {
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  grid-template-rows: 25% 25% 25% 25%;
+  grid-template-areas:
+    "stats dealer strategy"
+    "stats pot strategy"
+    ". player ."
+    "bet controls extra";
+  justify-items: center;
+  align-items: center;
   height: 80vh;
   width: 100vw;
   background-image: url('./images/blackjacktable.svg');
@@ -54,16 +64,11 @@
 
 #controls {
   border: 3px solid blue;
-  position: absolute;
-  bottom: 10%
+  grid-area: controls;
 }
 
 #bet-box {
-  position: fixed;
-  vertical-align: middle;
-  text-align: center;
-  min-width: 20vw;
-  bottom: 10px;
+  grid-area: bet;
 }
 
 .betting-chips {
@@ -77,34 +82,34 @@
 }
 
 #stats-box {
-  position: absolute;
-  top: 20%;
-  left: 20%;
+  grid-area: stats;
 }
 
 #strategy-box {
-  border: 1px solid white;
+  grid-area: strategy;
 }
 
 #pot-box {
-  vertical-align: middle;
-  text-align: center;
+  grid-area: pot;
+}
+
+#result-box {
+  grid-area: extra;
+}
+
+#insurance-box {
+  grid-area: extra;
 }
 
 #player-container {
-  border: 1px solid black;
-  vertical-align: middle;
-  text-align: center;
+  grid-area: player;
 }
 
 #player-hand {
-  padding: 10px;
 }
 
 #dealer-container {
-  border: 1px solid red;
-  vertical-align: middle;
-  text-align: center;
+  grid-area: dealer;
 }
 
 #dealer-hand {

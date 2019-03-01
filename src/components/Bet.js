@@ -26,12 +26,10 @@ class Bet extends React.Component {
               <input className='betting-chips' type="image" src={require('../images/redchip.svg')} onClick={this.increaseBet} value='5' alt='Red Chip/5'/>
               : null
             }
-            {this.props.user.pot >= 25 ? 
+            {this.props.user.pot >= 25 ?
               <input className='betting-chips' type="image" src={require('../images/lightbluechip.svg')} onClick={this.increaseBet} value='25' alt='Light Blue Chip/25'/>
               : null
             }
-          </div>
-          <div>
             {this.props.user.pot >= 100 ?
                 <input className='betting-chips' type="image" src={require('../images/blackchip.svg')} onClick={this.increaseBet} value='100' alt='Black Chip/100'/>
                 : null

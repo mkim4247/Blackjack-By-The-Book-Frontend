@@ -221,7 +221,7 @@ export const hittingDealerCards = () => {
     // let playerScore = getStore().playerHand[0].score
     /* DEALER HITS OF LOSING TO PLAYER AND AT LESS THAN 17 */
     // if(dealerScore <= playerScore && dealerScore < 17){
-    
+
     /* DEALER HITS IF LESS THAN 17 */
     if(dealerScore < 17){
       fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
@@ -497,7 +497,7 @@ export const dealerMove = () => {
       setTimeout( () => {
         dispatch(hittingDealerCards())
         dispatch(dealerMove())
-      }, 1000)
+      }, 1500)
     }
     else {
       /* COMPARE EACH OF PLAYER'S HANDS TO DEALER AND DETERMINE OUTCOME */

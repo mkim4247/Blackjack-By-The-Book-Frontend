@@ -7,67 +7,38 @@ import Strategy from './Strategy'
 import Bet from './Bet'
 import Pot from './Pot'
 import Stats from './Stats'
-import { Grid } from 'semantic-ui-react'
 
 class TableContainer extends React.Component {
 
   render(){
     return(
       <div id='table'>
-        <Grid>
-          <Grid.Row columns={3}>
-            <Grid.Column width={4}>
-              <Stats />
-            </Grid.Column>
-            <Grid.Column width={8}>
-              <DealerContainer />
-            </Grid.Column>
-            <Grid.Column width={4}>
+        <Stats />
+        <DealerContainer />
+
+
               <Strategy/>
-            </Grid.Column>
-          </Grid.Row>
 
-          <Grid.Row columns={1}>
-            <Grid.Column>
               <Controls />
-            </Grid.Column>
-          </Grid.Row>
 
-          <Grid.Row columns={1}>
-            <Grid.Column>
               <PlayerContainer />
-            </Grid.Column>
-          </Grid.Row>
 
-          <Grid.Row columns={3}>
-            <Grid.Column width={4}>
-
-              <div>
+              <div id='insurance-box'>
                 {this.props.insurance === 'LOST' || this.props.insurance === 'WON' ?
-                  <div>
-                    Insurance {this.props.insurance}
-                  </div>
+                  <div> Insurance {this.props.insurance} </div>
                   : null
                 }
-                <Bet />
               </div>
-            </Grid.Column>
-            <Grid.Column width={8}>
-              <div></div>
-            </Grid.Column>
-            <Grid.Column width={4}>
+
+              <Bet />
+
               <Pot />
-              <div>
+              <div id='result-box'>
                 {this.props.roundResult !== "Start" && this.props.roundResult !== "Deal" ?
-                  <div>
-                    {this.props.roundResult}
-                  </div>
-                  : null
+                  <div> {this.props.roundResult} </div> : null
                 }
               </div>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+
       </div>
     )
   }
