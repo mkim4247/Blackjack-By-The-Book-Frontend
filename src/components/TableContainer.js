@@ -28,19 +28,23 @@ class TableContainer extends React.Component {
           </Grid.Row>
           <Grid.Row columns={1}>
             <Grid.Column>
+              <Pot />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={1}>
+            <Grid.Column>
               <PlayerContainer />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={3}>
             <Grid.Column width={4}>
-              <Pot />
+              <div></div>
             </Grid.Column>
             <Grid.Column width={8}>
               <Controls />
             </Grid.Column>
             <Grid.Column width={4}>
-              <div>
-              </div>
+              <div></div>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={3}>

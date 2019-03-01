@@ -218,7 +218,7 @@ export const hittingDealerCards = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
     let dealerScore = getStore().dealerHand.score
-    let playerScore = getStore().playerHand[0].score
+    // let playerScore = getStore().playerHand[0].score
     /* DEALER HITS OF LOSING TO PLAYER AND AT LESS THAN 17 */
     // if(dealerScore <= playerScore && dealerScore < 17){
     

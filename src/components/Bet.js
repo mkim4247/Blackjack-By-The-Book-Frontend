@@ -20,11 +20,12 @@ class Bet extends React.Component {
       <div id='bet-box'>
       {this.props.roundResult !== "Deal" ?
         <div>
-          <button onClick={this.increaseBet} value='5'> 5 </button>
-          <button onClick={this.increaseBet} value='10'> 10 </button>
-          <button onClick={this.increaseBet} value='25'> 25 </button>
-          <button onClick={this.increaseBet} value='50'> 50 </button>
-          <button onClick={this.increaseBet} value={this.props.user.pot}> All In </button>
+          <input className='betting-chips' type="image" src={require('../images/greenchip.svg')} onClick={this.increaseBet} value='1' alt='Green Chip/1'/>
+          <input className='betting-chips' type="image" src={require('../images/redchip.svg')} onClick={this.increaseBet} value='5' alt='Red Chip/5'/>
+          <input className='betting-chips' type="image" src={require('../images/lightbluechip.svg')} onClick={this.increaseBet} value='25' alt='Light Blue Chip/25'/>
+          <input className='betting-chips' type="image" src={require('../images/blackchip.svg')} onClick={this.increaseBet} value='100' alt='Black Chip/100'/>
+          <input className='betting-chips' type="image" src={require('../images/whitechip.svg')} onClick={this.increaseBet} value={this.props.user.pot} alt='White Chip/All in'/>
+
         </div>
         : null
       }

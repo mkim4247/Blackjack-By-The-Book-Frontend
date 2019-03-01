@@ -49,7 +49,7 @@ class Pot extends React.Component {
 
   render(){
     return(
-      <div>
+      <div id='pot-box'>
         {this.props.bet > 0 ?
           <div> {this.props.bet} </div>
           :
