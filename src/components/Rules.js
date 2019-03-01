@@ -7,7 +7,7 @@ class Rules extends React.Component {
     return(
       <div>
       <Nav />
-
+      <div id='rules'>
       <Header size='medium'>
         How to Play:
       </Header>
@@ -82,7 +82,8 @@ A hand with an ace valued as 11 is called "soft", meaning that the hand will not
 
 Once all the players have completed their hands, it is the dealer’s turn. The dealer hand will not be completed if all players have either busted or received blackjacks. The dealer then reveals the hidden card and must hit until the cards total 17 or more points. (At most tables the dealer also hits on a "soft" 17, i.e. a hand containing an ace and one or more other cards totaling six.) Players win by not busting and having a total higher than the dealer, or not busting and having the dealer bust, or getting a blackjack without the dealer getting a blackjack. If the player and dealer have the same total (not counting blackjacks), this is called a "push", and the player typically does not win or lose money on that hand. Otherwise, the dealer wins.
         Blackjack is usually played with one or more decks of 52 cards.
-
+      </div>
+      
       </div>
     )
   }

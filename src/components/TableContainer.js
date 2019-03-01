@@ -26,46 +26,41 @@ class TableContainer extends React.Component {
               <Strategy/>
             </Grid.Column>
           </Grid.Row>
+
           <Grid.Row columns={1}>
             <Grid.Column>
-              <Pot />
+              <Controls />
             </Grid.Column>
           </Grid.Row>
+
           <Grid.Row columns={1}>
             <Grid.Column>
               <PlayerContainer />
             </Grid.Column>
           </Grid.Row>
+
           <Grid.Row columns={3}>
             <Grid.Column width={4}>
-              <div></div>
-            </Grid.Column>
-            <Grid.Column width={8}>
-              <Controls />
-            </Grid.Column>
-            <Grid.Column width={4}>
-              <div></div>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns={3}>
-            <Grid.Column width={4}>
-              <div>
-                {this.props.roundResult !== "Start" && this.props.roundResult !== "Deal" ?
-                  <div>
-                    {this.props.roundResult}
-                  </div>
-                  : null
-                }
-              </div>
-            </Grid.Column>
-            <Grid.Column width={8}>
-              <Bet />
-            </Grid.Column>
-            <Grid.Column width={4}>
+
               <div>
                 {this.props.insurance === 'LOST' || this.props.insurance === 'WON' ?
                   <div>
                     Insurance {this.props.insurance}
+                  </div>
+                  : null
+                }
+                <Bet />
+              </div>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <div></div>
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <Pot />
+              <div>
+                {this.props.roundResult !== "Start" && this.props.roundResult !== "Deal" ?
+                  <div>
+                    {this.props.roundResult}
                   </div>
                   : null
                 }

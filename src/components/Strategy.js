@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 class Strategy extends React.Component {
   /* local state for showing advice and count */
   state = {
-    showInfo: false
+    showInfo: true
   }
 
   toggleInfo = event => {
