@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 class Stats extends React.Component {
   render(){
     return(
-      <div>
+      <div id='stats-box'>
         {this.props.user.username}
         <div>
           Longest Streak: {this.props.user.longest_streak}
