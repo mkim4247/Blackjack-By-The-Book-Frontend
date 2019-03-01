@@ -115,6 +115,13 @@
 #dealer-hand {
 }
 
+.control-btns {
+  border-radius: 100%;
+  width: 5em;
+  height: 5em;
+  background-color: Transparent;
+}
+
 
 @keyframes deal {
   0% {

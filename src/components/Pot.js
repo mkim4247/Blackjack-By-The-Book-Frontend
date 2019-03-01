@@ -11,37 +11,37 @@ class Pot extends React.Component {
   // }
 
   decBetButtons = () => {
-    if(this.props.bet >= 50){
+    if(this.props.bet >= 100){
       return (
         <div>
-          <button onClick={() => this.props.placingBet(-50)}> Dec 50 </button>
-          <button onClick={() => this.props.placingBet(-25)}> Dec 25 </button>
-          <button onClick={() => this.props.placingBet(-10)}> Dec 10 </button>
-          <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
+          <input className='betting-chips' type="image" src={require('../images/blackchip.svg')} onClick={() => this.props.placingBet(-100)} alt='Black Chip/100'/>
+            <input className='betting-chips' type="image" src={require('../images/lightbluechip.svg')} onClick={() => this.props.placingBet(-25)} alt='Light Blue Chip/25'/>
+              <input className='betting-chips' type="image" src={require('../images/redchip.svg')} onClick={() => this.props.placingBet(-5)} alt='Red Chip/5'/>
+              <input className='betting-chips' type="image" src={require('../images/greenchip.svg')} onClick={() => this.props.placingBet(-1)} alt='Green Chip/1'/>
         </div>
       )
     }
-    else if(this.props.bet >= 25 && this.props.bet < 50){
+    else if(this.props.bet >= 25 && this.props.bet < 100){
       return (
         <div>
-          <button onClick={() => this.props.placingBet(-25)}> Dec 25 </button>
-          <button onClick={() => this.props.placingBet(-10)}> Dec 10 </button>
-          <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
+          <input className='betting-chips' type="image" src={require('../images/lightbluechip.svg')} onClick={() => this.props.placingBet(-25)} alt='Light Blue Chip/25'/>
+            <input className='betting-chips' type="image" src={require('../images/redchip.svg')} onClick={() => this.props.placingBet(-5)} alt='Red Chip/5'/>
+            <input className='betting-chips' type="image" src={require('../images/greenchip.svg')} onClick={() => this.props.placingBet(-1)} alt='Green Chip/1'/>
         </div>
       )
     }
-    else if(this.props.bet >= 10 && this.props.bet < 25){
+    else if(this.props.bet >= 5 && this.props.bet < 25){
       return (
         <div>
-          <button onClick={() => this.props.placingBet(-10)}> Dec 10 </button>
-          <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
+          <input className='betting-chips' type="image" src={require('../images/redchip.svg')} onClick={() => this.props.placingBet(-5)} alt='Red Chip/5'/>
+          <input className='betting-chips' type="image" src={require('../images/greenchip.svg')} onClick={() => this.props.placingBet(-1)} alt='Green Chip/1'/>
         </div>
       )
     }
-    else if(this.props.bet >= 5){
+    else if(this.props.bet >= 1){
       return (
         <div>
-          <button onClick={() => this.props.placingBet(-5)}> Dec 5 </button>
+          <input className='betting-chips' type="image" src={require('../images/greenchip.svg')} onClick={() => this.props.placingBet(-1)} alt='Green Chip/1'/>
         </div>
       )
     }

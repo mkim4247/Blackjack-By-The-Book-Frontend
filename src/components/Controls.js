@@ -8,8 +8,8 @@ class Controls extends React.Component {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
       return (
         <div>
-          <button onClick={this.props.hittingPlayerCards}>Hit</button>
-          <button onClick={this.props.playerStay}>Stay</button>
+          <button className='control-btns'  onClick={this.props.hittingPlayerCards}>Hit</button>
+          <button className='control-btns' onClick={this.props.playerStay}>Stay</button>
         </div>
       )
     }
@@ -18,7 +18,7 @@ class Controls extends React.Component {
   showDouble = () => {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2){
       return (
-        <button onClick={this.props.doublingPlayer}>Double</button>
+        <button className='control-btns'  onClick={this.props.doublingPlayer}>Double</button>
       )
     }
   }
@@ -28,7 +28,7 @@ class Controls extends React.Component {
   showSplit = () => {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2){
       return (
-        <button onClick={this.props.splittingPlayerCards}> Split </button>
+        <button className='control-btns' onClick={this.props.splittingPlayerCards}> Split </button>
       )
     }
   }
@@ -36,7 +36,7 @@ class Controls extends React.Component {
   showSurrender = () => {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2){
       return (
-        <button onClick={this.props.surrenderingPlayer}> Surrender </button>
+        <button className='control-btns' onClick={this.props.surrenderingPlayer}> Surrender </button>
       )
     }
   }
@@ -45,7 +45,7 @@ class Controls extends React.Component {
     return(
       <div id='controls'>
         {this.props.bet > 0 && this.props.roundResult !== "Deal" ?
-          <button onClick={this.props.dealingCards}>Deal</button>
+          <button className='control-btns' onClick={this.props.dealingCards}>Deal</button>
           :
           null
         }
@@ -63,8 +63,8 @@ class Controls extends React.Component {
             <div>
               This will cost {this.props.bet/2}.
             </div>
-            <button onClick={this.props.takeInsurance}> Take </button>
-            <button onClick={this.props.passInsurance}> Pass </button>
+            <button className='control-btns' onClick={this.props.takeInsurance}> Take </button>
+            <button className='control-btns' onClick={this.props.passInsurance}> Pass </button>
           </div>
           : null
       }
