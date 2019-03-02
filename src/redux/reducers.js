@@ -36,6 +36,8 @@ const dealerHandReducer = (state={ cards: [], score: null }, action) => {
 }
 
 const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: null }], action) => {
+
+  let handCopy;
   switch(action.type){
     case "DEAL_PLAYER_CARDS":
       return [{
@@ -45,28 +47,21 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: n
         result: null
       }]
     case "HIT_PLAYER_CARDS":
-      let copy = [...state]
-      copy[action.index] = {
+      handCopy = [...state]
+      handCopy[action.index] = {
         ...state[action.index],
         cards: action.cards,
         score: assignHandValue(action.cards)
       }
-      return copy
-    case "PLAYER_BUST":
-      let hand = [...state]
-      hand[action.index] = {
-        ...state[action.index],
-        result: action.result
-      }
-      return hand
+      return handCopy
     case "DOUBLE_PLAYER":
-      let double = [...state]
-      double[action.index] = { ...state[action.index],
+      handCopy = [...state]
+      handCopy[action.index] = { ...state[action.index],
         cards: action.cards,
         score: assignHandValue(action.cards),
         bet: action.bet
       }
-      return double
+      return handCopy
     case "SPLIT_PLAYER_CARDS":
       let firstHalf = state.slice(0, action.index)
       let secondHalf = state.slice( action.index + 1)
@@ -82,6 +77,15 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: n
           result: null
         }]
       return firstHalf.concat(split).concat(secondHalf)
+
+    case "SET_RESULT":
+      handCopy = [...state]
+      handCopy[action.index] = {
+        ...state[action.index],
+        result: action.result
+      }
+      return handCopy
+      
     default:
       return state
   }

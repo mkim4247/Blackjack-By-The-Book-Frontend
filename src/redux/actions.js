@@ -247,14 +247,24 @@ const checkPlayerBust = () => {
     let playerScore = getStore().playerHand[index].score
 
     if(playerScore > 21){
-      dispatch(playerBust())
+      let result = "Bust"
+      dispatch(setResult(result, index))
+
+      /* might not need later */
+      dispatch({ type: "PLAYER_BUST" })
+
       dispatch(resetBet())
     }
   }
 }
 
-const playerBust = () => {
-  return { type: "PLAYER_BUST", result: "Bust" }
+const setResult = (result, index) => {
+  return { type: "SET_RESULT", result, index }
+}
+
+/* might not need later */
+const playerBust = index => {
+  return { type: "PLAYER_BUST", result: "Bust", index }
 }
 
 //
