@@ -79,7 +79,7 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: n
         {cards: action.cards[1],
           score: assignHandValue(action.cards[1]),
           bet: action.bet,
-          result: null 
+          result: null
         }]
       return firstHalf.concat(split).concat(secondHalf)
     default:
@@ -99,6 +99,9 @@ const currentHandReducer = (state=0, action) => {
       next = ++state
       return next
     case "BLACKJACK":
+      next = ++state
+      return next
+    case "SURRENDER":
       next = ++state
       return next
     default:

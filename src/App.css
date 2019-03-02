@@ -63,7 +63,6 @@
 }
 
 #controls {
-  border: 3px solid blue;
   grid-area: controls;
 }
 
@@ -83,10 +82,16 @@
 
 #stats-box {
   grid-area: stats;
+  background-color: white;
+  border: 3px solid black;
+  border-radius: 5%;
 }
 
 #strategy-box {
   grid-area: strategy;
+  background-color: white;
+  border: 3px solid black;
+  border-radius: 5%;
 }
 
 #pot-box {
@@ -115,11 +120,18 @@
 #dealer-hand {
 }
 
+#deal-btn {
+  border-radius: 100%;
+  width: 5em;
+  height: 5em;
+  background-color: white;
+}
+
 .control-btns {
   border-radius: 100%;
   width: 5em;
   height: 5em;
-  background-color: Transparent;
+  background-color: transparent;
 }
 
 

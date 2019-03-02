@@ -45,7 +45,7 @@ class Controls extends React.Component {
     return(
       <div id='controls'>
         {this.props.bet > 0 && this.props.roundResult !== "Deal" ?
-          <button className='control-btns' onClick={this.props.dealingCards}>Deal</button>
+          <button id='deal-btn' onClick={this.props.dealingCards}>Deal</button>
           :
           null
         }

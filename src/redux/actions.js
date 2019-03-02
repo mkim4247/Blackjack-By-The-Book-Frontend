@@ -430,14 +430,27 @@ const insuranceWon = () => {
   }
 }
 
+
+
+
+
+
+///// IF SPLIT, NEED WAY TO CHECK OTHER HAND RESULTS IF ONLY SURRENDERED ONCE
+
+
+
+
+
+
+
 /* SURRENDER RELATED ACTIONS */
 /* GIVES PLAYER BACK 50% OF INITIAL BET */
 export const surrenderingPlayer = () => {
   return (dispatch, getStore) => {
     let user = getStore().user
     let index = getStore().currentHandIndex
-    let playerHand = getStore().playerHand[index]
-    let amount = (playerHand.bet/2)
+    let playerHand = getStore().playerHand
+    let amount = (playerHand[index].bet/2)
 
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
@@ -446,11 +459,17 @@ export const surrenderingPlayer = () => {
       },
       body: JSON.stringify({ pot: user.pot + amount })
     })
-    .then( res => res.json() )
-    .then( user => {
+    .then(res => res.json())
+    .then(user => {
       dispatch(setUser(user))
-      dispatch(surrenderedPlayer())
-      dispatch(resetBet())
+
+      if(index < playerHand.length - 1){
+        dispatch({ type: "STAY" })
+      }
+      else {
+        dispatch(surrenderedPlayer())
+        dispatch(resetBet())
+      }
     })
   }
 }
