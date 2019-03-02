@@ -73,11 +73,13 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: n
       let split = [{
           cards: action.cards[0],
           score: assignHandValue(action.cards[0]),
-          bet: action.bet
+          bet: action.bet,
+          result: null
         },
         {cards: action.cards[1],
           score: assignHandValue(action.cards[1]),
-          bet: action.bet
+          bet: action.bet,
+          result: null 
         }]
       return firstHalf.concat(split).concat(secondHalf)
     default:
@@ -93,7 +95,7 @@ const currentHandReducer = (state=0, action) => {
     case "STAY":
       next = ++state
       return next
-    case "BUST":
+    case "PLAYER_BUST":
       next = ++state
       return next
     case "BLACKJACK":
@@ -116,7 +118,7 @@ const roundResultReducer = (state="Start", action) => {
       return "Blackjack"
     case "DEAL_PLAYER_CARDS":
       return "Deal"
-    case "BUST":
+    case "PLAYER_BUST":
       return "Bust"
     case "SURRENDER":
       return "Surrender"

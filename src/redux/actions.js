@@ -247,23 +247,19 @@ const checkPlayerBust = () => {
     let playerScore = getStore().playerHand[index].score
 
     if(playerScore > 21){
-      dispatch({ type: "BUST" })
-
-
-      dispatch({ type: "PLAYER_BUST", result: "Bust" })
-
-
-
+      dispatch(playerBust())
       dispatch(resetBet())
     }
   }
 }
 
+const playerBust = () => {
+  return { type: "PLAYER_BUST", result: "Bust" }
+}
+
 //
 // WORKING OUT CHECKING BJ ON BOTH HANDS AFTER A SPLIT RIGHT AWAY AND RESOLVING
 //
-
-
 
 /* CHECK PLAYER FOR BLACKJACK; WIN UNLESS DEALER ALSO HAS BLACKJACK */
 const checkPlayerBlackJack = () => {
@@ -282,11 +278,10 @@ const checkPlayerBlackJack = () => {
         dispatch(showDealer())
         dispatch(playerPush())
       } else {
-        /* PLAYER WINS IF DEALER DOESN'T HAVE BLACKJACK */
         dispatch(winningBlackJack())
-        dispatch(showDealer())
       }
     }
+    console.log('checking for blackjack', playerHand)
   }
 }
 
@@ -295,6 +290,7 @@ const winningBlackJack = () => {
   return (dispatch, getStore) => {
     let user = getStore().user
     let index = getStore().currentHandIndex
+    let hand = getStore().playerHand
     let bet = getStore().playerHand[index].bet
     let winnings = bet * 1.5
 
@@ -310,6 +306,13 @@ const winningBlackJack = () => {
       dispatch(setUser(user))
       dispatch(resetBet())
       dispatch({ type: "BLACKJACK" })
+
+      if(index < hand.length - 1){
+        dispatch(checkPlayerBlackJack())
+      }
+      else {
+        dispatch(showDealer())
+      }
     })
   }
 }
@@ -464,6 +467,7 @@ export const playerStay = () => {
     /* CHECK HAND ARRAY; IF NOTHING AT NEXT INDEX, THEN DEALER's TURN, O/W PLAY NEXT HAND */
     if(index < hand.length - 1){
       dispatch({ type: "STAY" })
+      dispatch(checkPlayerBlackJack())
     }
     else {
       dispatch(showDealer())
@@ -489,6 +493,7 @@ export const dealerMove = () => {
     let dealerScore = getStore().dealerHand.score
     let playerHand = getStore().playerHand
 
+    /* not using this anymore */
     /* DEALER HITS IF LOSING TO PLAYER AND AT LESS THAN 17 */
     // if(playerHand.find( hand => hand.score >= dealerScore && hand.score <= 21) && dealerScore < 17){
 
@@ -586,8 +591,8 @@ export const splittingPlayerCards = () => {
       let cards = [splitHand1, splitHand2]
       dispatch(placingBet(bet))
       dispatch(splitPlayerCards( cards, index, bet ))
-
       dispatch(countingCards(deck.cards))
+      dispatch(checkPlayerBlackJack())
     })
   }
 }
