@@ -16,7 +16,7 @@ class Strategy extends React.Component {
       return (
         <div>
           <div>
-            The current count is {this.props.count}
+            Current Count: {this.props.count}
             <div>
               {this.checkCount()}
             </div>
@@ -24,10 +24,10 @@ class Strategy extends React.Component {
 
           <div>
             <p>
-              It looks like you have {this.props.playerHand[this.props.index].score} with a {this.props.playerHand[this.props.index].cards[0].value} and {this.props.playerHand[this.props.index].cards[1].value}.
-            </p>
-            <p>
-              The dealer's showing a {this.props.dealerHand.cards[0].value}, so you should {this.checkTable()}
+              It looks like you have {this.props.playerHand[this.props.index].score}.
+              <div>
+                You should {this.checkTable()}
+              </div>
             </p>
           </div>
         </div>
@@ -39,21 +39,21 @@ class Strategy extends React.Component {
     if(this.props.count > 0){
       return(
         <div>
-          The count is positive, so the chances of drawing a 10, Facecard, or Ace is higher. Bet HIGH in this situation.
+          The count is positive. Bet HIGH in this situation.
         </div>
       )
     }
     else if(this.props.count < 0){
       return(
         <div>
-          The count is negative, so the chances of drawing a 10, Facecard, or Ace is lower. Bet LOW in this situation.
+          The count is negative. Bet LOW in this situation.
         </div>
       )
     }
     else if(this.props.count === 0){
       return(
         <div>
-          The count is zero, so the chances of drawing a 10, Facecard, or Ace is even. There is no advantage to betting high or low in this situation.
+          The count is zero. There is no advantage to betting high or low.
         </div>
       )
     }

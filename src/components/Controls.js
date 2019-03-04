@@ -33,8 +33,9 @@ class Controls extends React.Component {
     }
   }
 
+  /* can only surrender on initial deal (not after splitting) */
   showSurrender = () => {
-    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2){
+    if(this.props.playerHand.length < 2){
       return (
         <button className='control-btns' onClick={this.props.surrenderingPlayer}> Surrender </button>
       )
