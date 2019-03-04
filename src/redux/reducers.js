@@ -79,13 +79,17 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: n
       return firstHalf.concat(split).concat(secondHalf)
 
     case "SET_RESULT":
-      handCopy = [...state]
-      handCopy[action.index] = {
-        ...state[action.index],
-        result: action.result
-      }
+      handCopy = state.map( hand => {
+        if(hand === action.hand){
+          hand.result = action.result
+          return hand
+        }
+        else {
+          return hand
+        }
+      })
       return handCopy
-      
+
     default:
       return state
   }
@@ -125,8 +129,8 @@ const roundResultReducer = (state="Start", action) => {
       return "Blackjack"
     case "DEAL_PLAYER_CARDS":
       return "Deal"
-    case "PLAYER_BUST":
-      return "Bust"
+    // case "PLAYER_BUST":
+    //   return "Bust"
     case "SURRENDER":
       return "Surrender"
     default:

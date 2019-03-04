@@ -12,6 +12,9 @@ class PlayerHand extends React.Component {
     return(
       <span id='player-hand'>
         {this.showCards()}
+        <span>
+          {this.props.hand.result}
+        </span>
       </span>
     )
   }

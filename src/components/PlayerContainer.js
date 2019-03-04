@@ -7,14 +7,14 @@ class PlayerContainer extends React.Component {
 
   render(){
     return(
-      <div id='player-container'>
+      <span id='player-container'>
       {this.props.playerHand[0].cards.length > 0 ?
         this.props.playerHand.map( (hand, index) => {
           return <PlayerHand hand={hand} key={index} />
         })
         : null
       }
-      </div>
+    </span>
     )
   }
 }

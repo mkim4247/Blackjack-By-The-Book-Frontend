@@ -244,22 +244,28 @@ const checkPlayerBust = () => {
   return (dispatch, getStore) => {
     /* CHECK IF PLAYER OVER 21 */
     let index = getStore().currentHandIndex
+    let playerHand = getStore().playerHand
     let playerScore = getStore().playerHand[index].score
+    let hand = getStore().playerHand[index]
+    let result = "Bust"
 
     if(playerScore > 21){
-      let result = "Bust"
-      dispatch(setResult(result, index))
-
+      dispatch(setResult(hand, result))
       /* might not need later */
       dispatch({ type: "PLAYER_BUST" })
 
-      dispatch(resetBet())
+      if(index < playerHand.length - 1){
+        dispatch(checkPlayerBlackJack())
+      }
+      else {
+        dispatch(resetBet())
+      }
     }
   }
 }
 
-const setResult = (result, index) => {
-  return { type: "SET_RESULT", result, index }
+const setResult = (hand, result) => {
+  return { type: "SET_RESULT", hand, result }
 }
 
 /* might not need later */
@@ -281,12 +287,15 @@ const checkPlayerBlackJack = () => {
     let dealerHand = getStore().dealerHand.cards
     let dealerScore = getStore().dealerHand.score
 
+    let hand = getStore().playerHand[index]
     /* CHECK IF PLAYER HAS BLACKJACK AND IF DEALER HAS BLACKJACK */
     if(playerHand.find( card => card.value === "ACE" ) && playerScore === 21){
       if(dealerHand.find( card => card.value === "ACE" ) && dealerScore === 21){
         /* TIE IF BOTH HAVE BLACKJACK */
         dispatch(showDealer())
         dispatch(playerPush())
+        let result = "Push"
+        dispatch(setResult(hand, result))
       } else {
         dispatch(winningBlackJack())
       }
@@ -300,9 +309,10 @@ const winningBlackJack = () => {
   return (dispatch, getStore) => {
     let user = getStore().user
     let index = getStore().currentHandIndex
-    let hand = getStore().playerHand
+    let playerHand = getStore().playerHand
     let bet = getStore().playerHand[index].bet
     let winnings = bet * 1.5
+    let hand = getStore().playerHand[index]
 
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
@@ -317,7 +327,10 @@ const winningBlackJack = () => {
       dispatch(resetBet())
       dispatch({ type: "BLACKJACK" })
 
-      if(index < hand.length - 1){
+      let result = "Blackjack"
+      dispatch(setResult(hand, result))
+
+      if(index < playerHand.length - 1){
         dispatch(checkPlayerBlackJack())
       }
       else {
@@ -333,15 +346,24 @@ const checkDealerFaceDown = () => {
     let dealerHand = getStore().dealerHand.cards
     let dealerScore = getStore().dealerHand.score
     let playerHand = getStore().playerHand[0].cards
+    let index = getStore().currentHandIndex
+    let hand = getStore().playerHand[index]
     /* TIE IF BOTH DEALER AND PLAYER HAVE BLACKJACK */
     if(dealerHand[1].value === "ACE" && dealerScore === 21){
       if(playerHand.find( card => card.value === "ACE" ) && playerHand.score === 21){
         dispatch(playerPush())
+
+        let result = "Push"
+        dispatch(setResult(hand, result))
+
       }
       else {
         /* DEALER WINS IF PLAYER DOESN'T HAVE BLACKJACK */
         dispatch(showDealer())
         dispatch({ type: "DEALER_WINS" })
+
+        let result = "Dealer Wins"
+        dispatch(setResult(hand, result))
       }
     }
   }
@@ -398,18 +420,27 @@ export const resolveDealerAce = () => {
     let dealerHand = getStore().dealerHand.cards
     let dealerScore = getStore().dealerHand.score
     let insurance = getStore().insurance
-
+    let index = getStore().currentHandIndex
+    let hand = getStore().playerHand[index]
     /* CHECK IF DEALER DOES HAVE BLACKJACK, RESOLVE WITH INSURANCE */
     if(dealerHand[0].value === "ACE" && dealerScore === 21){
       if(insurance === 'take'){
         dispatch(insuranceWon())
         dispatch(showDealer())
+
+        let result = "Dealer Wins"
+        dispatch(setResult(hand, result))
+
         dispatch({ type: "DEALER_WINS" })
       }
       else {
         dispatch({ type: "INSURANCE_LOST" })
         dispatch(showDealer())
         dispatch({ type: "DEALER_WINS" })
+
+        let result = "Dealer Wins"
+        dispatch(setResult(hand, result))
+
       }
     }
     else {
@@ -461,6 +492,7 @@ export const surrenderingPlayer = () => {
     let index = getStore().currentHandIndex
     let playerHand = getStore().playerHand
     let amount = (playerHand[index].bet/2)
+    let hand = playerHand[index]
 
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
@@ -474,10 +506,15 @@ export const surrenderingPlayer = () => {
       dispatch(setUser(user))
 
       if(index < playerHand.length - 1){
+        let result = "Surrender"
+        dispatch(setResult(hand, result))
+
         dispatch({ type: "STAY" })
       }
       else {
         dispatch(surrenderedPlayer())
+        let result = "Surrender"
+        dispatch(setResult(hand, result))
         dispatch(resetBet())
       }
     })
@@ -521,7 +558,7 @@ export const dealerMove = () => {
   return (dispatch, getStore) => {
     let dealerScore = getStore().dealerHand.score
     let playerHand = getStore().playerHand
-
+    let index = getStore().currentHandIndex
     /* not using this anymore */
     /* DEALER HITS IF LOSING TO PLAYER AND AT LESS THAN 17 */
     // if(playerHand.find( hand => hand.score >= dealerScore && hand.score <= 21) && dealerScore < 17){
@@ -535,21 +572,33 @@ export const dealerMove = () => {
     }
     else {
       /* COMPARE EACH OF PLAYER'S HANDS TO DEALER AND DETERMINE OUTCOME */
+      let result;
+
       playerHand.forEach( hand => {
         if(hand.score === dealerScore){
           dispatch(playerPush())
+          result = "Push"
+          dispatch(setResult(hand, result))
         }
         else if(dealerScore > 21){
           dispatch(playerWins(hand))
+          result = "Player Wins"
+          dispatch(setResult(hand, result))
         }
         else if(hand.score > 21){
           dispatch({ type: "DEALER_WINS" })
+          result = "Dealer Wins"
+          dispatch(setResult(hand, result))
           dispatch(resetBet())
         }
         else if(hand.score > dealerScore && hand.score <= 21){
+          result = "Player Wins"
+          dispatch(setResult(hand, result))
           dispatch(playerWins(hand))
         }
         else if(hand.score < dealerScore){
+          result = "Dealer Wins"
+          dispatch(setResult(hand, result))
           dispatch({ type: "DEALER_WINS" })
           dispatch(resetBet())
         }
@@ -678,6 +727,7 @@ export const playerPush = () => {
     let index = getStore().currentHandIndex
     let bet = getStore().playerHand[index].bet
     let user = getStore().user
+    let hand = getStore().playerHand[index]
 
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
@@ -690,6 +740,8 @@ export const playerPush = () => {
     .then(user => {
       dispatch(setUser(user))
       dispatch({ type: "PUSH" })
+      let result = "Push"
+      dispatch(setResult(hand, result))
       dispatch(resetBet())
     })
   }
@@ -702,15 +754,19 @@ export const playerPush = () => {
   */
 
 
-export const playerWins = hand => {
+export const playerWins = playerHand => {
   return (dispatch, getStore) => {
     let user = getStore().user
+    let index = getStore().currentHandIndex
     // let index = getStore().currentHandIndex
     // let hand = getStore().playerHand[index]
-    let winnings = (hand.bet * 2)
+    let winnings = (playerHand.bet * 2)
     let newPot = user.pot + winnings
     console.log('winnings:', winnings)
     console.log('newpot:', newPot)
+
+    let hand = getStore().playerHand[index]
+
     if(newPot > user.largest_pot){
       fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
         method: "PATCH",
@@ -723,6 +779,8 @@ export const playerWins = hand => {
       .then(user => {
         dispatch(setUser(user))
         dispatch({ type: "PLAYER_WINS" })
+        let result = "Player Wins"
+        dispatch(setResult(hand, result))
         dispatch(resetBet())
       })
     }
@@ -738,6 +796,8 @@ export const playerWins = hand => {
       .then(user => {
         dispatch(setUser(user))
         dispatch({ type: "PLAYER_WINS" })
+        let result = "Player Wins"
+        dispatch(setResult(hand, result))
         dispatch(resetBet())
       })
     }
