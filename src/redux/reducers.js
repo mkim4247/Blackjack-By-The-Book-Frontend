@@ -117,7 +117,7 @@ const currentHandReducer = (state=0, action) => {
   }
 }
 
-const roundResultReducer = (state=false, action) => {
+const roundResultReducer = (state="End", action) => {
   switch(action.type){
     // case "DEALER_WINS":
     //   return "Dealer Wins"
@@ -134,9 +134,9 @@ const roundResultReducer = (state=false, action) => {
     // case "SURRENDER":
     //   return "Surrender"
     case "DEAL_PLAYER_CARDS":
-      return false
+      return "Deal"
     case "END_ROUND":
-      return true
+      return "End"
     default:
       return state
   }
@@ -194,6 +194,8 @@ const insuranceReducer = (state=null, action) => {
       return 'LOST'
     case "INSURANCE_WON":
       return 'WON'
+    case "PASS_CORRECT":
+      return 'PASSED RIGHT'
     default:
       return state
   }

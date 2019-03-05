@@ -376,6 +376,11 @@ const checkDealerFaceDown = () => {
 const checkDealerFaceUp = () => {
   return (dispatch, getStore) => {
     let dealerHand = getStore().dealerHand.cards
+
+
+    /* shouldnt ask for insurance if player has winning BJ */
+
+
     /* OFFER INSURANCE IF DEALER SHOWING ACE */
     if(dealerHand[0].value === "ACE"){
       dispatch(askForInsurance())
@@ -448,7 +453,12 @@ export const resolveDealerAce = () => {
       }
     }
     else {
-      dispatch({ type: "INSURANCE_LOST" })
+      if(insurance === 'take') {
+        dispatch({ type: "INSURANCE_LOST" })
+      }
+      else {
+        dispatch({ type: "PASS_CORRECT" })
+      }
     }
   }
 }
@@ -562,7 +572,6 @@ const comparePlayerToDealer = () => {
   return (dispatch, getStore) => {
     let playerHand = getStore().playerHand
     let dealerScore = getStore().dealerHand.score
-    let index = getStore().currentHandIndex
     let result;
 
     playerHand.forEach( hand => {

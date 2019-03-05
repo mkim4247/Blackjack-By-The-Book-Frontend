@@ -98,11 +98,7 @@
   grid-area: pot;
 }
 
-#result-box {
-  grid-area: extra;
-}
-
-#insurance-box {
+#extra-box {
   grid-area: extra;
 }
 

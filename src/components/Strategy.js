@@ -25,9 +25,7 @@ class Strategy extends React.Component {
           <div>
             <p>
               It looks like you have {this.props.playerHand[this.props.index].score}.
-              <div>
                 You should {this.checkTable()}
-              </div>
             </p>
           </div>
         </div>
