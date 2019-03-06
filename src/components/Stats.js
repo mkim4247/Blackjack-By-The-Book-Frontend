@@ -6,6 +6,7 @@ class Stats extends React.Component {
     return(
       <div id='stats-box'>
         {this.props.user.username.toUpperCase()}
+        <hr/>
         <div>
           Longest Streak: {this.props.user.longest_streak}
         </div>

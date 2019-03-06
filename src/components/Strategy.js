@@ -15,18 +15,38 @@ class Strategy extends React.Component {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
       return (
         <div>
-          <div>
-            Current Count: {this.props.count}
+          {this.props.roundResult === "End" ?
             <div>
-              {this.checkCount()}
+              Count: {this.props.count}
+              <div>
+                {this.checkCount()}
+              </div>
             </div>
-          </div>
+            : null
+          }
+          <hr/>
 
           <div>
-            <p>
-              It looks like you have {this.props.playerHand[this.props.index].score}.
-                You should {this.checkTable()}
-            </p>
+            <div>
+              {this.props.showDealer ?
+                <span>
+                  Dealer has {this.props.dealerHand.score}.
+                </span>
+                :
+                <span>
+                  Dealer showing {this.props.dealerHand.cards[0].value}
+              </span>
+              }
+            </div>
+
+            <div>
+              You have {this.props.playerHand[this.props.index].score}.
+              {this.props.playerHand[this.props.index].score < 21 && !this.props.showDealer ?
+              <span> You should {this.checkTable()} </span>
+              : null
+            }
+            </div>
+
           </div>
         </div>
       )
@@ -37,21 +57,21 @@ class Strategy extends React.Component {
     if(this.props.count > 0){
       return(
         <div>
-          The count is positive. Bet HIGH in this situation.
+          The count is positive. Bet HIGH.
         </div>
       )
     }
     else if(this.props.count < 0){
       return(
         <div>
-          The count is negative. Bet LOW in this situation.
+          The count is negative. Bet LOW.
         </div>
       )
     }
     else if(this.props.count === 0){
       return(
         <div>
-          The count is zero. There is no advantage to betting high or low.
+          The count is zero.
         </div>
       )
     }
@@ -649,6 +669,7 @@ class Strategy extends React.Component {
             "Hide Info" : "Show Info"
           }
         </button>
+
         {this.state.showInfo ?
           this.renderInfo() : null
         }
@@ -662,7 +683,9 @@ const mapStateToProps = state => {
     index: state.currentHandIndex,
     playerHand: state.playerHand,
     dealerHand: state.dealerHand,
-    count: state.count
+    count: state.count,
+    showDealer: state.showDealer,
+    roundResult: state.roundResult
   }
 }
 

@@ -31,10 +31,18 @@
   }
 } */
 
+body {
+  background-color: green;
+}
+
 #home {
   height: 100vh;
   width: 100vw;
   background-color: green;
+}
+
+#login {
+  background-image: url(https://images.unsplash.com/photo-1529480780361-c8cb81eb5735?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80)
 }
 
 #rules {
@@ -48,7 +56,7 @@
   grid-template-areas:
     "stats dealer strategy"
     "stats pot strategy"
-    ". player ."
+    "bet player extra"
     "bet controls extra";
   justify-items: center;
   align-items: center;
@@ -56,10 +64,10 @@
   width: 100vw;
   background-image: url('./images/blackjacktable.svg');
   background-repeat: no-repeat;
-  min-height: 400px;
-  min-width: 600px;
+  min-height: 500px;
+  min-width: 750px;
   background-position: 50%;
-  margin-top: 25px;
+  background-color: green;
 }
 
 #controls {
@@ -80,11 +88,25 @@
 
 }
 
+.place-bets-marker {
+  color: lightblue;
+  font-size: 25px;
+  font-family: Phosphate-solid;
+}
+
+#pot-box {
+  grid-area: pot;
+}
+
 #stats-box {
   grid-area: stats;
   background-color: white;
   border: 3px solid black;
   border-radius: 5%;
+  margin: 5px;
+  padding: 5px;
+  font-size: 20px;
+  font-family: Phosphate-solid;
 }
 
 #strategy-box {
@@ -92,10 +114,10 @@
   background-color: white;
   border: 3px solid black;
   border-radius: 5%;
-}
-
-#pot-box {
-  grid-area: pot;
+  margin: 5px;
+  padding: 5px;
+  font-size: 20px;
+  font-family: Phosphate-solid;
 }
 
 #extra-box {
@@ -104,9 +126,11 @@
 
 #player-container {
   grid-area: player;
+  display: flex;
 }
 
 #player-hand {
+  margin: 10px;
 }
 
 #dealer-container {
@@ -116,7 +140,7 @@
 #dealer-hand {
 }
 
-#deal-btn {
+.bottom-btns {
   border-radius: 100%;
   width: 5em;
   height: 5em;
@@ -128,6 +152,7 @@
   width: 5em;
   height: 5em;
   background-color: transparent;
+  margin: 2px;
 }
 
 

@@ -4,11 +4,11 @@ import { takeInsurance, passInsurance, dealingCards, surrenderingPlayer } from '
 
 class BottomControls extends React.Component {
 
-
+  /* can only surrender on initial deal (not after splitting) */
   showSurrender = () => {
     if(this.props.playerHand.length < 2 && this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2 && !this.props.showDealer && this.props.roundResult !== "End"){
       return (
-        <button className='control-btns' onClick={this.props.surrenderingPlayer}> Surrender </button>
+        <button className='bottom-btns' onClick={this.props.surrenderingPlayer}> Surrender </button>
       )
     }
   }
@@ -16,38 +16,44 @@ class BottomControls extends React.Component {
   render(){
     return (
       <div id='extra-box'>
+        {this.props.bet > 0 ?
+          <div className='place-bets-marker'> Bet Size: {this.props.bet} </div>
+          :
+          <div className='place-bets-marker'> Place Your Bets </div>
+        }
 
-      {this.props.bet > 0 && this.props.roundResult !== "Deal" ?
-        <button id='deal-btn' onClick={this.props.dealingCards}>Deal</button>
-        :
-        null
-      }
-      {this.props.insurance === 'LOST' || this.props.insurance === 'WON' ?
-        <div> Insurance {this.props.insurance} </div>
-        : null
-      }
+        <br/>
+        {this.props.bet > 0 && this.props.roundResult !== "Deal" ?
+          <button className='bottom-btns' onClick={this.props.dealingCards}>Deal</button>
+          :
+          null
+        }
 
-      {
-      this.props.insurance === 'ask' ?
-        <div>
-          Take Insurance?
+        {this.props.insurance === 'LOST' || this.props.insurance === 'WON' ?
+          <div> Insurance {this.props.insurance} </div>
+          : null
+        }
+
+        {this.props.insurance === 'ask' ?
           <div>
-            This will cost {this.props.bet/2}.
+            Take Insurance?
+            <div>
+              This will cost {this.props.bet/2}.
+            </div>
+            <button className='control-btns' onClick={this.props.takeInsurance}> Take </button>
+            <button className='control-btns' onClick={this.props.passInsurance}> Pass </button>
           </div>
-          <button className='control-btns' onClick={this.props.takeInsurance}> Take </button>
-          <button className='control-btns' onClick={this.props.passInsurance}> Pass </button>
-        </div>
-        : null
-      }
-      /* can only surrender on initial deal (not after splitting) */
-      /* NOT SHOWING UP RIGHT */
+          : null
+        }
 
-      {this.showSurrender()}
+        {this.props.insurance !== "ask" ?
+          this.showSurrender()
+          : null
+        }
 
       </div>
     )
   }
-
 }
 
 const mapStateToProps = state => {
@@ -58,7 +64,6 @@ const mapStateToProps = state => {
     playerHand: state.playerHand,
     index: state.currentHandIndex,
     showDealer: state.showDealer,
-    roundResult: state.roundResult
   }
 }
 

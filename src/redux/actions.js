@@ -254,16 +254,28 @@ const checkPlayerBust = () => {
     if(playerScore > 21){
       let result = "Bust"
       dispatch(setResult(hand, result))
-      /* might not need later */
-      dispatch(advanceIndex())
 
       if(index < playerHand.length - 1){
+        dispatch(advanceIndex())
         dispatch(checkPlayerBlackJack())
       }
+      else if(index > 0 && index === playerHand.length - 1){
+        if(playerHand.find( hand => !hand.result )){
+          dispatch(showDealer())
+          dispatch(dealerMove())
+        }
+        else {
+          dispatch(showDealer())
+          dispatch(endRound())
+          dispatch(resetBet())
+        }
+      }
       else {
-        dispatch(comparePlayerToDealer())
+        dispatch(showDealer())
+        dispatch(endRound())
         dispatch(resetBet())
       }
+
     }
   }
 }
@@ -365,7 +377,7 @@ const checkDealerFaceDown = () => {
         /* DEALER WINS IF PLAYER DOESN'T HAVE BLACKJACK */
         dispatch(showDealer())
         dispatch(endRound())
-
+        dispatch(resetBet())
         let result = "Dealer Wins"
         dispatch(setResult(hand, result))
       }
@@ -441,6 +453,7 @@ export const resolveDealerAce = () => {
         dispatch(setResult(hand, result))
 
         dispatch(endRound())
+        dispatch(resetBet())
       }
       else {
         dispatch({ type: "INSURANCE_LOST" })
@@ -450,6 +463,7 @@ export const resolveDealerAce = () => {
         let result = "Dealer Wins"
         dispatch(setResult(hand, result))
 
+        dispatch(resetBet())
       }
     }
     else {
@@ -575,10 +589,11 @@ const comparePlayerToDealer = () => {
     let result;
 
     playerHand.forEach( hand => {
+      if(!hand.result){
       if(hand.score === dealerScore){
         dispatch(playerPush())
       }
-      else if(dealerScore > 21){
+      else if(dealerScore > 21 && hand.score <= 21){
         dispatch(playerWins(hand))
       }
       else if(hand.score > 21){
@@ -596,6 +611,7 @@ const comparePlayerToDealer = () => {
         dispatch(endRound())
         dispatch(resetBet())
       }
+    }
     })
   }
 }
@@ -627,7 +643,9 @@ export const doublingPlayer = () => {
       dispatch(checkPlayerBust())
       dispatch(countingCards(deck.cards))
       /* PLAYER ONLY GETS ONE CARD WHEN DOUBLING, SO MAKE STAY AFTER */
-      dispatch(playerStay())
+      if(!playerHand.result){
+        dispatch(playerStay())
+      }
     })
   }
 }
@@ -750,14 +768,14 @@ export const playerPush = () => {
 export const playerWins = playerHand => {
   return (dispatch, getStore) => {
     let user = getStore().user
-    let index = getStore().currentHandIndex
     let winnings = (playerHand.bet * 2)
     let newPot = user.pot + winnings
-    let hand = getStore().playerHand[index]
 
     /* TAKE OUT LATER ONCE RESOLVED */
     console.log('winnings:', winnings)
     console.log('newpot:', newPot)
+
+    let result = "Player Wins"
 
     if(newPot > user.largest_pot){
       fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
@@ -771,8 +789,7 @@ export const playerWins = playerHand => {
       .then(user => {
         dispatch(setUser(user))
         dispatch(endRound())
-        let result = "Player Wins"
-        dispatch(setResult(hand, result))
+        dispatch(setResult(playerHand, result))
         dispatch(resetBet())
       })
     }
@@ -788,8 +805,7 @@ export const playerWins = playerHand => {
       .then(user => {
         dispatch(setUser(user))
         dispatch(endRound())
-        let result = "Player Wins"
-        dispatch(setResult(hand, result))
+        dispatch(setResult(playerHand, result))
         dispatch(resetBet())
       })
     }
