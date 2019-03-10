@@ -152,9 +152,20 @@ body {
   width: 5em;
   height: 5em;
   background-color: transparent;
-  margin: 2px;
+  border-color: black;
+  margin: 1em;
 }
 
+.hit-stay-btns {
+  border-radius: 100%;
+  width: 5em;
+  height: 5em;
+  background-color: transparent;
+  border-color: black;
+  margin: 0.5em;
+  top: 1em;
+  bottom: 1em;
+}
 
 @keyframes deal {
   0% {

@@ -8,8 +8,8 @@ class Controls extends React.Component {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
       return (
         <span>
-          <button className='control-btns'  onClick={this.props.hittingPlayerCards}>Hit</button>
-          <button className='control-btns' onClick={this.props.playerStay}>Stay</button>
+          <button className='hit-stay-btns'  onClick={this.props.hittingPlayerCards}>Hit</button>
+          <button className='hit-stay-btns' onClick={this.props.playerStay}>Stay</button>
         </span>
       )
     }
