@@ -586,32 +586,30 @@ const comparePlayerToDealer = () => {
   return (dispatch, getStore) => {
     let playerHand = getStore().playerHand
     let dealerScore = getStore().dealerHand.score
-    let result;
+    let result = "Dealer Wins"
 
     playerHand.forEach( hand => {
       if(!hand.result){
-      if(hand.score === dealerScore){
-        dispatch(playerPush())
+        if(hand.score === dealerScore){
+          dispatch(playerPush())
+        }
+        else if(dealerScore > 21 && hand.score <= 21){
+          dispatch(playerWins(hand))
+        }
+        else if(hand.score > 21){
+          dispatch(setResult(hand, result))
+          dispatch(endRound())
+          dispatch(resetBet())
+        }
+        else if(hand.score > dealerScore && hand.score <= 21){
+          dispatch(playerWins(hand))
+        }
+        else if(hand.score < dealerScore){
+          dispatch(setResult(hand, result))
+          dispatch(endRound())
+          dispatch(resetBet())
+        }
       }
-      else if(dealerScore > 21 && hand.score <= 21){
-        dispatch(playerWins(hand))
-      }
-      else if(hand.score > 21){
-        result = "Dealer Wins"
-        dispatch(setResult(hand, result))
-        dispatch(endRound())
-        dispatch(resetBet())
-      }
-      else if(hand.score > dealerScore && hand.score <= 21){
-        dispatch(playerWins(hand))
-      }
-      else if(hand.score < dealerScore){
-        result = "Dealer Wins"
-        dispatch(setResult(hand, result))
-        dispatch(endRound())
-        dispatch(resetBet())
-      }
-    }
     })
   }
 }

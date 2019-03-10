@@ -23,13 +23,14 @@ class Controls extends React.Component {
     }
   }
 
-  /* need to handle splitting */
-
   showSplit = () => {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2){
-      return (
-        <button className='control-btns' onClick={this.props.splittingPlayerCards}> Split </button>
-      )
+      if(this.props.playerHand[this.props.index].cards[0].value === this.props.playerHand[this.props.index].cards[1].value || this.props.playerHand[this.props.index].score === 20
+      ){
+        return (
+          <button className='control-btns' onClick={this.props.splittingPlayerCards}> Split </button>
+        )
+      }
     }
   }
 

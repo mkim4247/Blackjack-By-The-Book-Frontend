@@ -151,7 +151,8 @@ body {
   border-radius: 100%;
   width: 5em;
   height: 5em;
-  background-color: transparent;
+  color: blue;
+  font-family: Phosphate-solid;
   border-color: black;
   margin: 1em;
 }
@@ -160,8 +161,9 @@ body {
   border-radius: 100%;
   width: 5em;
   height: 5em;
-  background-color: transparent;
   border-color: black;
+  color: blue;
+  font-family: Phosphate-solid;
   margin: 0.5em;
   top: 1em;
   bottom: 1em;
