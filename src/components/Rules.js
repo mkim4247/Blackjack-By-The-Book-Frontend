@@ -1,6 +1,5 @@
 import React from 'react'
 import Nav from './Nav'
-import { Header } from 'semantic-ui-react'
 
 class Rules extends React.Component {
   render(){
@@ -8,19 +7,19 @@ class Rules extends React.Component {
       <div>
       <Nav />
       <div id='rules'>
-      <Header size='medium'>
+      <h2>
         How to Play:
-      </Header>
+      </h2>
       <div>
         Blackjack is a card game played between players and a dealer. Each player goes in turn, comparing their cards against the dealer, but not against other players. The goal of Blackjack is to beat the dealer; this can be done in a number of ways:
       </div>
 
       <ul>
         <li>
-          Getting a Blackjack (21 points) with your first two cards, without the dealer getting a Blackjack. This is done with an Ace and either a 10 or Facecard.
+          Getting a Blackjack (21 points) with your first two cards (an Ace and either a 10 or Facecard). If the dealer also has a Blackjack, it's a tie.
         </li>
         <li>
-          Ending with a final score higher than the dealer, without going over 21 points (busting)
+          Ending with a final score higher than the dealer, without going over 21 points (busting).
         </li>
         <li>
           Letting the dealer draw additional cards and going over 21 points.
@@ -31,20 +30,17 @@ class Rules extends React.Component {
         Gameplay:
       </div>
       <div>
-        <p>
-          At the beginning of each round, players are each dealt two cards. The dealer is also dealt two cards, normally, with only one shown face up, and the other hidden face down.
-        </p>
-
-        <p>
+          At the beginning of each round, players are each dealt two cards. The dealer is also dealt two cards, normally with only one shown face up, and the other hidden face down.
+        <br/>
           The value of each card from 2 through 10 is their numerical value. Facecards (Jack, Queen, and King) are each worth 10, while Aces can be worth either 1 or 11. The value of a player's hand is the sum of these card values.
-        </p>
-
-        <p>
+        <br/>
            After the initial cards have been dealt, players have several options:
-        </p>
+        <br/>
         <ul>
           <li>
-            Hit: Draw another card to improve your hand. (Usually signaled by tapping the table with your finger or waving your hand toward your body).
+            Hit: Draw another card to improve your hand.
+            <br/>
+            Usually signaled by tapping the table with your finger or waving your hand toward your body).
           </li>
           <li>
             Stand/Stay: Choose not to take any additional cards. End your turn. (Usually signaled by waving your hand horizontally)

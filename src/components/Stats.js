@@ -7,19 +7,18 @@ class Stats extends React.Component {
       <div id='stats-box'>
         {this.props.user.username.toUpperCase()}
         <hr/>
+          <div>
+            Pot: {this.props.user.pot}
+          </div>
+          <div>
+            Streak: {this.props.user.current_streak}
+          </div>
+        <hr/>
         <div>
           Longest Streak: {this.props.user.longest_streak}
         </div>
         <div>
           Largest Pot: {this.props.user.largest_pot}
-        </div>
-        <hr/>
-
-        <div>
-          Pot: {this.props.user.pot}
-        </div>
-        <div>
-          Current Streak: {this.props.user.current_streak}
         </div>
       </div>
     )

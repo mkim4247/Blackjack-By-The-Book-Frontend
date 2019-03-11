@@ -24,15 +24,16 @@ class Strategy extends React.Component {
                 </span>
                 :
                 <span>
-                  Dealer showing {this.props.dealerHand.cards[0].value}
+                  Dealer showing {this.props.dealerHand.cards[0].value}.
               </span>
               }
             </div>
 
             <div>
               You have {this.props.playerHand[this.props.index].score}.
+              <br/>
               {this.props.playerHand[this.props.index].score < 21 && !this.props.showDealer ?
-              <span> You should {this.checkTable()} </span>
+              <span> You should {this.checkTable()}. </span>
               : null
             }
             </div>
@@ -62,14 +63,18 @@ class Strategy extends React.Component {
     if(this.props.count > 0){
       return(
         <div>
-          The count is positive. Bet HIGH.
+          The count is positive.
+          <br/>
+          Bet HIGH.
         </div>
       )
     }
     else if(this.props.count < 0){
       return(
         <div>
-          The count is negative. Bet LOW.
+          The count is negative.
+          <br/>
+          Bet LOW.
         </div>
       )
     }

@@ -76,7 +76,7 @@ export const fetchingDeck = () => {
     fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
     .then(res => res.json())
     .then(deck => {
-      console.log(`Deck ID: ${deck.deck_id}`)
+      console.log(`Deck Set`)
       dispatch(fetchedDeck(deck.deck_id))
     })
   }
