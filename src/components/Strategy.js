@@ -15,17 +15,7 @@ class Strategy extends React.Component {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
       return (
         <div>
-          {this.props.roundResult === "End" ?
-            <div>
-              Count: {this.props.count}
-              <div>
-                {this.checkCount()}
-              </div>
-            </div>
-            : null
-          }
-          <hr/>
-
+          <br/>
           <div>
             <div>
               {this.props.showDealer ?
@@ -48,6 +38,21 @@ class Strategy extends React.Component {
             </div>
 
           </div>
+
+          <hr/>
+          <br/>
+
+          {this.props.roundResult === "End" ?
+            <div>
+              Count: {this.props.count}
+              <div>
+                {this.checkCount()}
+              </div>
+            </div>
+            : null
+          }
+
+
         </div>
       )
     }

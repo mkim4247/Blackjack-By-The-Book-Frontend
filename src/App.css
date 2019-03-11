@@ -133,6 +133,10 @@ body {
   margin: 10px;
 }
 
+#player-result {
+  text-align: center;
+}
+
 #dealer-container {
   grid-area: dealer;
 }
@@ -145,6 +149,8 @@ body {
   width: 5em;
   height: 5em;
   background-color: white;
+  color: blue;
+  font-family: Phosphate-solid;
 }
 
 .control-btns {

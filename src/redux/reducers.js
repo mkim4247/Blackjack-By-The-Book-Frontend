@@ -100,15 +100,6 @@ const currentHandReducer = (state=0, action) => {
   switch(action.type){
     case "DEAL_PLAYER_CARDS":
       return 0
-    case "STAY":
-      next = ++state
-      return next
-    case "PLAYER_BUST":
-      next = ++state
-      return next
-    case "BLACKJACK":
-      next = ++state
-      return next
     case "ADVANCE_INDEX":
       next = ++state
       return next
@@ -119,20 +110,6 @@ const currentHandReducer = (state=0, action) => {
 
 const roundResultReducer = (state="End", action) => {
   switch(action.type){
-    // case "DEALER_WINS":
-    //   return "Dealer Wins"
-    // case "PLAYER_WINS":
-    //   return "Player Wins"
-    // case "PUSH":
-    //   return "Push"
-    // case "BLACKJACK":
-    //   return "Blackjack"
-    // case "DEAL_PLAYER_CARDS":
-    //   return "Deal"
-    // case "PLAYER_BUST":
-    //   return "Bust"
-    // case "SURRENDER":
-    //   return "Surrender"
     case "DEAL_PLAYER_CARDS":
       return "Deal"
     case "END_ROUND":
@@ -141,9 +118,6 @@ const roundResultReducer = (state="End", action) => {
       return state
   }
 }
-
-
-//on SHUFFLE NEED TO RESET COUNT
 
 const countReducer = (state=0, action) => {
   switch(action.type){
