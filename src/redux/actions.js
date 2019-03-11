@@ -258,7 +258,7 @@ const checkPlayerBust = () => {
 
       if(index < playerHand.length - 1){
         dispatch(advanceIndex())
-        dispatch(checkPlayerBlackJack())
+        // dispatch(checkPlayerBlackJack())
       }
       else if(index > 0 && index === playerHand.length - 1){
         if(playerHand.find( hand => !hand.result )){
@@ -345,16 +345,16 @@ const winningBlackJack = () => {
       dispatch(setUser(user))
       dispatch(setResult(hand, result))
       dispatch(resetBet())
-      dispatch(advanceIndex())
-
-      if(index < playerHand.length - 1){
-        dispatch(checkPlayerBlackJack())
-      }
-      else {
+      // dispatch(advanceIndex())
+      //
+      // if(index < playerHand.length - 1){
+      //   dispatch(checkPlayerBlackJack())
+      // }
+      // else {
         dispatch(showDealer())
-        dispatch(dealerMove())
+        // dispatch(dealerMove())
         dispatch(endRound())
-      }
+      // }
     })
   }
 }
@@ -537,7 +537,7 @@ export const playerStay = () => {
     /* CHECK HAND ARRAY; IF NOTHING AT NEXT INDEX, THEN DEALER's TURN, O/W PLAY NEXT HAND */
     if(index < hand.length - 1){
       dispatch(advanceIndex())
-      dispatch(checkPlayerBlackJack())
+      // dispatch(checkPlayerBlackJack())
     }
     else {
       dispatch(showDealer())
@@ -673,7 +673,15 @@ export const splittingPlayerCards = () => {
       dispatch(placingBet(bet))
       dispatch(splitPlayerCards( cards, index, bet ))
       dispatch(countingCards(deck.cards))
-      dispatch(checkPlayerBlackJack())
+      // dispatch(checkPlayerBlackJack())
+
+      /* IF SPLIT ACES, NOT ALLOWED FURTHER ACTIONS */
+      if(oldHand[0].value === "ACE"){
+        setTimeout( () => {
+          dispatch(showDealer())
+          dispatch(dealerMove())
+        }, 1750)
+      }
     })
   }
 }
