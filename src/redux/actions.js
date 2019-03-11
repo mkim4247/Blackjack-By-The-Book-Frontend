@@ -560,14 +560,17 @@ const showDealer = () => {
 /* HANDLE DEALER DECISION TREE; HIT OR STAY, COMPARE TO EACH OF PLAYER'S HANDS */
 export const dealerMove = () => {
   return (dispatch, getStore) => {
+    let dealerHand = getStore().dealerHand.cards
     let dealerScore = getStore().dealerHand.score
     let playerHand = getStore().playerHand
     /* DEALER HITS IF LESS THAN 17 */
-    if(dealerScore < 17 && playerHand.find( hand => hand.result === null )){
-      setTimeout( () => {
-        dispatch(hittingDealerCards())
-        dispatch(dealerMove())
-      }, 1750)
+    if((dealerScore < 17 && !dealerHand.find( card => card.value === "ACE" )) || (dealerScore <= 17 && dealerHand.find( card => card.value === "ACE"))){
+        if(playerHand.find( hand => hand.result === null )){
+       setTimeout( () => {
+         dispatch(hittingDealerCards())
+         dispatch(dealerMove())
+       }, 1750)
+     }
     }
     else {
       /* COMPARE EACH OF PLAYER'S HANDS TO DEALER AND DETERMINE OUTCOME */
