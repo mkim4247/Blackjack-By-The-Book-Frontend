@@ -269,12 +269,14 @@ const checkPlayerBust = () => {
           dispatch(showDealer())
           dispatch(endRound())
           dispatch(resetBet())
+          dispatch(checkPlayerPot())
         }
       }
       else {
         dispatch(showDealer())
         dispatch(endRound())
         dispatch(resetBet())
+        dispatch(checkPlayerPot())
       }
 
     }
@@ -381,6 +383,7 @@ const checkDealerFaceDown = () => {
         dispatch(setResult(hand, result))
         dispatch(endRound())
         dispatch(resetBet())
+        dispatch(checkPlayerPot())
       }
     }
   }
@@ -461,6 +464,7 @@ export const resolveDealerAce = () => {
         dispatch(setResult(hand, result))
         dispatch(endRound())
         dispatch(resetBet())
+        dispatch(checkPlayerPot())
       }
     }
     else {
@@ -598,6 +602,7 @@ const comparePlayerToDealer = () => {
           dispatch(setResult(hand, result))
           dispatch(endRound())
           dispatch(resetBet())
+          dispatch(checkPlayerPot())
         }
         else if(hand.score > dealerScore && hand.score <= 21){
           dispatch(playerWins(hand))
@@ -606,6 +611,7 @@ const comparePlayerToDealer = () => {
           dispatch(setResult(hand, result))
           dispatch(endRound())
           dispatch(resetBet())
+          dispatch(checkPlayerPot())
         }
       }
     })
@@ -814,6 +820,58 @@ export const playerWins = playerHand => {
   }
 }
 
+const checkPlayerPot = () => {
+  return (dispatch, getStore) => {
+    let user = getStore().user
+
+    if(user.pot < 1){
+      dispatch(endGame())
+      dispatch(shuffleDeck())
+    }
+  }
+}
+
+const endGame = () => {
+  return { type: "GAME_OVER" }
+}
+
+const shuffleDeck = () => {
+  return (dispatch, getStore) => {
+    let deckId = getStore().deckId
+
+    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/shuffle/`)
+    .then(res => res.json())
+    .then(deck => {
+      console.log('Deck shuffled')
+      /* RESET COUNT ON SHUFFLE */
+      dispatch(resetCount())
+    })
+  }
+}
+
+export const restartGame = () => {
+  return (dispatch, getStore) => {
+    let user = getStore().user
+
+    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({ pot: 100, current_streak: 0 })
+    })
+    .then(res => res.json())
+    .then(user => {
+      dispatch(setUser(user))
+      dispatch(startNewGame())
+    })
+  }
+}
+
+const startNewGame = () => {
+  return { type: "NEW_GAME" }
+}
+
 /* CONVENIENCE METHOD FOR COUNTING CARDS, TAKES IN AN ARRAY */
 const getCountFromHand = cards => {
   let count = 0
@@ -855,6 +913,11 @@ const getCountFromHand = cards => {
   })
   return count
 }
+
+/*
+   IF GAME RESTARTS, NEED TO RESET USER's POT to 100 and STREAK to 0, RESHUFFLE DECK
+*/
+
 
 /*
 GAME LOGIC:

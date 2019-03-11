@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { dealingCards, surrenderingPlayer } from '../redux/actions'
+import { dealingCards, surrenderingPlayer, restartGame } from '../redux/actions'
 
 class BottomControls extends React.Component {
 
@@ -34,6 +34,10 @@ class BottomControls extends React.Component {
           : null
         }
 
+        {this.props.gameOver ?
+          <button className='bottom-btns' onClick={this.props.restartGame}> New Game </button>
+          : null
+        }
       </div>
     )
   }
@@ -47,13 +51,15 @@ const mapStateToProps = state => {
     playerHand: state.playerHand,
     index: state.currentHandIndex,
     showDealer: state.showDealer,
+    gameOver: state.gameOver
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     dealingCards: () => dispatch(dealingCards()),
-    surrenderingPlayer: () => dispatch(surrenderingPlayer())
+    surrenderingPlayer: () => dispatch(surrenderingPlayer()),
+    restartGame: () => dispatch(restartGame())
   }
 }
 

@@ -14,6 +14,11 @@ class Nav extends React.Component {
     return(
       <div id='nav'>
         <Menu size='small' inverted>
+          <Menu.Menu position='left'>
+            <Menu.Item
+              name={this.props.user.username.toUpperCase()}
+            />
+          </Menu.Menu>
           <Menu.Menu position='right'>
             <Menu.Item
                 as={NavLink}

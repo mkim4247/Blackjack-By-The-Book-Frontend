@@ -175,6 +175,17 @@ const insuranceReducer = (state=null, action) => {
   }
 }
 
+const gameReducer = (state=false, action) => {
+  switch(action.type){
+    case "GAME_OVER":
+      return true
+    case "NEW_GAME":
+      return false
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
   user: userReducer,
   deckId: deckReducer,
@@ -185,7 +196,8 @@ const rootReducer = combineReducers({
   count: countReducer,
   bet: betReducer,
   showDealer: showDealerReducer,
-  insurance: insuranceReducer
+  insurance: insuranceReducer,
+  gameOver: gameReducer
 })
 
 export default rootReducer

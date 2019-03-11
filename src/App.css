@@ -192,6 +192,9 @@ body {
   bottom: 0;
   width: 100vw;
   height: 5vh;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+
 }
 
 @keyframes deal {
