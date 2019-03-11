@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards } from '../redux/actions'
+import { hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards, takeInsurance, passInsurance } from '../redux/actions'
 
 class Controls extends React.Component {
 
@@ -37,16 +37,31 @@ class Controls extends React.Component {
   render(){
     return(
       <div id='controls'>
-        {
-        !this.props.showDealer && this.props.roundResult === "Deal" && this.props.insurance !== "ask" ?
+        {!this.props.showDealer && this.props.roundResult === "Deal" && this.props.insurance !== "ask" ?
           <span>
             {this.showDouble()}
             {this.showHitAndStay()}
             {this.showSplit()}
+
             <button className='control-btns' onClick={this.props.splittingPlayerCards}> Split </button>
           </span>
         : null
-      }
+        }
+        {this.props.insurance === 'LOST' || this.props.insurance === 'WON' ?
+          <div className='insurance-box'> Insurance {this.props.insurance} </div>
+          : null
+        }
+        {this.props.insurance === 'ask' ?
+          <div className='insurance-box'>
+            Take Insurance?
+            <div className='insurance-box'>
+              This will cost {this.props.bet/2}.
+            </div>
+            <button className='control-btns' onClick={this.props.takeInsurance}> Take </button>
+            <button className='control-btns' onClick={this.props.passInsurance}> Pass </button>
+          </div>
+          : null
+        }
       </div>
 
     )
@@ -69,7 +84,9 @@ const mapDispatchToProps = dispatch => {
     hittingPlayerCards: () => dispatch(hittingPlayerCards()),
     playerStay: () => dispatch(playerStay()),
     doublingPlayer: () => dispatch(doublingPlayer()),
-    splittingPlayerCards: () => dispatch(splittingPlayerCards())
+    splittingPlayerCards: () => dispatch(splittingPlayerCards()),
+    takeInsurance: () => dispatch(takeInsurance()),
+    passInsurance: () => dispatch(passInsurance())
   }
 }
 

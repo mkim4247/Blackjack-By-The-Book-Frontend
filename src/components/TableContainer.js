@@ -7,6 +7,7 @@ import Bet from './Bet'
 import Pot from './Pot'
 import Stats from './Stats'
 import BottomControls from './BottomControls'
+import Footer from './Footer'
 
 class TableContainer extends React.Component {
 
@@ -21,6 +22,7 @@ class TableContainer extends React.Component {
         <Bet />
         <Pot />
         <BottomControls />
+        <Footer />
       </div>
     )
   }

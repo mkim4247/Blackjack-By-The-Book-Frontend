@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { takeInsurance, passInsurance, dealingCards, surrenderingPlayer } from '../redux/actions'
+import { dealingCards, surrenderingPlayer } from '../redux/actions'
 
 class BottomControls extends React.Component {
 
@@ -29,23 +29,6 @@ class BottomControls extends React.Component {
           null
         }
 
-        {this.props.insurance === 'LOST' || this.props.insurance === 'WON' ?
-          <div> Insurance {this.props.insurance} </div>
-          : null
-        }
-
-        {this.props.insurance === 'ask' ?
-          <div>
-            Take Insurance?
-            <div>
-              This will cost {this.props.bet/2}.
-            </div>
-            <button className='control-btns' onClick={this.props.takeInsurance}> Take </button>
-            <button className='control-btns' onClick={this.props.passInsurance}> Pass </button>
-          </div>
-          : null
-        }
-
         {this.props.insurance !== "ask" ?
           this.showSurrender()
           : null
@@ -69,8 +52,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    takeInsurance: () => dispatch(takeInsurance()),
-    passInsurance: () => dispatch(passInsurance()),
     dealingCards: () => dispatch(dealingCards()),
     surrenderingPlayer: () => dispatch(surrenderingPlayer())
   }

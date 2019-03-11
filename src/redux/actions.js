@@ -116,7 +116,7 @@ export const dealingCards = () => {
         })
       }
       else {
-        /* SAME AS ABOVE BUT API DECK NOT SHUFFLED BEFORE DEALING */
+        /* SAME AS ABOVE BUT DECK NOT SHUFFLED BEFORE DEALING */
         dispatch(dealingActions(deck))
       }
     })
@@ -345,6 +345,7 @@ const winningBlackJack = () => {
       dispatch(setUser(user))
       dispatch(setResult(hand, result))
       dispatch(resetBet())
+      /* commented out code was for handling blackjack after splitting */
       // dispatch(advanceIndex())
       //
       // if(index < playerHand.length - 1){

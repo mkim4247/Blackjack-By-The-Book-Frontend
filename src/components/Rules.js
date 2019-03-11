@@ -40,32 +40,44 @@ class Rules extends React.Component {
           <li>
             Hit: Draw another card to improve your hand.
             <br/>
-            Usually signaled by tapping the table with your finger or waving your hand toward your body).
+            Usually signaled by tapping the table with your finger or waving your hand toward your body.
           </li>
           <li>
-            Stand/Stay: Choose not to take any additional cards. End your turn. (Usually signaled by waving your hand horizontally)
+            Stand/Stay: Choose not to take any additional cards. End your turn.
+            <br/>
+            Usually signaled by waving your hand horizontally
           </li>
           <li>
-            Double down: You may increase your initial bet by up to 100% in exchage for committing to stand after receiving only one more card. The additional bet is placed on the table next to the original bet. Some games do not permit the player to increase the bet by amounts other than 100%.
+            Double down: In exchange for committing to stay after receiving only one more card, you may increase your initial bet by up to 100%. Some games do not permit increasing the bet by amounts other than 100%.
+            <br/>
+            Usually signaled by placing additional chips beside the original bet and pointing with one finger.
+          </li>
+          <li>
+            Split: If the first two cards in a hand have the same value, you may split them into two separate hands by placing a second bet equal to the first. The dealer will draw an additional card for each new hand, placing one bet with each hand. You then play out the two hands in turn, with each treated independently: you win or lose their wager separately.
+            <br/>
+            There may be some restrictions when splitting:
+            <ul>
+              <li>
+                Doubling and further splitting may not be allowed.
+              </li>
+              <li>
+                An Ace and 10 value card is not considered a "natural" Blackjack. It is counted as a regular 21. Additionally, hitting after splitting aces is usually not allowed.
+              </li>
+            </ul>
+            <br/>
+            Usually signaled by placing additional chips next to the original bet and pointing with two fingers spread into a V formation.
+          </li>
 
-            (Usually signaled by placing additional chips beside the original bet and pointing with one finger)
-          </li>
           <li>
-
+            Surrender: Most casinos will allow this option. It is only available as the first decision of a hand. When you surrender, the house takes half of your bet and returns the other half. This ends your stake in the hand.
+            <br/>
+            The request to surrender is made verbally, there is no standard hand signal.
           </li>
         </ul>
-
+        <br/>
+        After a player's turn has ended, play proceeds to the next player, clockwise around the table. When the last hand has finished being played, the dealer reveals their "hole" card, and stands or draws additional cards according to the rules of the game for the dealer. Once the outcome of the dealer's hand is established, any hands with bets remaining on the table are resolved. Bets on losing hands are forfeited, bets on a push are left on the table, and winners are paid out.
       </div>
 
-       "hit", "stand", "double down", or "split". Each option has a corresponding hand signal. Some games give the player a fifth option, "surrender".
-
-
-      Split: If the first two cards of a hand have the same value, the player can split them into two hands, by moving a second bet equal to the first into an area outside the betting box. The dealer separates the two cards and draws an additional card on each, placing one bet with each hand. The player then plays out the two separate hands in turn; except for a few restrictions, the hands are treated as independent new hands, with the player winning or losing their wager separately for each hand. Occasionally, in the case of ten-valued cards, some casinos allow splitting only when the cards have the identical ranks; for instance, a hand of 10-10 may be split, but not one of 10-king. However, usually all 10-value cards are treated the same. Doubling and further splitting of post-split hands may be restricted, and an ace and ten value card after a split are counted as a non-blackjack 21. Hitting split aces is usually not allowed. Non-controlling players may follow the controlling player by putting down an additional bet or decline to do so, instead associating their existing wager with one of the two post-split hands. In that case they must choose which hand to play behind before the second cards are drawn. Some casinos do not give non-controlling players this option, and require that the wager of a player not electing to split remains with the first of the two post-split hands.
-      Signal: Place additional chips next to the original bet outside the betting box; point with two fingers spread into a V formation.
-
-      Surrender (only available as first decision of a hand): Some games offer the option to "surrender" directly after the dealer has checked for blackjack (see below for variations). When the player surrenders, the house takes half the player's bet and returns the other half to the player; this terminates the player's interest in the hand.
-      Signal: The request to surrender is made verbally, there being no standard hand signal.
-      Hand signals are used to assist the "eye in the sky", a person or video camera located above the table and sometimes concealed behind one-way glass. The eye in the sky usually makes a video recording of the table, which helps in resolving disputes and identifying dealer mistakes, and is also used to protect the casino against dealers who steal chips or players who cheat. The recording can further be used to identify advantage players whose activities, while legal, make them undesirable customers. In the event of a disagreement between a player's hand signals and their words, the hand signal takes precedence. Each hand may normally "hit" as many times as desired so long as the total is not above hard 20. On reaching 21 (including soft 21), the hand is normally required to stand; busting is an irrevocable loss and the players' wagers are immediately forfeited to the house. After a bust or a stand, play proceeds to the next hand clockwise around the table. When the last hand has finished being played, the dealer reveals the hole card, and stands or draws further cards according to the rules of the game for dealer drawing. When the outcome of the dealer's hand is established, any hands with bets remaining on the table are resolved (usually in counterclockwise order): bets on losing hands are forfeited, the bet on a push is left on the table, and winners are paid out.
 
       Insurance
       If the dealer's upcard is an ace, the player is offered the option of taking "insurance" before the dealer checks the hole card.

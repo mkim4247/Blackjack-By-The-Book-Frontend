@@ -131,6 +131,10 @@ body {
   grid-area: extra;
 }
 
+.insurance-box {
+  text-align: center;
+}
+
 #player-container {
   grid-area: player;
   display: flex;
@@ -178,6 +182,16 @@ body {
   color: blue;
   font-family: Phosphate-solid;
   margin: 0.5em;
+}
+
+#footer-bar {
+  background-color: black;
+  color: white;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  height: 5vh;
 }
 
 @keyframes deal {
