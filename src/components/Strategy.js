@@ -2,19 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 class Strategy extends React.Component {
-  /* local state for showing advice and count */
-  state = {
-    showInfo: true
-  }
-
-  toggleInfo = event => {
-    this.setState({ showInfo: !this.state.showInfo })
-  }
 
   renderInfo = () => {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
       return (
-        <div>
+        <div id='inner-strategy'>
           <br/>
           <div>
             <div>
@@ -674,13 +666,7 @@ class Strategy extends React.Component {
   render(){
     return(
       <div id='strategy-box'>
-        <button onClick={this.toggleInfo}>
-          {this.state.showInfo ?
-            "Hide Info" : "Show Info"
-          }
-        </button>
-
-        {this.state.showInfo ?
+        {this.props.showStrategy ?
           this.renderInfo() : null
         }
       </div>
@@ -695,7 +681,8 @@ const mapStateToProps = state => {
     dealerHand: state.dealerHand,
     count: state.count,
     showDealer: state.showDealer,
-    roundResult: state.roundResult
+    roundResult: state.roundResult,
+    showStrategy: state.showStrategy
   }
 }
 

@@ -1,11 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { toggleStrategy } from '../redux/actions'
 
 class Footer extends React.Component {
   render(){
     return(
-      <div id='footer-bar'>
-        <div> {this.props.user.username} </div>
+      <div className='footer'>
+        <div className='right' onClick={this.props.toggleStrategy}>
+          {this.props.showStrategy ?
+            "Hide Strategy" :
+            "Show Strategy"
+          }
+        </div>
       </div>
     )
   }
@@ -13,8 +19,8 @@ class Footer extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    showStrategy: state.showStrategy
   }
 }
 
-export default connect(mapStateToProps)(Footer)
+export default connect(mapStateToProps, { toggleStrategy })(Footer)

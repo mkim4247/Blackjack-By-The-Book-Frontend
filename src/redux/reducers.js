@@ -34,7 +34,7 @@ const dealerHandReducer = (state={ cards: [], score: null }, action) => {
     case "RESET_COUNT":
       let newState = { cards: [], score: null }
       return newState
-      
+
     default:
       return state
   }
@@ -194,6 +194,15 @@ const gameReducer = (state=false, action) => {
   }
 }
 
+const strategyReducer = (state=true, action) => {
+  switch(action.type){
+    case "TOGGLE_STRATEGY":
+      return !state
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
   user: userReducer,
   deckId: deckReducer,
@@ -205,7 +214,8 @@ const rootReducer = combineReducers({
   bet: betReducer,
   showDealer: showDealerReducer,
   insurance: insuranceReducer,
-  gameOver: gameReducer
+  gameOver: gameReducer,
+  showStrategy: strategyReducer
 })
 
 export default rootReducer

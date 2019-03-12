@@ -84,6 +84,11 @@ body {
 
 #strategy-box {
   grid-area: strategy;
+
+  margin-right: 3vw;
+}
+
+#inner-strategy {
   background-color: white;
   border: 3px solid black;
   border-radius: 5%;
@@ -91,7 +96,6 @@ body {
   padding: 5px;
   font-size: 100%;
   font-family: Phosphate-solid;
-  margin-right: 3vw;
 }
 
 #extra-box {
@@ -120,6 +124,7 @@ body {
 }
 
 #dealer-hand {
+  margin-top: 40%;
 }
 
 .bottom-btns {
@@ -151,17 +156,58 @@ body {
   margin: 0.5em;
 }
 
-#footer-bar {
+.navbar {
+  background-color: black;
+  color: white;
+  top: 0;
+  width: 100%;
+  border-bottom: 2px solid white;
+  overflow: hidden;
+}
+
+.navbar div {
+  color: white;
+  text-align: center;
+  padding: 1%;
+  text-decoration: none;
+}
+
+.navbar a {
+  color: white;
+  text-align: center;
+  padding: 1%;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.footer {
   background-color: black;
   color: white;
   overflow: hidden;
   position: fixed;
   bottom: 0;
-  width: 100vw;
-  height: 5vh;
+  width: 100%;
   border-top: 2px solid white;
-  border-bottom: 2px solid white;
+}
 
+.footer div {
+  color: black;
+  background-color: white;
+  text-align: center;
+  padding: 1%;
+  text-decoration: bold;
 }
 
 @keyframes deal {

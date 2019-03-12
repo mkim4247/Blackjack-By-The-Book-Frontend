@@ -1,8 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setUser } from '../redux/actions'
-import { Menu } from 'semantic-ui-react'
-import { NavLink } from 'react-router-dom'
 
 class Nav extends React.Component {
   logout = () => {
@@ -12,38 +10,26 @@ class Nav extends React.Component {
 
   render(){
     return(
-      <div id='nav'>
-        <Menu size='small' inverted>
-          <Menu.Menu position='left'>
-            <Menu.Item
-              name={this.props.user.username.toUpperCase()}
-            />
-          </Menu.Menu>
-          <Menu.Menu position='right'>
-            <Menu.Item
-                as={NavLink}
-                name='Home'
-                to='/'>
-            </Menu.Item>
-            <Menu.Item
-                as={NavLink}
-                name='Rules'
-                to='/rules'>
-            </Menu.Item>
+        <div className='navbar'>
             {this.props.user ?
-              <Menu.Item
-                name="Logout"
-                onClick={this.logout}>
-              </Menu.Item>
-              :
-              <Menu.Item
-                as={NavLink}
-                name="Login"
-                to='/login' />
+              <div className='left' id='username' onMouseOver={() => console.log('HI')}> {this.props.user.username.toUpperCase()} </div>
+              : null
             }
-          </Menu.Menu>
-        </Menu>
-      </div>
+            {this.props.user ?
+              <div className='left'> Pot: {this.props.user.pot} </div>
+              : null
+            }
+            {this.props.user ?
+              <div className='left'>
+                Streak: {this.props.user.current_streak}
+              </div>
+              : null
+            }
+            <a className='right' onClick={this.logout}>Logout</a>
+            <a href="/rules" className='right'>Rules</a>
+            <a href="/" className="right">Home</a>
+        </div>
+
     )
   }
 }

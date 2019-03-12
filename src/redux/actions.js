@@ -875,6 +875,10 @@ const startNewGame = () => {
   return { type: "NEW_GAME" }
 }
 
+export const toggleStrategy = () => {
+  return { type: "TOGGLE_STRATEGY" }
+}
+
 /* CONVENIENCE METHOD FOR COUNTING CARDS, TAKES IN AN ARRAY */
 const getCountFromHand = cards => {
   let count = 0
