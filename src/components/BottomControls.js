@@ -16,10 +16,12 @@ class BottomControls extends React.Component {
   render(){
     return (
       <div id='extra-box'>
-        {this.props.bet > 0 ?
-          <div className='place-bets-marker'> Bet Size: {this.props.bet} </div>
-          :
-          <div className='place-bets-marker'> Place Your Bets </div>
+        { this.props.user.pot > 0 ?
+            this.props.bet > 0 ?
+              <div className='place-bets-marker'> Bet Size: {this.props.bet} </div>
+              :
+              <div className='place-bets-marker'> Place Your Bets </div>
+            : null
         }
 
         <br/>
@@ -45,6 +47,7 @@ class BottomControls extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    user: state.user,
     insurance: state.insurance,
     roundResult: state.roundResult,
     bet: state.bet,

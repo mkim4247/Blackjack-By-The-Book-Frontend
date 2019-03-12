@@ -21,8 +21,10 @@ class Bet extends React.Component {
       {this.props.roundResult !== "Deal" ?
         <div>
           <div>
-            <input className='betting-chips' type="image" src={require('../images/greenchip.svg')} onClick={this.increaseBet} value='1' alt='Green Chip/1'/>
-
+            {this.props.user.pot >= 1 ?
+              <input className='betting-chips' type="image" src={require('../images/greenchip.svg')} onClick={this.increaseBet} value='1' alt='Green Chip/1'/>
+              : null
+            }
             {this.props.user.pot >=5 ?
               <input className='betting-chips' type="image" src={require('../images/redchip.svg')} onClick={this.increaseBet} value='5' alt='Red Chip/5'/>
               : null
@@ -38,8 +40,10 @@ class Bet extends React.Component {
                 : null
             }
           </div>
+          {this.props.user.pot > 1 ?
             <input className='betting-chips' type="image" src={require('../images/whitechip.svg')} onClick={this.increaseBet} value={this.props.user.pot} alt='White Chip/All in'/>
-          
+            : null
+          }
         </div>
         : null
       }

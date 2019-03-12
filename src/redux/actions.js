@@ -21,6 +21,8 @@ export const settingUser = user => {
         console.log('Login Successful')
         dispatch(setUser(data.user_info))
         localStorage.setItem('token', data.token)
+
+        dispatch(checkPlayerPot())
       }
     })
   }
@@ -61,6 +63,7 @@ export const checkingToken = token => {
     .then(data => {
       console.log(`Welcome Back, ${data.user.username}`)
       dispatch(setUser(data.user))
+      dispatch(checkPlayerPot())
     })
   }
 }
@@ -826,7 +829,6 @@ const checkPlayerPot = () => {
 
     if(user.pot < 1){
       dispatch(endGame())
-      dispatch(shuffleDeck())
     }
   }
 }
@@ -863,6 +865,7 @@ export const restartGame = () => {
     .then(res => res.json())
     .then(user => {
       dispatch(setUser(user))
+      dispatch(shuffleDeck())
       dispatch(startNewGame())
     })
   }

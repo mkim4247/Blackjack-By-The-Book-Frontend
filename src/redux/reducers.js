@@ -30,6 +30,11 @@ const dealerHandReducer = (state={ cards: [], score: null }, action) => {
         cards: action.cards,
         score: assignHandValue(action.cards)
       }
+
+    case "RESET_COUNT":
+      let newState = { cards: [], score: null }
+      return newState
+      
     default:
       return state
   }
@@ -89,6 +94,9 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: n
         }
       })
       return handCopy
+    case "RESET_COUNT":
+      let newState = [{ cards: [], score: null, bet: null, result: null }]
+      return newState
 
     default:
       return state
