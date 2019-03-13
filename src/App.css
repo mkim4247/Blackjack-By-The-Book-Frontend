@@ -9,9 +9,13 @@ body {
 }
 
 #login {
-  background-image: url(https://images.unsplash.com/photo-1529480780361-c8cb81eb5735?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80);
+  background-image: url('./images/a.jpeg');
   height: 100vh;
   width: 100vw;
+  background-size: 50% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: black;
 }
 
 #rules {
@@ -58,10 +62,10 @@ body {
 }
 
 .place-bets-marker {
-  color: white;
-  background: black;
+  color: blue;
+  background: white;
   text-align: center;
-  font-size: 25px;
+  font-size: 200%;
   font-family: Phosphate-solid;
 }
 
@@ -79,9 +83,10 @@ body {
   color: black;
   border: 3px solid black;
   border-radius: 5%;
-  margin: 5px;
-  padding: 5px;
-  font-size: 100%;
+  margin: 3vh;
+  padding: 3vh;
+  text-align: center;
+  font-size: 150%;
   font-family: Phosphate-solid;
 }
 
@@ -96,9 +101,10 @@ body {
   color: black;
   border: 3px solid black;
   border-radius: 5%;
-  margin: 5px;
-  padding: 5px;
-  font-size: 100%;
+  margin: 3vh;
+  padding: 3vh;
+  text-align: center;
+  font-size: 150%;
   font-family: Phosphate-solid;
 }
 
@@ -108,6 +114,12 @@ body {
 
 .insurance-box {
   text-align: center;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 5%;
+  font-family: Phosphate-solid;
+  color: blue;
+  font-size: 150%;
 }
 
 #player-container {
@@ -121,36 +133,39 @@ body {
 
 #player-result {
   text-align: center;
+  border: 2px solid black;
+  border-radius: 5%;
+  font-family: Phosphate-solid;
 }
 
 .losing-hand {
   color: red;
-  font-weight: bold;
   font-size: 120%;
+  background-color: black;
 }
 
 .winning-hand {
   color: blue;
-  font-weight: bold;
+  background-color: white;
   font-size: 120%;
 }
 
 .push-hand {
   color: black;
-  font-weight: bold;
+  background-color: white;
   font-size: 120%;
 }
 
 .bust-hand {
   color: red;
-  font-weight: bold;
+  background-color: black;
   font-size: 120%;
 }
 
 .blackjack-hand {
-  color: yellow;
-  font-weight: bold;
+  color: green;
   font-size: 120%;
+  background-color: white;
 }
 
 #dealer-container {
@@ -158,17 +173,7 @@ body {
 }
 
 #dealer-hand {
-  margin-top: 40%;
-}
-
-.bottom-btns {
-  border-radius: 100%;
-  width: 6em;
-  height: 6em;
-  border-color: black;
-  background-color: white;
-  color: black;
-  font-family: Phosphate-solid;
+  margin-top: 30%;
 }
 
 .control-btns {
@@ -179,18 +184,12 @@ body {
   background-color: white;
   color: black;
   font-family: Phosphate-solid;
-  margin: 1em;
+  margin: 0.5em;
 }
 
-.hit-stay-btns {
-  border-radius: 100%;
-  width: 6em;
-  height: 6em;
-  border-color: black;
-  background-color: white;
-  color: black;
-  font-family: Phosphate-solid;
-  margin: 1em;
+.control-btns:hover{
+  background-color: #4CAF50;
+  color: white;
 }
 
 .navbar {
@@ -200,6 +199,7 @@ body {
   width: 100%;
   border-bottom: 2px solid white;
   overflow: hidden;
+  font-family: Phosphate-solid;
 }
 
 .navbar div {
@@ -215,6 +215,7 @@ body {
   color: white;
   padding: 1%;
   text-decoration: none;
+  font-family: Phosphate-solid;
 }
 
 .navbar a {
@@ -250,6 +251,7 @@ body {
   bottom: 0;
   width: 100%;
   border-top: 2px solid white;
+  font-family: Phosphate-solid;
 }
 
 .footer button {
@@ -258,6 +260,7 @@ body {
   color: white;
   padding: 1%;
   text-decoration: none;
+  font-family: Phosphate-solid;
 }
 
 .footer button:hover {

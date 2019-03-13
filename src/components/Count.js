@@ -29,7 +29,7 @@ class Count extends React.Component {
       if(this.props.count > 0){
         return(
           <div>
-            The count is positive.
+            Count is positive.
           <br/>
             Bet HIGH.
           </div>
@@ -38,7 +38,7 @@ class Count extends React.Component {
         else if(this.props.count < 0){
           return(
             <div>
-              The count is negative.
+              Count is negative.
             <br/>
               Bet LOW.
             </div>
@@ -47,7 +47,7 @@ class Count extends React.Component {
           else if(this.props.count === 0){
             return(
               <div>
-                The count is zero.
+                Count is zero.
               </div>
             )
           }

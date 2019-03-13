@@ -9,10 +9,10 @@ class PlayerHand extends React.Component {
   }
 
   toggleResultClass = () => {
-    if(this.props.hand.result === "DEALER WINS"){
+    if(this.props.hand.result === "LOSE"){
       return "losing-hand"
     }
-    else if(this.props.hand.result === "PLAYER WINS"){
+    else if(this.props.hand.result === "WIN"){
       return "winning-hand"
     }
     else if(this.props.hand.result === "PUSH"){
@@ -30,9 +30,12 @@ class PlayerHand extends React.Component {
     return(
       <span id='player-hand'>
         {this.showCards()}
-        <div id="player-result" className={this.toggleResultClass()}>
-          {this.props.hand.result}
-        </div>
+        {this.props.hand.result ?
+          <div id="player-result" className={this.toggleResultClass()}>
+            {this.props.hand.result}
+          </div>
+          : null
+        }
       </span>
     )
   }

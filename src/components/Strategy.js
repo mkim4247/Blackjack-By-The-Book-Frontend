@@ -9,18 +9,19 @@ class Strategy extends React.Component {
         <div id='inner-strategy'>
           {this.props.showDealer ?
             <span>
-              Dealer has {this.props.dealerHand.score}.
+              Dealer: {this.props.dealerHand.score}
             </span>
             :
             <span>
-              Dealer showing {this.props.dealerHand.cards[0].value}.
+              Dealer: {this.props.dealerHand.cards[0].value}
             </span>
           }
+          <hr/>
         <div>
-          You have {this.props.playerHand[this.props.index].score}.
+          Player: {this.props.playerHand[this.props.index].score}
           <br/>
           {this.props.playerHand[this.props.index].score < 21 && !this.props.showDealer ?
-            <span> You should {this.checkTable()}. </span>
+            <span> <hr/> Advice: {this.checkTable()} </span>
             : null
           }
         </div>

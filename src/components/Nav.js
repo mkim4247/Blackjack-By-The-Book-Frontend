@@ -41,7 +41,7 @@ class Nav extends React.Component {
             <a href="/rules" className='right'>Rules</a>
             <a href="/" className="right">Home</a>
         </div>
-
+        {this.props.user ?
         <div id='hover-stats' style={{display: "none"}}>
 
           <div>
@@ -56,8 +56,8 @@ class Nav extends React.Component {
             Largest Pot: {this.props.user.largest_pot}
           </div>
         </div>
-
-
+        : null
+      }
       </div>
 
     )

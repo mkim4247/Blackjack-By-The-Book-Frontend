@@ -8,8 +8,8 @@ class Controls extends React.Component {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
       return (
         <span>
-          <button className='hit-stay-btns'  onClick={this.props.hittingPlayerCards}>Hit</button>
-          <button className='hit-stay-btns' onClick={this.props.playerStay}>Stay</button>
+          <button className='control-btns'  onClick={this.props.hittingPlayerCards}>Hit</button>
+          <button className='control-btns' onClick={this.props.playerStay}>Stay</button>
         </span>
       )
     }
@@ -52,10 +52,9 @@ class Controls extends React.Component {
           : null
         }
         {this.props.insurance === 'ask' ?
-          <div className='insurance-box'>
-            Take Insurance?
+          <div>
             <div className='insurance-box'>
-              This will cost {this.props.bet/2}.
+            Take Insurance for ${Math.ceil(this.props.bet/2)} ?
             </div>
             <button className='control-btns' onClick={this.props.takeInsurance}> Take </button>
             <button className='control-btns' onClick={this.props.passInsurance}> Pass </button>

@@ -8,7 +8,7 @@ class BottomControls extends React.Component {
   showSurrender = () => {
     if(this.props.playerHand.length < 2 && this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2 && !this.props.showDealer && this.props.roundResult !== "End"){
       return (
-        <button className='bottom-btns' onClick={this.props.surrenderingPlayer}> Surrender </button>
+        <button className='control-btns' onClick={this.props.surrenderingPlayer}> Surrender </button>
       )
     }
   }
@@ -26,7 +26,7 @@ class BottomControls extends React.Component {
 
         <br/>
         {this.props.bet > 0 && this.props.roundResult !== "Deal" ?
-          <button className='bottom-btns' onClick={this.props.dealingCards}>Deal</button>
+          <button className='control-btns' onClick={this.props.dealingCards}>Deal</button>
           :
           null
         }
@@ -37,7 +37,7 @@ class BottomControls extends React.Component {
         }
 
         {this.props.gameOver ?
-          <button className='bottom-btns' onClick={this.props.restartGame}> New Game </button>
+          <button className='control-btns' onClick={this.props.restartGame}> New Game </button>
           : null
         }
       </div>

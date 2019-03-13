@@ -373,7 +373,7 @@ const checkDealerFaceDown = () => {
     let index = getStore().currentHandIndex
     let hand = getStore().playerHand[index]
     let playerHand = hand.cards
-    let result = "DEALER WINS"
+    let result = "LOSE"
 
     /* TIE IF BOTH DEALER AND PLAYER HAVE BLACKJACK */
     if(dealerHand[1].value === "ACE" && dealerScore === 21){
@@ -417,7 +417,7 @@ export const takeInsurance = () => {
   return (dispatch, getStore) => {
     let index = getStore().currentHandIndex
     let playerHand = getStore().playerHand[index]
-    let insurance = (playerHand.bet/2)
+    let insurance = Math.ceil(playerHand.bet/2)
     let user = getStore().user
 
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
@@ -450,7 +450,7 @@ export const resolveDealerAce = () => {
     let insurance = getStore().insurance
     let index = getStore().currentHandIndex
     let hand = getStore().playerHand[index]
-    let result = "DEALER WINS"
+    let result = "LOSE"
 
     /* CHECK IF DEALER HAS BLACKJACK, RESOLVE WITH INSURANCE */
     if(dealerHand[0].value === "ACE" && dealerScore === 21){
@@ -572,7 +572,7 @@ export const dealerMove = () => {
     let dealerScore = getStore().dealerHand.score
     let playerHand = getStore().playerHand
     /* DEALER HITS IF LESS THAN 17 */
-    if((dealerScore < 17 && !dealerHand.find( card => card.value === "ACE" )) || (dealerScore <= 17 && dealerHand.find( card => card.value === "ACE"))){
+    if((dealerScore < 17 && !dealerHand.find( card => card.value === "ACE" )) || (dealerScore <= 17 && !!dealerHand.find( card => card.value === "ACE"))){
         if(playerHand.find( hand => hand.result === null )){
        setTimeout( () => {
          dispatch(hittingDealerCards())
@@ -591,7 +591,7 @@ const comparePlayerToDealer = () => {
   return (dispatch, getStore) => {
     let playerHand = getStore().playerHand
     let dealerScore = getStore().dealerHand.score
-    let result = "DEALER WINS"
+    let result = "LOSE"
 
     playerHand.forEach( hand => {
       if(hand.result === null){
@@ -786,7 +786,7 @@ export const playerWins = playerHand => {
     console.log('winnings:', winnings)
     console.log('newpot:', newPot)
 
-    let result = "PLAYER WINS"
+    let result = "WIN"
 
     if(newPot > user.largest_pot){
       fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
