@@ -136,6 +136,8 @@ const dealingActions = deck => {
 
     /* SPLIT UP FETCHED CARDS BTWN PLAYER AND DEALER */
     let cards = [deck.cards[0], deck.cards[1]]
+    deck.cards[2].value = "ACE"
+    deck.cards[3].value = "6"
     let dealerCards = [deck.cards[2], deck.cards[3]]
     dispatch(dealDealerCards(dealerCards))
     dispatch(dealPlayerCards(cards, bet))
@@ -220,6 +222,8 @@ export const hittingPlayerCards = () => {
   }
 }
 
+
+
 const hitDealerCards = cards => {
   return { type: "HIT_DEALER_CARDS", cards }
 }
@@ -228,9 +232,23 @@ export const hittingDealerCards = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
     let dealerScore = getStore().dealerHand.score
-
+    let dealerHand = getStore().dealerHand.cards 
     /* DEALER HITS IF LESS THAN 17 */
-    if(dealerScore < 17){
+    if(dealerScore < 17 && !dealerHand.find( card => card.value === "ACE" )){
+      fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+      .then(res => res.json())
+      .then(deck => {
+        console.log("Dealer Hits")
+        /* COPY CURRENT HAND AND ADD NEW CARD TO IT */
+        let cards = getStore().dealerHand.cards.slice()
+        cards.push(deck.cards[0])
+        /* PASS ENTIRE NEW HAND THROUGH */
+        dispatch(hitDealerCards(cards))
+        /* ADD CARD TO CURRENT COUNT */
+        dispatch(countingCards(deck.cards))
+      })
+    }
+    else if(dealerScore < 18 && dealerHand.find( card => card.value === "ACE")){
       fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
       .then(res => res.json())
       .then(deck => {
@@ -572,13 +590,22 @@ export const dealerMove = () => {
     let dealerScore = getStore().dealerHand.score
     let playerHand = getStore().playerHand
     /* DEALER HITS IF LESS THAN 17 */
-    if((dealerScore < 17 && !dealerHand.find( card => card.value === "ACE" )) || (dealerScore <= 17 && !!dealerHand.find( card => card.value === "ACE"))){
+
+    if(dealerScore < 17 && !dealerHand.find( card => card.value === "ACE" )){
         if(playerHand.find( hand => hand.result === null )){
        setTimeout( () => {
          dispatch(hittingDealerCards())
          dispatch(dealerMove())
        }, 1750)
      }
+    }
+    else if(dealerScore < 18 && dealerHand.find( card => card.value === "ACE")){
+      if(playerHand.find( hand => hand.result === null )){
+        setTimeout( () => {
+           dispatch(hittingDealerCards())
+           dispatch(dealerMove())
+         }, 1750)
+      }
     }
     else {
       /* COMPARE EACH OF PLAYER'S HANDS TO DEALER AND DETERMINE OUTCOME */
