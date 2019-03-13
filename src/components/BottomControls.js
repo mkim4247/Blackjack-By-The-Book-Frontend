@@ -20,7 +20,7 @@ class BottomControls extends React.Component {
             this.props.bet > 0 ?
               <div className='place-bets-marker'> Bet Size: {this.props.bet} </div>
               :
-              <div className='place-bets-marker'> Place Your Bets </div>
+              <div className='place-bets-marker'> Place Bet </div>
             : null
         }
 

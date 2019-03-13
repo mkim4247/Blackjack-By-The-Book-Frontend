@@ -5,7 +5,7 @@ import Controls from './Controls'
 import Strategy from './Strategy'
 import Bet from './Bet'
 import Pot from './Pot'
-import Stats from './Stats'
+import Count from './Count'
 import BottomControls from './BottomControls'
 import Footer from './Footer'
 
@@ -14,7 +14,7 @@ class TableContainer extends React.Component {
   render(){
     return(
       <div id='table'>
-        <Stats />
+        <Count />
         <DealerContainer />
         <Strategy/>
         <Controls />

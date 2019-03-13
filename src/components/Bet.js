@@ -11,7 +11,11 @@ class Bet extends React.Component {
       this.props.placingBet(amount)
     }
     else {
-      console.log('Insufficient Funds')
+      return(
+        <div id='extra-box'>
+          Insufficient Funds
+        </div>
+      )
     }
   }
 

@@ -6,12 +6,12 @@ class Footer extends React.Component {
   render(){
     return(
       <div className='footer'>
-        <div className='right' onClick={this.props.toggleStrategy}>
+        <button className='right' onClick={this.props.toggleStrategy}>
           {this.props.showStrategy ?
             "Hide Strategy" :
             "Show Strategy"
           }
-        </div>
+        </button>
       </div>
     )
   }

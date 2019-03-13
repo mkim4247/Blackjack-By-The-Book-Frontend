@@ -8,11 +8,23 @@ class Nav extends React.Component {
     localStorage.clear()
   }
 
+  showHiddenStats = event => {
+    let stats = document.getElementById('hover-stats')
+    stats.style.display = 'block'
+  }
+
+  hideHiddenStats = event => {
+    let stats = document.getElementById('hover-stats')
+    stats.style.display = 'none'
+  }
+
   render(){
     return(
+      <div>
+
         <div className='navbar'>
             {this.props.user ?
-              <div className='left' id='username' onMouseOver={() => console.log('HI')}> {this.props.user.username.toUpperCase()} </div>
+              <div className='left' id='username' onMouseOver={() => this.showHiddenStats()} onMouseOut={() => this.hideHiddenStats()}> {this.props.user.username.toUpperCase()} </div>
               : null
             }
             {this.props.user ?
@@ -25,10 +37,28 @@ class Nav extends React.Component {
               </div>
               : null
             }
-            <a className='right' onClick={this.logout}>Logout</a>
+            <button className='right' onClick={this.logout}>Logout</button>
             <a href="/rules" className='right'>Rules</a>
             <a href="/" className="right">Home</a>
         </div>
+
+        <div id='hover-stats' style={{display: "none"}}>
+
+          <div>
+            Win Percent: 50%
+          </div>
+          <hr/>
+          <div>
+            Longest Streak: {this.props.user.longest_streak}
+          </div>
+          <hr/>
+          <div>
+            Largest Pot: {this.props.user.largest_pot}
+          </div>
+        </div>
+
+
+      </div>
 
     )
   }

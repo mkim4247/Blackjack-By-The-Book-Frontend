@@ -254,7 +254,7 @@ const checkPlayerBust = () => {
     let playerHand = getStore().playerHand
     let playerScore = playerHand[index].score
     let hand = playerHand[index]
-    let result = "Bust"
+    let result = "BUST"
 
     if(playerScore > 21){
       dispatch(setResult(hand, result))
@@ -336,7 +336,7 @@ const winningBlackJack = () => {
     let bet = getStore().playerHand[index].bet
     let winnings = bet * 1.5
     let hand = playerHand[index]
-    let result = "Blackjack"
+    let result = "BLACKJACK"
 
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
@@ -373,7 +373,7 @@ const checkDealerFaceDown = () => {
     let index = getStore().currentHandIndex
     let hand = getStore().playerHand[index]
     let playerHand = hand.cards
-    let result = "Dealer Wins"
+    let result = "DEALER WINS"
 
     /* TIE IF BOTH DEALER AND PLAYER HAVE BLACKJACK */
     if(dealerHand[1].value === "ACE" && dealerScore === 21){
@@ -450,7 +450,7 @@ export const resolveDealerAce = () => {
     let insurance = getStore().insurance
     let index = getStore().currentHandIndex
     let hand = getStore().playerHand[index]
-    let result = "Dealer Wins"
+    let result = "DEALER WINS"
 
     /* CHECK IF DEALER HAS BLACKJACK, RESOLVE WITH INSURANCE */
     if(dealerHand[0].value === "ACE" && dealerScore === 21){
@@ -512,7 +512,7 @@ export const surrenderingPlayer = () => {
     let playerHand = getStore().playerHand
     let amount = (playerHand[index].bet/2)
     let hand = playerHand[index]
-    let result = "Surrender"
+    let result = "SURRENDER"
 
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
@@ -591,7 +591,7 @@ const comparePlayerToDealer = () => {
   return (dispatch, getStore) => {
     let playerHand = getStore().playerHand
     let dealerScore = getStore().dealerHand.score
-    let result = "Dealer Wins"
+    let result = "DEALER WINS"
 
     playerHand.forEach( hand => {
       if(hand.result === null){
@@ -750,7 +750,7 @@ export const playerPush = playerHand => {
   return (dispatch, getStore) => {
     let bet = playerHand.bet
     let user = getStore().user
-    let result = "Push"
+    let result = "PUSH"
 
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
@@ -786,7 +786,7 @@ export const playerWins = playerHand => {
     console.log('winnings:', winnings)
     console.log('newpot:', newPot)
 
-    let result = "Player Wins"
+    let result = "PLAYER WINS"
 
     if(newPot > user.largest_pot){
       fetch(`http://localhost:4247/api/v1/users/${user.id}`, {

@@ -25,7 +25,7 @@ class Controls extends React.Component {
 
   showSplit = () => {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2){
-      if(this.props.playerHand[this.props.index].cards[0].value === this.props.playerHand[this.props.index].cards[1].value || this.props.playerHand[this.props.index].score === 20
+      if(this.props.playerHand[this.props.index].cards[0].value === this.props.playerHand[this.props.index].cards[1].value || (this.props.playerHand[this.props.index].score === 20 && !this.props.playerHand[this.props.index].cards.find( card => card.value === "ACE"))
       ){
         return (
           <button className='control-btns' onClick={this.props.splittingPlayerCards}> Split </button>

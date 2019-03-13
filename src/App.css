@@ -23,8 +23,8 @@ body {
   grid-template-columns: 20% 60% 20%;
   grid-template-rows: 25% 25% 25% 25%;
   grid-template-areas:
-    "stats dealer strategy"
-    "stats pot strategy"
+    "count dealer strategy"
+    "count pot strategy"
     "bet player extra"
     "bet controls extra";
   justify-items: center;
@@ -69,27 +69,31 @@ body {
   grid-area: pot;
 }
 
-#stats-box {
-  grid-area: stats;
-  color: white;
-  border: 3px solid white;
+#count-box {
+  grid-area: count;
+  margin-left: 3vw;
+}
+
+#inner-count {
+  background-color: white;
+  color: black;
+  border: 3px solid black;
   border-radius: 5%;
   margin: 5px;
-  margin-left: 3vw;
   padding: 5px;
   font-size: 100%;
   font-family: Phosphate-solid;
-  background-color: black;
 }
+
 
 #strategy-box {
   grid-area: strategy;
-
   margin-right: 3vw;
 }
 
 #inner-strategy {
   background-color: white;
+  color: black;
   border: 3px solid black;
   border-radius: 5%;
   margin: 5px;
@@ -119,6 +123,36 @@ body {
   text-align: center;
 }
 
+.losing-hand {
+  color: red;
+  font-weight: bold;
+  font-size: 120%;
+}
+
+.winning-hand {
+  color: blue;
+  font-weight: bold;
+  font-size: 120%;
+}
+
+.push-hand {
+  color: black;
+  font-weight: bold;
+  font-size: 120%;
+}
+
+.bust-hand {
+  color: red;
+  font-weight: bold;
+  font-size: 120%;
+}
+
+.blackjack-hand {
+  color: yellow;
+  font-weight: bold;
+  font-size: 120%;
+}
+
 #dealer-container {
   grid-area: dealer;
 }
@@ -129,31 +163,34 @@ body {
 
 .bottom-btns {
   border-radius: 100%;
-  width: 5em;
-  height: 5em;
+  width: 6em;
+  height: 6em;
+  border-color: black;
   background-color: white;
-  color: blue;
+  color: black;
   font-family: Phosphate-solid;
 }
 
 .control-btns {
   border-radius: 100%;
-  width: 5em;
-  height: 5em;
-  color: blue;
-  font-family: Phosphate-solid;
+  width: 6em;
+  height: 6em;
   border-color: black;
+  background-color: white;
+  color: black;
+  font-family: Phosphate-solid;
   margin: 1em;
 }
 
 .hit-stay-btns {
   border-radius: 100%;
-  width: 5em;
-  height: 5em;
+  width: 6em;
+  height: 6em;
   border-color: black;
-  color: blue;
+  background-color: white;
+  color: black;
   font-family: Phosphate-solid;
-  margin: 0.5em;
+  margin: 1em;
 }
 
 .navbar {
@@ -172,6 +209,14 @@ body {
   text-decoration: none;
 }
 
+.navbar button {
+  border-color: transparent;
+  background-color: black;
+  color: white;
+  padding: 1%;
+  text-decoration: none;
+}
+
 .navbar a {
   color: white;
   text-align: center;
@@ -180,6 +225,11 @@ body {
 }
 
 .navbar a:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.navbar button:hover {
   background-color: #4CAF50;
   color: white;
 }
@@ -202,12 +252,26 @@ body {
   border-top: 2px solid white;
 }
 
-.footer div {
-  color: black;
-  background-color: white;
-  text-align: center;
+.footer button {
+  border-color: transparent;
+  background-color: black;
+  color: white;
   padding: 1%;
-  text-decoration: bold;
+  text-decoration: none;
+}
+
+.footer button:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#hover-stats {
+  color: white;
+  font-size: 100%;
+  background-color: black;
+  position: absolute;
+  padding: 10px;
+  border: 2px solid white;
 }
 
 @keyframes deal {

@@ -3,78 +3,28 @@ import { connect } from 'react-redux'
 
 class Strategy extends React.Component {
 
-  renderInfo = () => {
+  renderStrategy = () => {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
       return (
         <div id='inner-strategy'>
+          {this.props.showDealer ?
+            <span>
+              Dealer has {this.props.dealerHand.score}.
+            </span>
+            :
+            <span>
+              Dealer showing {this.props.dealerHand.cards[0].value}.
+            </span>
+          }
+        <div>
+          You have {this.props.playerHand[this.props.index].score}.
           <br/>
-          <div>
-            <div>
-              {this.props.showDealer ?
-                <span>
-                  Dealer has {this.props.dealerHand.score}.
-                </span>
-                :
-                <span>
-                  Dealer showing {this.props.dealerHand.cards[0].value}.
-              </span>
-              }
-            </div>
-
-            <div>
-              You have {this.props.playerHand[this.props.index].score}.
-              <br/>
-              {this.props.playerHand[this.props.index].score < 21 && !this.props.showDealer ?
-              <span> You should {this.checkTable()}. </span>
-              : null
-            }
-            </div>
-
-          </div>
-
-          <hr/>
-          <br/>
-
-          {this.props.roundResult === "End" ?
-            <div>
-              Count: {this.props.count}
-              <div>
-                {this.checkCount()}
-              </div>
-            </div>
+          {this.props.playerHand[this.props.index].score < 21 && !this.props.showDealer ?
+            <span> You should {this.checkTable()}. </span>
             : null
           }
-
-
         </div>
-      )
-    }
-  }
-
-  checkCount = () => {
-    if(this.props.count > 0){
-      return(
-        <div>
-          The count is positive.
-          <br/>
-          Bet HIGH.
-        </div>
-      )
-    }
-    else if(this.props.count < 0){
-      return(
-        <div>
-          The count is negative.
-          <br/>
-          Bet LOW.
-        </div>
-      )
-    }
-    else if(this.props.count === 0){
-      return(
-        <div>
-          The count is zero.
-        </div>
+      </div>
       )
     }
   }
@@ -667,7 +617,7 @@ class Strategy extends React.Component {
     return(
       <div id='strategy-box'>
         {this.props.showStrategy ?
-          this.renderInfo() : null
+          this.renderStrategy() : null
         }
       </div>
     )
