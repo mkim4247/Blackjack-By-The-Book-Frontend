@@ -172,8 +172,8 @@ export const addToStreak = () => {
           longest_streak: newStreak })
       })
       .then(res => res.json())
-      .then(user => {
-        dispatch(setUser(user))
+      .then(userObj => {
+        dispatch(setUser(userObj))
       })
     }
     else if(newStreak <= user.longest_streak){
@@ -188,8 +188,8 @@ export const addToStreak = () => {
         })
       })
       .then(res => res.json())
-      .then(user => {
-        dispatch(setUser(user))
+      .then(userObj => {
+        dispatch(setUser(userObj))
       })
     }
   }
@@ -358,7 +358,7 @@ const winningBlackJack = () => {
     let result = "BLACKJACK"
     let newPot = user.pot + bet + winnings
     let addedWin = user.wins + 1
-    
+
     if(newPot > user.largest_pot){
       fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
         method: "PATCH",
@@ -371,8 +371,8 @@ const winningBlackJack = () => {
           largest_pot: newPot })
       })
       .then(res => res.json())
-      .then(user => {
-        dispatch(setUser(user))
+      .then(userObj => {
+        dispatch(setUser(userObj))
         dispatch(setResult(hand, result))
         dispatch(resetBet())
         /* commented out code was for handling blackjack after splitting */
@@ -400,8 +400,8 @@ const winningBlackJack = () => {
         })
       })
       .then(res => res.json())
-      .then(user => {
-        dispatch(setUser(user))
+      .then(userObj => {
+        dispatch(setUser(userObj))
         dispatch(setResult(hand, result))
         dispatch(resetBet())
         /* commented out code was for handling blackjack after splitting */
@@ -483,8 +483,8 @@ export const takeInsurance = () => {
       body: JSON.stringify({ pot: user.pot - insurance })
     })
     .then(res => res.json())
-    .then(user => {
-      dispatch(setUser(user))
+    .then(userObj => {
+      dispatch(setUser(userObj))
       dispatch({ type: "TAKE_INSURANCE" })
       dispatch(resolveDealerAce())
     })
@@ -556,8 +556,8 @@ const insuranceWon = () => {
          })
       })
       .then(res => res.json())
-      .then(user => {
-        dispatch(setUser(user))
+      .then(userObj => {
+        dispatch(setUser(userObj))
         dispatch({ type: "INSURANCE_WON" })
       })
     }
@@ -572,8 +572,8 @@ const insuranceWon = () => {
          })
       })
       .then(res => res.json())
-      .then(user => {
-        dispatch(setUser(user))
+      .then(userObj => {
+        dispatch(setUser(userObj))
         dispatch({ type: "INSURANCE_WON" })
       })
     }
@@ -599,8 +599,8 @@ export const surrenderingPlayer = () => {
       body: JSON.stringify({ pot: user.pot + amount })
     })
     .then(res => res.json())
-    .then(user => {
-      dispatch(setUser(user))
+    .then(userObj => {
+      dispatch(setUser(userObj))
       dispatch(setResult(hand, result))
       dispatch(surrenderedPlayer())
       dispatch(endRound())
@@ -816,8 +816,8 @@ export const placingBet = bet => {
       body: JSON.stringify({ pot: newPot })
     })
     .then(res => res.json())
-    .then(user => {
-      dispatch(setUser(user))
+    .then(userObj => {
+      dispatch(setUser(userObj))
     })
   }
 }
@@ -846,8 +846,8 @@ export const playerPush = playerHand => {
       body: JSON.stringify({ pot: user.pot + bet })
     })
     .then(res => res.json())
-    .then(user => {
-      dispatch(setUser(user))
+    .then(userObj => {
+      dispatch(setUser(userObj))
       dispatch(setResult(playerHand, result))
       dispatch(endRound())
       dispatch(resetBet())
@@ -887,8 +887,8 @@ export const playerWins = playerHand => {
           largest_pot: newPot })
       })
       .then(res => res.json())
-      .then(user => {
-        dispatch(setUser(user))
+      .then(userObj => {
+        dispatch(setUser(userObj))
         dispatch(setResult(playerHand, result))
         dispatch(endRound())
         dispatch(resetBet())
@@ -905,8 +905,8 @@ export const playerWins = playerHand => {
           pot: newPot })
       })
       .then(res => res.json())
-      .then(user => {
-        dispatch(setUser(user))
+      .then(userObj => {
+        dispatch(setUser(userObj))
         dispatch(setResult(playerHand, result))
         dispatch(endRound())
         dispatch(resetBet())
@@ -955,8 +955,8 @@ export const restartGame = () => {
       body: JSON.stringify({ pot: 100, current_streak: 0 })
     })
     .then(res => res.json())
-    .then(user => {
-      dispatch(setUser(user))
+    .then(userObj => {
+      dispatch(setUser(userObj))
       dispatch(shuffleDeck())
       dispatch(startNewGame())
     })

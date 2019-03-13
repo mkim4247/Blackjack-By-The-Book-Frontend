@@ -45,7 +45,7 @@ class Nav extends React.Component {
         <div id='hover-stats' style={{display: "none"}}>
 
           <div>
-            Win Percent: { this.props.user.games_played > 0 ? this.props.user.wins/this.props.user.games_played : "0%" }
+            Win Percent: { this.props.user.games_played > 0 ? Math.ceil(this.props.user.wins/this.props.user.games_played * 100) + "%" : "0%" }
           </div>
           <hr/>
           <div>
