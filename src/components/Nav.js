@@ -28,7 +28,7 @@ class Nav extends React.Component {
               : null
             }
             {this.props.user ?
-              <div className='left'> Pot: {this.props.user.pot} </div>
+              <div className='left'> Pot: ${this.props.user.pot} </div>
               : null
             }
             {this.props.user ?
@@ -45,7 +45,7 @@ class Nav extends React.Component {
         <div id='hover-stats' style={{display: "none"}}>
 
           <div>
-            Win Percent: 50%
+            Win Percent: { this.props.user.games_played > 0 ? this.props.user.wins/this.props.user.games_played : "0%" }
           </div>
           <hr/>
           <div>

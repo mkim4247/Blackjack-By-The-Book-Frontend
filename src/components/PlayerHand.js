@@ -24,6 +24,9 @@ class PlayerHand extends React.Component {
     else if(this.props.hand.result === "BLACKJACK"){
       return "blackjack-hand"
     }
+    else if(this.props.hand.result === "SURRENDER"){
+      return "surrender-hand"
+    }
   }
 
   render(){

@@ -42,8 +42,6 @@ class Controls extends React.Component {
             {this.showDouble()}
             {this.showHitAndStay()}
             {this.showSplit()}
-
-            <button className='control-btns' onClick={this.props.splittingPlayerCards}> Split </button>
           </span>
         : null
         }

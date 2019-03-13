@@ -168,6 +168,12 @@ body {
   background-color: white;
 }
 
+.surrender-hand {
+  color: red;
+  background: black;
+  font-size: 120%;
+}
+
 #dealer-container {
   grid-area: dealer;
 }
@@ -279,9 +285,14 @@ body {
 
 @keyframes deal {
   0% {
-    transform: translateY(-100%)
+    /* position: fixed; */
+    top: 50px; left: 50%
+  }
+  50%{
+    top: 50%; left: 50%
   }
   100% {
+    /* position: static; */
     transform: translateY(0%)
   }
 }
