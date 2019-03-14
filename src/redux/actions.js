@@ -142,10 +142,10 @@ const dealingActions = deck => {
 
 
     let cards = [deck.cards[0], deck.cards[1]]
-    let playerScore = assignHandValue(cards)
+    let playerScore = assignHandValue(cards).score
 
     let dealerCards = [deck.cards[2], deck.cards[3]]
-    let dealerScore = assignHandValue(dealerCards)
+    let dealerScore = assignHandValue(dealerCards).score
 
     dispatch(dealDealerCards(dealerCards, dealerScore))
     dispatch(dealPlayerCards(cards, playerScore, bet))
@@ -223,7 +223,7 @@ export const hittingPlayerCards = () => {
       let index = getStore().currentHandIndex
       let cards = getStore().playerHand[index].cards.slice()
       cards.push(deck.cards[0])
-      let score = assignHandValue(cards)
+      let score = assignHandValue(cards).score
 
       /* PASS ENTIRE NEW HAND THROUGH */
       dispatch(hitPlayerCards(cards, score, index))
@@ -247,7 +247,8 @@ export const hittingDealerCards = () => {
     let dealerScore = getStore().dealerHand.score
     let dealerHand = getStore().dealerHand.cards
     /* DEALER HITS IF LESS THAN 17 */
-    if(dealerScore < 17 && !dealerHand.find( card => card.value === "ACE" )){
+    // if(dealerScore < 17 && !dealerHand.find( card => card.value === "ACE" )){
+    if(dealerScore <= 17 && assignHandValue(dealerHand).soft){
       fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
       .then(res => res.json())
       .then(deck => {
@@ -255,14 +256,15 @@ export const hittingDealerCards = () => {
         /* COPY CURRENT HAND AND ADD NEW CARD TO IT */
         let cards = getStore().dealerHand.cards.slice()
         cards.push(deck.cards[0])
-        let score = assignHandValue(cards)
+        let score = assignHandValue(cards).score
         /* PASS ENTIRE NEW HAND THROUGH */
         dispatch(hitDealerCards(cards, score))
         /* ADD CARD TO CURRENT COUNT */
         dispatch(countingCards(deck.cards))
       })
     }
-    else if(dealerScore <= 17 && dealerHand.find( card => card.value === "ACE")){
+    // else if(dealerScore <= 17 && dealerHand.find( card => card.value === "ACE")){
+    else if(dealerScore < 17){
       fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
       .then(res => res.json())
       .then(deck => {
@@ -270,7 +272,7 @@ export const hittingDealerCards = () => {
         /* COPY CURRENT HAND AND ADD NEW CARD TO IT */
         let cards = getStore().dealerHand.cards.slice()
         cards.push(deck.cards[0])
-        let score = assignHandValue(cards)
+        let score = assignHandValue(cards).score
         /* PASS ENTIRE NEW HAND THROUGH */
         dispatch(hitDealerCards(cards, score))
         /* ADD CARD TO CURRENT COUNT */
@@ -664,7 +666,8 @@ export const dealerMove = () => {
     let playerHand = getStore().playerHand
     /* DEALER HITS IF LESS THAN 17 */
 
-    if(dealerScore < 17 && !dealerHand.find( card => card.value === "ACE" )){
+    // if(dealerScore < 17 && !dealerHand.find( card => card.value === "ACE" )){
+    if(dealerScore <= 17 && assignHandValue(dealerHand).soft){
         if(playerHand.find( hand => hand.result === null )){
        setTimeout( () => {
          dispatch(hittingDealerCards())
@@ -672,7 +675,8 @@ export const dealerMove = () => {
        }, 1750)
      }
     }
-    else if(dealerScore <= 17 && dealerHand.find( card => card.value === "ACE")){
+    // else if(dealerScore <= 17 && dealerHand.find( card => card.value === "ACE")){
+    else if(dealerScore < 17){
       if(playerHand.find( hand => hand.result === null )){
         setTimeout( () => {
            dispatch(hittingDealerCards())
@@ -736,7 +740,7 @@ export const doublingPlayer = () => {
       let playerHand = getStore().playerHand[index]
       let cards = playerHand.cards.slice()
       cards.push(deck.cards[0])
-      let score = assignHandValue(cards)
+      let score = assignHandValue(cards).score
       /* GET CURRENT BET AND DOUBLE IT */
       let currentBet = playerHand.bet
       let bet = (currentBet * 2)
@@ -782,7 +786,7 @@ export const splittingPlayerCards = () => {
       /* split up current hand into two and add cards */
       let splitHand1 = [oldHand[0], deck.cards[0]]
       let splitHand2 = [oldHand[1], deck.cards[1]]
-      let score = [assignHandValue(splitHand1), assignHandValue(splitHand2)]
+      let score = [assignHandValue(splitHand1).score, assignHandValue(splitHand2).score]
       let cards = [splitHand1, splitHand2]
 
 
@@ -1029,6 +1033,7 @@ const getCountFromHand = cards => {
 const assignHandValue = cards => {
   let aceCount = 0
   let handValue = 0
+  let soft = false
 
   cards.forEach( card => {
     switch(card.value){
@@ -1044,6 +1049,7 @@ const assignHandValue = cards => {
       case "ACE":
         handValue += 11
         aceCount++
+        soft = true
         break
       default:
         handValue += parseInt(card.value)
@@ -1055,7 +1061,12 @@ const assignHandValue = cards => {
     handValue -= 10
     aceCount--
   }
-  return handValue
+
+  if(aceCount === 0){
+    soft = false
+  }
+
+  return {score: handValue, soft}
 }
 
 /*
