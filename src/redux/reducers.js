@@ -23,12 +23,12 @@ const dealerHandReducer = (state={ cards: [], score: null }, action) => {
     case "DEAL_DEALER_CARDS":
       return {
         cards: action.cards,
-        score: assignHandValue(action.cards)
+        score: action.score
       }
     case "HIT_DEALER_CARDS":
       return {
         cards: action.cards,
-        score: assignHandValue(action.cards)
+        score: action.score
       }
 
     case "RESET_COUNT":
@@ -47,7 +47,7 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: n
     case "DEAL_PLAYER_CARDS":
       return [{
         cards: action.cards,
-        score: assignHandValue(action.cards),
+        score: action.score,
         bet: action.bet,
         result: null
       }]
@@ -56,14 +56,14 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: n
       handCopy[action.index] = {
         ...state[action.index],
         cards: action.cards,
-        score: assignHandValue(action.cards)
+        score: action.score
       }
       return handCopy
     case "DOUBLE_PLAYER":
       handCopy = [...state]
       handCopy[action.index] = { ...state[action.index],
         cards: action.cards,
-        score: assignHandValue(action.cards),
+        score: action.score,
         bet: action.bet
       }
       return handCopy
@@ -72,12 +72,12 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: n
       let secondHalf = state.slice( action.index + 1)
       let split = [{
           cards: action.cards[0],
-          score: assignHandValue(action.cards[0]),
+          score: action.score[0],
           bet: action.bet,
           result: null
         },
         {cards: action.cards[1],
-          score: assignHandValue(action.cards[1]),
+          score: action.score[1],
           bet: action.bet,
           result: null
         }]
@@ -219,37 +219,3 @@ const rootReducer = combineReducers({
 })
 
 export default rootReducer
-
-
-/* CONVENIENCE METHOD FOR ASSIGNING HAND VALUE */
-const assignHandValue = cards => {
-  let aceCount = 0
-  let handValue = 0
-
-  cards.forEach( card => {
-    switch(card.value){
-      case "KING":
-        handValue += 10
-        break
-      case "QUEEN":
-        handValue += 10
-        break
-      case "JACK":
-        handValue += 10
-        break
-      case "ACE":
-        handValue += 11
-        aceCount++
-        break
-      default:
-        handValue += parseInt(card.value)
-        break
-      }
-  })
-
-  while(handValue > 21 && aceCount > 0){
-    handValue -= 10
-    aceCount--
-  }
-  return handValue
-}

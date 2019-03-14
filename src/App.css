@@ -300,8 +300,9 @@ body {
 .cards {
   height: 90px;
   width: 60px;
-  padding: 2px;
   animation-name: deal;
   animation-duration: 2s;
   animation-timing-function: ease-in-out;
+  border: 2px solid black;
+  border-radius: 10%;
 }

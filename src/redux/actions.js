@@ -86,13 +86,13 @@ export const fetchingDeck = () => {
 }
 
 /* DEALING RELATED ACTIONS */
-const dealDealerCards = cards => {
-  return { type: "DEAL_DEALER_CARDS", cards }
+const dealDealerCards = (cards, score) => {
+  return { type: "DEAL_DEALER_CARDS", cards, score }
 }
 
 /* PASSING BET HERE TO ASSIGN TO HAND IN REDUCER */
-const dealPlayerCards = (cards, bet) => {
-  return { type: "DEAL_PLAYER_CARDS", cards, bet }
+const dealPlayerCards = (cards, score, bet) => {
+  return { type: "DEAL_PLAYER_CARDS", cards, score, bet }
 }
 
 export const dealingCards = () => {
@@ -135,10 +135,20 @@ const dealingActions = deck => {
     let bet = getStore().bet
 
     /* SPLIT UP FETCHED CARDS BTWN PLAYER AND DEALER */
+    deck.cards[0].value = "10"
+    deck.cards[1].value = "10"
+    deck.cards[2].value = "ACE"
+    deck.cards[3].value = "ACE"
+
+
     let cards = [deck.cards[0], deck.cards[1]]
+    let playerScore = assignHandValue(cards)
+
     let dealerCards = [deck.cards[2], deck.cards[3]]
-    dispatch(dealDealerCards(dealerCards))
-    dispatch(dealPlayerCards(cards, bet))
+    let dealerScore = assignHandValue(dealerCards)
+
+    dispatch(dealDealerCards(dealerCards, dealerScore))
+    dispatch(dealPlayerCards(cards, playerScore, bet))
 
     /* ADD TO NUMBER OF GAMES PLAYED STREAK STAT */
     dispatch(addToStreak())
@@ -197,7 +207,7 @@ export const addToStreak = () => {
 
 /* HITTING RELATED ACTIONS */
 /* PASS INDEX THROUGH SO KNOW WHICH HAND IS HIT */
-const hitPlayerCards = (cards, index) => {
+const hitPlayerCards = (cards, score, index) => {
   return { type: "HIT_PLAYER_CARDS", cards, index }
 }
 
@@ -213,8 +223,10 @@ export const hittingPlayerCards = () => {
       let index = getStore().currentHandIndex
       let cards = getStore().playerHand[index].cards.slice()
       cards.push(deck.cards[0])
+      let score = assignHandValue(cards)
+
       /* PASS ENTIRE NEW HAND THROUGH */
-      dispatch(hitPlayerCards(cards, index))
+      dispatch(hitPlayerCards(cards, score, index))
       /* CHECK IF PLAYER BUSTED */
       dispatch(checkPlayerBust())
       /* ADD CARD TO CURRENT COUNT */
@@ -225,8 +237,8 @@ export const hittingPlayerCards = () => {
 
 
 
-const hitDealerCards = cards => {
-  return { type: "HIT_DEALER_CARDS", cards }
+const hitDealerCards = (cards, score) => {
+  return { type: "HIT_DEALER_CARDS", cards, score }
 }
 
 export const hittingDealerCards = () => {
@@ -243,13 +255,14 @@ export const hittingDealerCards = () => {
         /* COPY CURRENT HAND AND ADD NEW CARD TO IT */
         let cards = getStore().dealerHand.cards.slice()
         cards.push(deck.cards[0])
+        let score = assignHandValue(cards)
         /* PASS ENTIRE NEW HAND THROUGH */
-        dispatch(hitDealerCards(cards))
+        dispatch(hitDealerCards(cards, score))
         /* ADD CARD TO CURRENT COUNT */
         dispatch(countingCards(deck.cards))
       })
     }
-    else if(dealerScore < 18 && dealerHand.find( card => card.value === "ACE")){
+    else if(dealerScore <= 17 && dealerHand.find( card => card.value === "ACE")){
       fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
       .then(res => res.json())
       .then(deck => {
@@ -257,8 +270,9 @@ export const hittingDealerCards = () => {
         /* COPY CURRENT HAND AND ADD NEW CARD TO IT */
         let cards = getStore().dealerHand.cards.slice()
         cards.push(deck.cards[0])
+        let score = assignHandValue(cards)
         /* PASS ENTIRE NEW HAND THROUGH */
-        dispatch(hitDealerCards(cards))
+        dispatch(hitDealerCards(cards, score))
         /* ADD CARD TO CURRENT COUNT */
         dispatch(countingCards(deck.cards))
       })
@@ -605,7 +619,7 @@ export const surrenderingPlayer = () => {
       dispatch(surrenderedPlayer())
       dispatch(endRound())
       dispatch(resetBet())
-
+      dispatch(checkPlayerPot())
     })
   }
 }
@@ -658,7 +672,7 @@ export const dealerMove = () => {
        }, 1750)
      }
     }
-    else if(dealerScore < 18 && dealerHand.find( card => card.value === "ACE")){
+    else if(dealerScore <= 17 && dealerHand.find( card => card.value === "ACE")){
       if(playerHand.find( hand => hand.result === null )){
         setTimeout( () => {
            dispatch(hittingDealerCards())
@@ -722,14 +736,14 @@ export const doublingPlayer = () => {
       let playerHand = getStore().playerHand[index]
       let cards = playerHand.cards.slice()
       cards.push(deck.cards[0])
-
+      let score = assignHandValue(cards)
       /* GET CURRENT BET AND DOUBLE IT */
       let currentBet = playerHand.bet
       let bet = (currentBet * 2)
 
       /* SUBTRACT DOUBLE DOWN BET FROM POT, PASS THROUGH NEW DOUBLED BET THROUGH TO REDUCER TO ASSIGN TO HAND */
       dispatch(placingBet(currentBet))
-      dispatch(doublePlayer(cards, index, bet))
+      dispatch(doublePlayer(cards, score, index, bet))
       /* CHECK FOR BUST AND ADD TO COUNT */
       dispatch(checkPlayerBust())
       dispatch(countingCards(deck.cards))
@@ -741,12 +755,12 @@ export const doublingPlayer = () => {
   }
 }
 
-export const doublePlayer = (cards, index, bet) => {
-  return { type: "DOUBLE_PLAYER", cards, index, bet }
+export const doublePlayer = (cards, score, index, bet) => {
+  return { type: "DOUBLE_PLAYER", cards, score, index, bet }
 }
 
-const splitPlayerCards = (cards, index, bet) => {
-  return { type: "SPLIT_PLAYER_CARDS", cards, index, bet }
+const splitPlayerCards = (cards, score, index, bet) => {
+  return { type: "SPLIT_PLAYER_CARDS", cards, score, index, bet }
 }
 
 
@@ -768,9 +782,12 @@ export const splittingPlayerCards = () => {
       /* split up current hand into two and add cards */
       let splitHand1 = [oldHand[0], deck.cards[0]]
       let splitHand2 = [oldHand[1], deck.cards[1]]
+      let score = [assignHandValue(splitHand1), assignHandValue(splitHand2)]
       let cards = [splitHand1, splitHand2]
+
+
       dispatch(placingBet(bet))
-      dispatch(splitPlayerCards( cards, index, bet ))
+      dispatch(splitPlayerCards( cards, score, index, bet ))
       dispatch(countingCards(deck.cards))
       // dispatch(checkPlayerBlackJack())
 
@@ -779,7 +796,7 @@ export const splittingPlayerCards = () => {
         setTimeout( () => {
           dispatch(showDealer())
           dispatch(dealerMove())
-        }, 1750)
+        }, 1000)
       }
     })
   }
@@ -867,12 +884,7 @@ export const playerWins = playerHand => {
     let user = getStore().user
     let winnings = (playerHand.bet * 2)
     let newPot = user.pot + winnings
-
     let addedWin = user.wins + 1
-    /* TAKE OUT LATER ONCE RESOLVED */
-    console.log('winnings:', winnings)
-    console.log('newpot:', newPot)
-
     let result = "WIN"
 
     if(newPot > user.largest_pot){
@@ -1011,6 +1023,39 @@ const getCountFromHand = cards => {
     }
   })
   return count
+}
+
+/* CONVENIENCE METHOD FOR ASSIGNING HAND VALUE */
+const assignHandValue = cards => {
+  let aceCount = 0
+  let handValue = 0
+
+  cards.forEach( card => {
+    switch(card.value){
+      case "KING":
+        handValue += 10
+        break
+      case "QUEEN":
+        handValue += 10
+        break
+      case "JACK":
+        handValue += 10
+        break
+      case "ACE":
+        handValue += 11
+        aceCount++
+        break
+      default:
+        handValue += parseInt(card.value)
+        break
+      }
+  })
+
+  while(handValue > 21 && aceCount > 0){
+    handValue -= 10
+    aceCount--
+  }
+  return handValue
 }
 
 /*
