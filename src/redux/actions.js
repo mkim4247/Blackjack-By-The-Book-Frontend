@@ -135,12 +135,6 @@ const dealingActions = deck => {
     let bet = getStore().bet
 
     /* SPLIT UP FETCHED CARDS BTWN PLAYER AND DEALER */
-    deck.cards[0].value = "10"
-    deck.cards[1].value = "10"
-    deck.cards[2].value = "ACE"
-    deck.cards[3].value = "ACE"
-
-
     let cards = [deck.cards[0], deck.cards[1]]
     let playerScore = assignHandValue(cards).score
 
@@ -208,7 +202,7 @@ export const addToStreak = () => {
 /* HITTING RELATED ACTIONS */
 /* PASS INDEX THROUGH SO KNOW WHICH HAND IS HIT */
 const hitPlayerCards = (cards, score, index) => {
-  return { type: "HIT_PLAYER_CARDS", cards, index }
+  return { type: "HIT_PLAYER_CARDS", cards, score, index }
 }
 
 export const hittingPlayerCards = () => {
@@ -695,26 +689,47 @@ const comparePlayerToDealer = () => {
   return (dispatch, getStore) => {
     let playerHand = getStore().playerHand
     let dealerScore = getStore().dealerHand.score
-    let result = "LOSE"
+    let result
+    let winnings = 0;
+    let wins = 0;
 
     playerHand.forEach( hand => {
       if(hand.result === null){
         if(hand.score === dealerScore){
-          dispatch(playerPush(hand))
+          result = "PUSH"
+          dispatch(setResult(hand, result))
+          dispatch(endRound())
+          dispatch(resetBet())
+
+          winnings += hand.bet
         }
         else if(dealerScore > 21 && hand.score <= 21){
-          dispatch(playerWins(hand))
+          result = "WIN"
+          dispatch(setResult(hand, result))
+          dispatch(endRound())
+          dispatch(resetBet())
+
+          winnings += (hand.bet * 2)
+          wins++
+        }
+        else if(hand.score > dealerScore && hand.score <= 21){
+          result = "WIN"
+          dispatch(setResult(hand, result))
+          dispatch(endRound())
+          dispatch(resetBet())
+
+          winnings += (hand.bet * 2)
+          wins++
         }
         else if(hand.score > 21){
+          result = "LOSE"
           dispatch(setResult(hand, result))
           dispatch(endRound())
           dispatch(resetBet())
           dispatch(checkPlayerPot())
         }
-        else if(hand.score > dealerScore && hand.score <= 21){
-          dispatch(playerWins(hand))
-        }
         else if(hand.score < dealerScore){
+          result = "LOSE"
           dispatch(setResult(hand, result))
           dispatch(endRound())
           dispatch(resetBet())
@@ -722,6 +737,9 @@ const comparePlayerToDealer = () => {
         }
       }
     })
+    if(wins > 0){
+      dispatch(playerWins(winnings, wins))
+    }
   }
 }
 
@@ -857,7 +875,6 @@ export const playerPush = playerHand => {
   return (dispatch, getStore) => {
     let bet = playerHand.bet
     let user = getStore().user
-    let result = "PUSH"
 
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
@@ -869,6 +886,7 @@ export const playerPush = playerHand => {
     .then(res => res.json())
     .then(userObj => {
       dispatch(setUser(userObj))
+      let result = "PUSH"
       dispatch(setResult(playerHand, result))
       dispatch(endRound())
       dispatch(resetBet())
@@ -883,13 +901,13 @@ export const playerPush = playerHand => {
   */
 
 
-export const playerWins = playerHand => {
+export const playerWins = (winnings, wins) => {
   return (dispatch, getStore) => {
     let user = getStore().user
-    let winnings = (playerHand.bet * 2)
+    // let winnings = (playerHand.bet * 2)
+    // let newPot = user.pot + winnings
+    // let addedWin = user.wins + 1
     let newPot = user.pot + winnings
-    let addedWin = user.wins + 1
-    let result = "WIN"
 
     if(newPot > user.largest_pot){
       fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
@@ -898,16 +916,13 @@ export const playerWins = playerHand => {
           "Content-type": "application/json"
         },
         body: JSON.stringify({
-          wins: addedWin,
+          wins: user.wins + wins,
           pot: newPot,
           largest_pot: newPot })
       })
       .then(res => res.json())
       .then(userObj => {
         dispatch(setUser(userObj))
-        dispatch(setResult(playerHand, result))
-        dispatch(endRound())
-        dispatch(resetBet())
       })
     }
     else if(newPot <= user.largest_pot){
@@ -917,15 +932,12 @@ export const playerWins = playerHand => {
           "Content-type": "application/json"
         },
         body: JSON.stringify({
-          wins: addedWin,
+          wins: user.wins + wins,
           pot: newPot })
       })
       .then(res => res.json())
       .then(userObj => {
         dispatch(setUser(userObj))
-        dispatch(setResult(playerHand, result))
-        dispatch(endRound())
-        dispatch(resetBet())
       })
     }
   }
