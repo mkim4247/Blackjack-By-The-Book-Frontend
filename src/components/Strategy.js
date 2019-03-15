@@ -19,16 +19,21 @@ class Strategy extends React.Component {
           <hr/>
         <div>
           Player: {this.props.playerHand[this.props.index].score}
-          <br/>
-          {this.props.playerHand[this.props.index].score < 21 && !this.props.showDealer ?
-            <span> <hr/> Advice: {this.checkTable()} </span>
-            : null
-          }
         </div>
+          <hr/>
+        { this.props.bet > 0 ?
+             "Bet Size: " + this.props.bet
+            : <span style={{color: 'blue'}}>Place Bet</span>
+        }
       </div>
       )
     }
   }
+  // <br/>
+  // {this.props.playerHand[this.props.index].score < 21 && !this.props.showDealer ?
+    // <span> <hr/> Advice: {this.checkTable()} </span>
+    // : null
+  // }
 
   checkTable = () => {
     let hardTotal = {
@@ -617,9 +622,7 @@ class Strategy extends React.Component {
   render(){
     return(
       <div id='strategy-box'>
-        {this.props.showStrategy ?
-          this.renderStrategy() : null
-        }
+          {this.renderStrategy()}
       </div>
     )
   }
@@ -633,7 +636,9 @@ const mapStateToProps = state => {
     count: state.count,
     showDealer: state.showDealer,
     roundResult: state.roundResult,
-    showStrategy: state.showStrategy
+    showStrategy: state.showStrategy,
+    user: state.user,
+    bet: state.bet
   }
 }
 

@@ -269,6 +269,13 @@ body {
   font-family: Phosphate-solid;
 }
 
+.footer div {
+  color: white;
+  text-align: center;
+  padding: 1%;
+  text-decoration: none;
+}
+
 .footer button:hover {
   background-color: #4CAF50;
   color: white;

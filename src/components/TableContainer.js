@@ -5,7 +5,7 @@ import Controls from './Controls'
 import Strategy from './Strategy'
 import Bet from './Bet'
 import Pot from './Pot'
-import Count from './Count'
+// import Count from './Count'
 import BottomControls from './BottomControls'
 import Footer from './Footer'
 
@@ -14,7 +14,6 @@ class TableContainer extends React.Component {
   render(){
     return(
       <div id='table'>
-        <Count />
         <DealerContainer />
         <Strategy/>
         <Controls />
@@ -28,5 +27,6 @@ class TableContainer extends React.Component {
   }
 }
 
+/* REMOVED <COUNT/> FROM TOP OF RENDER */
 
 export default TableContainer

@@ -16,15 +16,7 @@ class BottomControls extends React.Component {
   render(){
     return (
       <div id='extra-box'>
-        { this.props.user.pot > 0 ?
-            this.props.bet > 0 ?
-              <div className='place-bets-marker'> Bet Size: {this.props.bet} </div>
-              :
-              <div className='place-bets-marker'> Place Bet </div>
-            : null
-        }
 
-        <br/>
         {this.props.bet > 0 && this.props.roundResult !== "Deal" ?
           <button className='control-btns' onClick={this.props.dealingCards}>Deal</button>
           :
