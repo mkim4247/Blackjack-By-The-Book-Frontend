@@ -16,7 +16,7 @@ class Controls extends React.Component {
   }
 
   showDouble = () => {
-    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2){
+    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2 && this.props.playerHand[this.props.index].bet <= this.props.user.pot){
       return (
         <button className='control-btns'  onClick={this.props.doublingPlayer}>Double</button>
       )
@@ -24,7 +24,7 @@ class Controls extends React.Component {
   }
 
   showSplit = () => {
-    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2){
+    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2 && this.props.playerHand[this.props.index].bet <= this.props.user.pot){
       if(this.props.playerHand[this.props.index].cards[0].value === this.props.playerHand[this.props.index].cards[1].value || (this.props.playerHand[this.props.index].score === 20 && !this.props.playerHand[this.props.index].cards.find( card => card.value === "ACE"))
       ){
         return (
@@ -72,7 +72,8 @@ const mapStateToProps = state => {
     index: state.currentHandIndex,
     bet: state.bet,
     showDealer: state.showDealer,
-    insurance: state.insurance
+    insurance: state.insurance,
+    user: state.user
   }
 }
 
