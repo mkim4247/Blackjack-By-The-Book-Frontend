@@ -229,8 +229,6 @@ export const hittingPlayerCards = () => {
   }
 }
 
-
-
 const hitDealerCards = (cards, score) => {
   return { type: "HIT_DEALER_CARDS", cards, score }
 }
@@ -322,9 +320,6 @@ const setResult = (hand, result) => {
 const advanceIndex = () => {
   return { type: "ADVANCE_INDEX" }
 }
-//
-// WORKING OUT CHECKING BJ ON BOTH HANDS AFTER A SPLIT RIGHT AWAY AND RESOLVING
-//
 
 /* CHECK PLAYER FOR BLACKJACK; WIN UNLESS DEALER ALSO HAS BLACKJACK */
 const checkPlayerBlackJack = () => {
@@ -648,7 +643,7 @@ const showDealer = () => {
     /* ADD FACEDOWN CARD TO CURRENT COUNT */
     let uncountedCard = [dealerHand[1]]
     dispatch(countingCards(uncountedCard))
-    dispatch({ type: "DEALER_MOVE" })
+    setTimeout( () => dispatch({ type: "DEALER_MOVE" }), 1000)
   }
 }
 
@@ -666,7 +661,7 @@ export const dealerMove = () => {
        setTimeout( () => {
          dispatch(hittingDealerCards())
          dispatch(dealerMove())
-       }, 1750)
+       }, 1500)
      }
     }
     // else if(dealerScore <= 17 && dealerHand.find( card => card.value === "ACE")){
@@ -675,12 +670,14 @@ export const dealerMove = () => {
         setTimeout( () => {
            dispatch(hittingDealerCards())
            dispatch(dealerMove())
-         }, 1750)
+         }, 1500)
       }
     }
     else {
       /* COMPARE EACH OF PLAYER'S HANDS TO DEALER AND DETERMINE OUTCOME */
-      dispatch(comparePlayerToDealer())
+      setTimeout( () => {
+        dispatch(comparePlayerToDealer())
+      }, 1000)
     }
   }
 }
@@ -785,9 +782,6 @@ const splitPlayerCards = (cards, score, index, bet) => {
   return { type: "SPLIT_PLAYER_CARDS", cards, score, index, bet }
 }
 
-
-/* ON INITIAL SPLIT NEED TO CHECK BOTH HANDS TO SEE IF EITHER RESULTED IN BLACKJACK */
-
 export const splittingPlayerCards = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
@@ -875,6 +869,7 @@ export const playerPush = playerHand => {
   return (dispatch, getStore) => {
     let bet = playerHand.bet
     let user = getStore().user
+    let result = "PUSH"
 
     fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
       method: "PATCH",
@@ -886,7 +881,6 @@ export const playerPush = playerHand => {
     .then(res => res.json())
     .then(userObj => {
       dispatch(setUser(userObj))
-      let result = "PUSH"
       dispatch(setResult(playerHand, result))
       dispatch(endRound())
       dispatch(resetBet())
@@ -895,11 +889,6 @@ export const playerPush = playerHand => {
 }
 
 /* HANDLE PLAYER WINNING; SINCE POT DECREASED AT DEAL, NEED TO GET 2X BET BACK */
-  /* V1 ISSUE =>
-    WHEN SPLITTING, NOT GETTING PAID WHEN BOTH HANDS WIN; SINCE USING currentHandIndex, IT GETS TICKED TO LAST HAND INDEX, SO ONLY GETTING THAT WINNING, NOT ACTUALLY CHECKING EACH HAND
-      => V2: WILL REFACTOR TO PASS IN HAND OBJECT SINCE USING THIS FUNCTION IN A MAP
-  */
-
 
 export const playerWins = (winnings, wins) => {
   return (dispatch, getStore) => {
