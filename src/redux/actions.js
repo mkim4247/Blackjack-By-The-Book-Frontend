@@ -461,7 +461,7 @@ const checkDealerFaceUp = () => {
     /* shouldnt ask for insurance if player has winning BJ */
 
     /* OFFER INSURANCE IF DEALER SHOWING ACE */
-    if(dealerHand[0].value === "ACE" && !playerHand.find( card => card.value === "ACE" && playerHand.score !== 21)){
+    if(dealerHand[0].value === "ACE" && !playerHand.find( card => card.value === "ACE" && playerHand.score < 21)){
       dispatch(askForInsurance())
     }
   }
@@ -522,20 +522,11 @@ export const resolveDealerAce = () => {
         dispatch(resetBet())
       }
       else {
-        dispatch({ type: "INSURANCE_LOST" })
         dispatch(showDealer())
         dispatch(setResult(hand, result))
         dispatch(endRound())
         dispatch(resetBet())
         dispatch(checkPlayerPot())
-      }
-    }
-    else {
-      if(insurance === 'take') {
-        dispatch({ type: "INSURANCE_LOST" })
-      }
-      else {
-        dispatch({ type: "PASS_CORRECT" })
       }
     }
   }
@@ -563,7 +554,6 @@ const insuranceWon = () => {
       .then(res => res.json())
       .then(userObj => {
         dispatch(setUser(userObj))
-        dispatch({ type: "INSURANCE_WON" })
       })
     }
     else if(newPot <= user.largest_pot){
@@ -579,7 +569,6 @@ const insuranceWon = () => {
       .then(res => res.json())
       .then(userObj => {
         dispatch(setUser(userObj))
-        dispatch({ type: "INSURANCE_WON" })
       })
     }
   }
@@ -661,7 +650,7 @@ export const dealerMove = () => {
        setTimeout( () => {
          dispatch(hittingDealerCards())
          dispatch(dealerMove())
-       }, 1500)
+       }, 1000)
      }
     }
     // else if(dealerScore <= 17 && dealerHand.find( card => card.value === "ACE")){
@@ -670,7 +659,7 @@ export const dealerMove = () => {
         setTimeout( () => {
            dispatch(hittingDealerCards())
            dispatch(dealerMove())
-         }, 1500)
+         }, 1000)
       }
     }
     else {
@@ -693,12 +682,7 @@ const comparePlayerToDealer = () => {
     playerHand.forEach( hand => {
       if(hand.result === null){
         if(hand.score === dealerScore){
-          result = "PUSH"
-          dispatch(setResult(hand, result))
-          dispatch(endRound())
-          dispatch(resetBet())
-
-          winnings += hand.bet
+          dispatch(playerPush(hand))
         }
         else if(dealerScore > 21 && hand.score <= 21){
           result = "WIN"

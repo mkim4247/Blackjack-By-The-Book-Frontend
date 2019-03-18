@@ -172,12 +172,6 @@ const insuranceReducer = (state=null, action) => {
       return 'pass'
     case "DEAL_PLAYER_CARDS":
       return null
-    case "INSURANCE_LOST":
-      return 'LOST'
-    case "INSURANCE_WON":
-      return 'WON'
-    case "PASS_CORRECT":
-      return 'PASSED RIGHT'
     default:
       return state
   }

@@ -3,13 +3,16 @@ import { connect } from 'react-redux'
 import { hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards, takeInsurance, passInsurance } from '../redux/actions'
 
 class Controls extends React.Component {
-
   showHitAndStay = () => {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
       return (
         <span>
-          <button className='control-btns'  onClick={this.props.hittingPlayerCards}>Hit</button>
-          <button className='control-btns' onClick={this.props.playerStay}>Stay</button>
+          <button className='control-btns' onClick={this.props.hittingPlayerCards}>
+            Hit
+          </button>
+          <button className='control-btns' onClick={this.props.playerStay}>
+            Stay
+          </button>
         </span>
       )
     }
@@ -18,7 +21,9 @@ class Controls extends React.Component {
   showDouble = () => {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2 && this.props.playerHand[this.props.index].bet <= this.props.user.pot){
       return (
-        <button className='control-btns'  onClick={this.props.doublingPlayer}>Double</button>
+        <button className='control-btns' onClick={this.props.doublingPlayer}>
+          Double
+        </button>
       )
     }
   }
@@ -28,7 +33,9 @@ class Controls extends React.Component {
       if(this.props.playerHand[this.props.index].cards[0].value === this.props.playerHand[this.props.index].cards[1].value || (this.props.playerHand[this.props.index].score === 20 && !this.props.playerHand[this.props.index].cards.find( card => card.value === "ACE"))
       ){
         return (
-          <button className='control-btns' onClick={this.props.splittingPlayerCards}> Split </button>
+          <button className='control-btns' onClick={this.props.splittingPlayerCards}>
+            Split
+          </button>
         )
       }
     }
@@ -45,22 +52,29 @@ class Controls extends React.Component {
           </span>
         : null
         }
-        {this.props.insurance === 'LOST' || this.props.insurance === 'WON' ?
-          <div className='insurance-box'> Insurance {this.props.insurance} </div>
-          : null
-        }
         {this.props.insurance === 'ask' ?
           <div>
             <div className='insurance-box'>
-            Take Insurance for ${Math.ceil(this.props.bet/2)} ?
+              Take Insurance for ${Math.ceil(this.props.bet/2)} ?
             </div>
-            <button className='control-btns' onClick={this.props.takeInsurance}> Take </button>
-            <button className='control-btns' onClick={this.props.passInsurance}> Pass </button>
+            <div className='btns-div'>
+              <button className='control-btns' onClick={this.props.takeInsurance}>
+                Take
+              </button>
+              <button className='control-btns' onClick={this.props.passInsurance}>
+                Pass
+              </button>
+            </div>
+          </div>
+          : null
+        }
+        {!this.props.gameOver && this.props.bet === 0 ?
+          <div className='insurance-box'>
+            Place Bet
           </div>
           : null
         }
       </div>
-
     )
   }
 }

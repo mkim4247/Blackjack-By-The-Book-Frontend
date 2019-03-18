@@ -3,19 +3,14 @@ import { connect } from 'react-redux'
 import { toggleStrategy } from '../redux/actions'
 
 class Footer extends React.Component {
-
-    checkCount = () => {
-      if(this.props.count > 0){
-        return(
-            "Bet HIGH"
-          )
-        }
-        else if(this.props.count < 0){
-          return(
-              "Bet LOW"
-            )
-          }
-      }
+  checkCount = () => {
+    if(this.props.count > 0){
+      return "Bet HIGH"
+    }
+    else if(this.props.count < 0){
+      return "Bet LOW"
+    }
+  }
 
   checkTable = () => {
     let hardTotal = {
@@ -584,30 +579,35 @@ class Footer extends React.Component {
       }
     }
 
-        let currentHand = this.props.playerHand[this.props.index]
-        let dealerCard = this.props.dealerHand.cards[0]
+    let currentHand = this.props.playerHand[this.props.index]
+    let dealerCard = this.props.dealerHand.cards[0]
 
-        if(currentHand.cards[0].value === currentHand.cards[1].value){
-          return pairs[dealerCard.value][currentHand.cards[0].value]
-        }
-        else if(currentHand.cards[0].value === "ACE" || currentHand.cards[1].value === "ACE"){
-          let otherCard = currentHand.cards.find( card => card.value !== "ACE")
-
-          return softTotal[dealerCard.value][otherCard.value]
-        }
-        else {
-          return hardTotal[dealerCard.value][currentHand.score]
-        }
-
-      }
-
+    if(currentHand.cards[0].value === currentHand.cards[1].value){
+      return pairs[dealerCard.value][currentHand.cards[0].value]
+    }
+    else if(currentHand.cards[0].value === "ACE" || currentHand.cards[1].value === "ACE"){
+      let otherCard = currentHand.cards.find( card => card.value !== "ACE")
+      return softTotal[dealerCard.value][otherCard.value]
+    }
+    else {
+      return hardTotal[dealerCard.value][currentHand.score]
+    }
+   }
 
   render(){
     return(
       <div className='footer'>
+        <div className='left'
+          style={ this.props.bet > 0 ?
+            {color: 'lightGreen'}
+            :
+            {color: 'yellow'}}>
+          Bet Size: {this.props.bet}
+        </div>
         <div className='left'>
           {this.props.showStrategy ?
-            "Count: " + this.props.count : null
+            "Count: " + this.props.count
+            : null
           }
         </div>
         <div className='left'>
@@ -616,13 +616,14 @@ class Footer extends React.Component {
             :
             this.props.playerHand[this.props.index].score < 21 && !this.props.showDealer ?
               "Advice: " + this.checkTable()
+              : null
             : null
-            : null 
           }
         </div>
         <button className='right' onClick={this.props.toggleStrategy}>
           {this.props.showStrategy ?
-            "Hide Strategy" :
+            "Hide Strategy"
+            :
             "Show Strategy"
           }
         </button>
@@ -639,7 +640,8 @@ const mapStateToProps = state => {
     count: state.count,
     showDealer: state.showDealer,
     roundResult: state.roundResult,
-    showStrategy: state.showStrategy
+    showStrategy: state.showStrategy,
+    bet: state.bet
   }
 }
 
