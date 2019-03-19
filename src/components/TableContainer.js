@@ -1,12 +1,12 @@
 import React from 'react'
 import DealerContainer from './DealerContainer'
 import PlayerContainer from './PlayerContainer'
-import Controls from './Controls'
+import TurnControls from './TurnControls'
 import Info from './Info'
 import Bet from './Bet'
 import Pot from './Pot'
 // import Count from './Count'
-import BottomControls from './BottomControls'
+import RoundControls from './RoundControls'
 import Footer from './Footer'
 
 const TableContainer = () => {
@@ -14,11 +14,11 @@ const TableContainer = () => {
     <div id='table'>
       <DealerContainer />
       <Info/>
-      <Controls />
+      <TurnControls />
       <PlayerContainer />
       <Bet />
       <Pot />
-      <BottomControls />
+      <RoundControls />
       <Footer />
     </div>
   )

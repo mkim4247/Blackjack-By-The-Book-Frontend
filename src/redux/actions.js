@@ -789,6 +789,7 @@ export const splittingPlayerCards = () => {
       dispatch(placingBet(bet))
       dispatch(splitPlayerCards( cards, score, index, bet ))
       dispatch(countingCards(deck.cards))
+      dispatch(addToStreak())
       // dispatch(checkPlayerBlackJack())
 
       /* IF SPLIT ACES, NOT ALLOWED FURTHER ACTIONS */

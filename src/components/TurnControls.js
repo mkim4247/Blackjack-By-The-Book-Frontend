@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards, takeInsurance, passInsurance } from '../redux/actions'
 
-class Controls extends React.Component {
+class TurnControls extends React.Component {
   showHitAndStay = () => {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
       return (
@@ -102,4 +102,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Controls)
+export default connect(mapStateToProps, mapDispatchToProps)(TurnControls)

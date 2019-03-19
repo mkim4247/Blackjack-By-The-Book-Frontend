@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { dealingCards, surrenderingPlayer, restartGame } from '../redux/actions'
 
-class BottomControls extends React.Component {
+class RoundControls extends React.Component {
   /* can only surrender on initial deal (not after splitting) */
   showSurrender = () => {
     if(this.props.playerHand.length < 2 && this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2 && !this.props.showDealer && this.props.roundResult !== "End"){
@@ -29,7 +29,7 @@ class BottomControls extends React.Component {
           : null
         }
         {this.props.gameOver ?
-          <button className='control-btns' style={{color: 'blue', backgroundColor: 'white'}} onClick={this.props.restartGame}>
+          <button className='control-btns' onClick={this.props.restartGame}>
             New Game
           </button>
           : null
@@ -60,4 +60,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BottomControls)
+export default connect(mapStateToProps, mapDispatchToProps)(RoundControls)
