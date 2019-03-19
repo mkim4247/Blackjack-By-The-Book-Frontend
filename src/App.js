@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Route, Switch, Redirect, withRouter } from 'react-router'
-import { checkingToken, fetchingDeck } from './redux/actions'
+import { checkingToken } from './redux/actions'
 import './App.css';
 import 'semantic-ui-css/semantic.min.css'
 import Login from './components/Login'
@@ -13,9 +13,9 @@ class App extends Component {
 
   componentDidMount(){
     let token = localStorage.getItem('token')
+    
     if(token){
       this.props.checkingToken(token)
-      this.props.fetchingDeck()
     }
   }
 
@@ -50,4 +50,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, { checkingToken, fetchingDeck })(App));
+export default withRouter(connect(mapStateToProps, { checkingToken })(App));

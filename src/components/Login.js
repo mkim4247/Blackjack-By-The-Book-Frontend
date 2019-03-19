@@ -25,16 +25,22 @@ class Login extends React.Component {
   render(){
     return(
       <div id='login'>
-        <div>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor='name'> Username: </label>
-          <input type='text' name='username' onChange={this.handleChange}/>
-
-          <label htmlFor='password'> Password: </label>
-          <input type='password' name='password' onChange={this.handleChange}/>
-
-          <input type='submit'/>
-        </form>
+        <div id='inner-login'>
+          <form id='login-form' onSubmit={this.handleSubmit}>
+            <div>
+              <label htmlFor='name'> Username: </label>
+              <br/>
+              <input type='text' name='username' onChange={this.handleChange}/>
+            </div>
+            <div>
+              <label htmlFor='password'> Password: </label>
+              <br/>
+              <input type='password' name='password' onChange={this.handleChange}/>
+            </div>
+            <div>
+              <button onClick={this.handleSubmit}> Login </button>
+            </div>
+          </form>
         </div>
       </div>
     )

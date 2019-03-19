@@ -9,19 +9,66 @@ body {
 }
 
 #login {
-  background-image: url('https://image.freepik.com/free-photo/jack-spade-heart-ace-card-with-casino-chip-stack-green-poker-table_23-2147881160.jpg');
+  background-image: url('./images/feltbackground.svg');
   height: 100vh;
   width: 100vw;
-  background-size: 50% 100%;
-  background-position: center;
+  background-size: cover;
   background-repeat: no-repeat;
   background-color: black;
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  grid-template-rows: 25% 50% 25%;
+  grid-template-areas:
+    ". . ."
+    ". form ."
+    ". . .";
+  justify-items: center;
+  align-items: center;
+}
+
+#inner-login {
+  grid-area: form;
+}
+
+#login-form {
+  font-family: Phosphate-solid, Impact;
+  text-align: center;
+  color: white;
+  text-shadow: 5px 5px 5px black;
+}
+
+#login-form div {
+  margin: 20px;
+  font-size: 150%;
+}
+
+#login-form button {
+  border-radius: 20%;
+  border: 3px solid black;
+  width: 4.5em;
+  height: 2em;
+  background-color: white;
+  color: black;
+  font-family: Phosphate-solid, Impact;
+}
+
+#login-form button:hover {
+  background-color: black;
+  border: 3px solid white;
+  color: white;
+}
+
+#login-form input {
+  border-radius: 5%;
+  text-align: center;
 }
 
 #rules {
-  background-color: green;
+  background-image: url('./images/feltbackground.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
   border: 3px solid black;
-  color: black;
+  color: white;
   padding-left: 50px;
   padding-right: 50px;
   padding-top: 20px;

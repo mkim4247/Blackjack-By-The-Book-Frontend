@@ -17,7 +17,7 @@ class BottomControls extends React.Component {
   render(){
     return (
       <div id='extra-box'>
-        {this.props.bet > 0 && this.props.roundResult !== "Deal" ?
+        {this.props.bet > 0 && this.props.roundResult !== "Deal" && this.props.deckId ?
           <button className='control-btns' onClick={this.props.dealingCards}>
             Deal
           </button>
@@ -47,7 +47,8 @@ const mapStateToProps = state => {
     playerHand: state.playerHand,
     index: state.currentHandIndex,
     showDealer: state.showDealer,
-    gameOver: state.gameOver
+    gameOver: state.gameOver,
+    deckId: state.deckId
   }
 }
 

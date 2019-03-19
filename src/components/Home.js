@@ -1,14 +1,22 @@
 import React from 'react'
 import Nav from './Nav'
 import TableContainer from './TableContainer'
+import { connect } from 'react-redux'
+import { fetchingDeck } from '../redux/actions'
 
-const Home = () => {
-  return(
-    <div id='home'>
-      <Nav />
-      <TableContainer />
-    </div>
-  )
+class Home extends React.Component {
+  componentDidMount(){
+    this.props.fetchingDeck()
+  }
+
+  render() {
+    return(
+      <div id='home'>
+        <Nav />
+        <TableContainer />
+      </div>
+    )
+  }
 }
 
-export default Home
+export default connect(null, { fetchingDeck })(Home)

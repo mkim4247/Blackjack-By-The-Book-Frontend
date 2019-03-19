@@ -43,9 +43,15 @@ class Nav extends React.Component {
             </div>
             : null
           }
-          <button className='right' onClick={this.logout}>
-            Logout
-          </button>
+          {this.props.user ?
+            <button className='right' onClick={this.logout}>
+              Logout
+            </button>
+            :
+            <a href='login' className='right'>
+              Login
+            </a>
+          }
           <a href="/rules" className='right'>
             Rules
           </a>
@@ -54,7 +60,7 @@ class Nav extends React.Component {
           </a>
         </div>
         {this.props.user ?
-          <table id='hover-stats' style={{display: "none", fontFamily: "Phosphate-solid"}}>
+          <table id='hover-stats' style={{display: "none", fontFamily: "Phosphate-solid, Impact"}}>
             <thead style={{textDecoration: 'underline'}}>
               <tr>
                 <th>
