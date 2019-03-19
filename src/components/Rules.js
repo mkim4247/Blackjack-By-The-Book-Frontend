@@ -7,32 +7,28 @@ class Rules extends React.Component {
       <div>
       <Nav />
       <div id='rules'>
-      <h2>
-        How to Play:
-      </h2>
-      <div>
-        Blackjack is a card game played between players and a dealer. Each player goes in turn, comparing their cards against the dealer, but not against other players. The goal of Blackjack is to beat the dealer; this can be done in a number of ways:
-      </div>
+        <h1 style={{fontFamily: 'Phosphate-solid, Impact', textAlign: 'center'}}>
+          How to Play:
+        </h1>
+          <div>
+            Blackjack is played between players and a dealer. Each player goes in turn, comparing their cards against the dealer, but not against other players. The goal is to beat the dealer in one of the following ways:
+          <ul>
+            <li>
+              Getting a Blackjack (21 points) with your first two cards (an Ace and either a 10 or Facecard). If the dealer also has a Blackjack, it's a tie.
+            </li>
+            <li>
+              Ending with a final score higher than the dealer, without going over 21 points (busting).
+            </li>
+            <li>
+              Letting the dealer draw additional cards and going over 21 points.
+            </li>
+          </ul>
+        </div>
 
-      <ul>
-        <li>
-          Getting a Blackjack (21 points) with your first two cards (an Ace and either a 10 or Facecard). If the dealer also has a Blackjack, it's a tie.
-        </li>
-        <li>
-          Ending with a final score higher than the dealer, without going over 21 points (busting).
-        </li>
-        <li>
-          Letting the dealer draw additional cards and going over 21 points.
-        </li>
-      </ul>
-
-      <div>
-        Gameplay:
-      </div>
-      <div>
-          At the beginning of each round, players are each dealt two cards. The dealer is also dealt two cards, normally with only one shown face up, and the other hidden face down.
+          <div>
+          At the start of the round, each player is dealt two cards. The dealer is also dealt two cards and will usually only show one face up, with the other face down.
         <br/>
-          The value of each card from 2 through 10 is their numerical value. Facecards (Jack, Queen, and King) are each worth 10, while Aces can be worth either 1 or 11. The value of a player's hand is the sum of these card values.
+          The value of cards from 2 through 10 is their numerical value. Facecards (Jack, Queen, and King) are worth 10, while Aces can be worth either 1 or 11. The value of a player's hand is the sum of these card values.
         <br/>
            After the initial cards have been dealt, players have several options:
         <br/>
@@ -98,7 +94,6 @@ A hand with an ace valued as 11 is called "soft", meaning that the hand will not
 Once all the players have completed their hands, it is the dealer’s turn. The dealer hand will not be completed if all players have either busted or received blackjacks. The dealer then reveals the hidden card and must hit until the cards total 17 or more points. (At most tables the dealer also hits on a "soft" 17, i.e. a hand containing an ace and one or more other cards totaling six.) Players win by not busting and having a total higher than the dealer, or not busting and having the dealer bust, or getting a blackjack without the dealer getting a blackjack. If the player and dealer have the same total (not counting blackjacks), this is called a "push", and the player typically does not win or lose money on that hand. Otherwise, the dealer wins.
         Blackjack is usually played with one or more decks of 52 cards.
       </div>
-
       </div>
     )
   }

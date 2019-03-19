@@ -29,7 +29,7 @@ class BottomControls extends React.Component {
           : null
         }
         {this.props.gameOver ?
-          <button className='control-btns' style={{color: 'blue'}} onClick={this.props.restartGame}>
+          <button className='control-btns' style={{color: 'blue', backgroundColor: 'white'}} onClick={this.props.restartGame}>
             New Game
           </button>
           : null
