@@ -7,11 +7,13 @@ class Rules extends React.Component {
       <div>
       <Nav />
       <div id='rules'>
-        <h1 style={{fontFamily: 'Phosphate-solid, Impact', textAlign: 'center'}}>
-          How to Play:
-        </h1>
+        <div>
+          <h1 style={{fontFamily: 'Phosphate-solid, Impact', textAlign: 'center'}}>
+            How to Play:
+          </h1>
+
           <div>
-            Blackjack is played between players and a dealer. Each player goes in turn, comparing their cards against the dealer, but not against other players. The goal is to beat the dealer in one of the following ways:
+            Blackjack is played between players and a dealer. Each player compares their cards against the dealer in turn, but not against other players. The goal is to beat the dealer in one of the following ways:
           <ul>
             <li>
               Getting a Blackjack (21 points) with your first two cards (an Ace and either a 10 or Facecard). If the dealer also has a Blackjack, it's a tie.
@@ -39,12 +41,12 @@ class Rules extends React.Component {
             Usually signaled by tapping the table with your finger or waving your hand toward your body.
           </li>
           <li>
-            Stand/Stay: Choose not to take any additional cards. End your turn.
+            Stand/Stay: Choose not to take any additional cards and end your turn.
             <br/>
             Usually signaled by waving your hand horizontally
           </li>
           <li>
-            Double down: In exchange for committing to stay after receiving only one more card, you may increase your initial bet by up to 100%. Some games do not permit increasing the bet by amounts other than 100%.
+            Double Down: In exchange for committing to stay after receiving only one more card, you may increase your initial bet by up to 100%. Some games do not permit increasing the bet by amounts other than 100%.
             <br/>
             Usually signaled by placing additional chips beside the original bet and pointing with one finger.
           </li>
@@ -65,20 +67,30 @@ class Rules extends React.Component {
           </li>
 
           <li>
-            Surrender: Most casinos will allow this option. It is only available as the first decision of a hand. When you surrender, the house takes half of your bet and returns the other half. This ends your stake in the hand.
+            Surrender: Most casinos will allow this option. It is only available as your first action of a hand. When you surrender, the house takes half of your bet and returns the other half. This ends your stake in the hand.
             <br/>
             The request to surrender is made verbally, there is no standard hand signal.
           </li>
         </ul>
         <br/>
         After a player's turn has ended, play proceeds to the next player, clockwise around the table. When the last hand has finished being played, the dealer reveals their "hole" card, and stands or draws additional cards according to the rules of the game for the dealer. Once the outcome of the dealer's hand is established, any hands with bets remaining on the table are resolved. Bets on losing hands are forfeited, bets on a push are left on the table, and winners are paid out.
+
+        Once all the players have completed their hands, it is the dealer’s turn. The dealer hand will not be completed if all players have either busted or received blackjacks. The dealer then reveals the hidden card and must hit until the cards total 17 or more points. (At most tables the dealer also hits on a "soft" 17, i.e. a hand containing an ace and one or more other cards totaling six.) Players win by not busting and having a total higher than the dealer, or not busting and having the dealer bust, or getting a blackjack without the dealer getting a blackjack. If the player and dealer have the same total (not counting blackjacks), this is called a "push", and the player typically does not win or lose money on that hand. Otherwise, the dealer wins.
+
       </div>
 
 
-      Insurance
-      If the dealer's upcard is an ace, the player is offered the option of taking "insurance" before the dealer checks the hole card.
+      <div>
+        Insurance:
+        <br/>
 
-      Insurance is a side bet that the dealer has blackjack and is treated independently of the main wager. It pays 2:1 (meaning that the player receives two dollars for every dollar bet) and is available when the dealer's exposed card is an ace. The idea is that the dealer's second card has a fairly high probability (nearly one-third) to be ten-valued, giving the dealer blackjack and disappointment for the player. It is attractive (although not necessarily wise) for the player to insure against the possibility of a dealer blackjack by making a maximum "insurance" bet, in which case the "insurance proceeds" will make up for the concomitant loss on the original bet. The player may add up to half the value of their original bet to the insurance and these extra chips are placed on a portion of the table usually marked "Insurance pays 2 to 1".
+        <div>
+          If the dealer's face up card is an Ace, the player is offered the option of taking "insurance" before the dealer checks the facedown card. Insurance is a side bet that the dealer has Blackjack, and is treated independently of the main wager. It pays 2:1, meaning that the player receives two dollars for every dollar bet.
+        </div>
+
+
+      </div>
+      The idea is that the dealer's second card has a fairly high probability (nearly one-third) to be ten-valued, giving the dealer blackjack and disappointment for the player. It is attractive (although not necessarily wise) for the player to insure against the possibility of a dealer blackjack by making a maximum "insurance" bet, in which case the "insurance proceeds" will make up for the concomitant loss on the original bet. The player may add up to half the value of their original bet to the insurance and these extra chips are placed on a portion of the table usually marked "Insurance pays 2 to 1".
 
       Players with a blackjack may also take insurance, and in taking maximum insurance they commit themselves to winning an amount exactly equal to their main wager, regardless of the dealer's outcome. Fully insuring a blackjack against blackjack is thus referred to as "taking even money", and paid out immediately, before the dealer's hand is resolved; the players do not need to place more chips for the insurance wager.
 
@@ -91,9 +103,11 @@ class Rules extends React.Component {
 
 A hand with an ace valued as 11 is called "soft", meaning that the hand will not bust by taking an additional card; the value of the ace will become one to prevent the hand from exceeding 21. Otherwise, the hand is "hard"
 
-Once all the players have completed their hands, it is the dealer’s turn. The dealer hand will not be completed if all players have either busted or received blackjacks. The dealer then reveals the hidden card and must hit until the cards total 17 or more points. (At most tables the dealer also hits on a "soft" 17, i.e. a hand containing an ace and one or more other cards totaling six.) Players win by not busting and having a total higher than the dealer, or not busting and having the dealer bust, or getting a blackjack without the dealer getting a blackjack. If the player and dealer have the same total (not counting blackjacks), this is called a "push", and the player typically does not win or lose money on that hand. Otherwise, the dealer wins.
+
         Blackjack is usually played with one or more decks of 52 cards.
       </div>
+    </div>
+
       </div>
     )
   }

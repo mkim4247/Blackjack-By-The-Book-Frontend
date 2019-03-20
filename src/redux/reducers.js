@@ -122,6 +122,8 @@ const roundResultReducer = (state="End", action) => {
       return "Deal"
     case "END_ROUND":
       return "End"
+    case "RESET_COUNT":
+      return "End"
     default:
       return state
   }
@@ -145,6 +147,8 @@ const betReducer = (state=0, action) => {
       let newBet = state + action.bet
       return newBet
     case "RESET_BET":
+      return 0
+    case "RESET_COUNT":
       return 0
     default:
       return state
@@ -172,6 +176,8 @@ const insuranceReducer = (state=null, action) => {
       return 'pass'
     case "DEAL_PLAYER_CARDS":
       return null
+    case "RESET_COUNT":
+      return null
     default:
       return state
   }
@@ -182,6 +188,8 @@ const gameReducer = (state=false, action) => {
     case "GAME_OVER":
       return true
     case "NEW_GAME":
+      return false
+    case "RESET_COUNT":
       return false
     default:
       return state

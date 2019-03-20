@@ -61,9 +61,32 @@ export const checkingToken = token => {
     })
     .then(res => res.json())
     .then(data => {
-      console.log(`Welcome Back, ${data.user.username}`)
-      dispatch(setUser(data.user))
-      dispatch(checkPlayerPot())
+      if(data.error){
+        alert('Invalid Token')
+        localStorage.clear()
+      }
+      else {
+        console.log(`Welcome Back, ${data.user.username}`)
+        dispatch(setUser(data.user))
+        dispatch(checkPlayerPot())
+      }
+    })
+  }
+}
+
+export const guestLogin = () => {
+  return dispatch => {
+    fetch('http://localhost:4247/api/v1/guest', {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log('Logged in as Guest', data)
+      localStorage.setItem('token', data.token)
+      dispatch(setUser(data.user_info))
     })
   }
 }
@@ -81,6 +104,7 @@ export const fetchingDeck = () => {
     .then(deck => {
       console.log(`Deck Set`)
       dispatch(fetchedDeck(deck.deck_id))
+      dispatch(resetCount())
     })
   }
 }
@@ -104,7 +128,7 @@ export const dealingCards = () => {
     .then(deck => {
       /* AUTO SHUFFLE DECK IF ~HALFWAY THROUGH BEFORE DEALING CARDS*/
 
-      if(deck.remaining < 150){
+      if(deck.remaining < 160){
         fetch(`https://deckofcardsapi.com/api/deck/${deckId}/shuffle/`)
         .then(res => res.json())
         .then(deck => {

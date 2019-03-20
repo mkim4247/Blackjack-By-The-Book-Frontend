@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setUser } from '../redux/actions'
+import { NavLink } from 'react-router-dom'
 
 class Nav extends React.Component {
   logout = () => {
@@ -22,7 +23,7 @@ class Nav extends React.Component {
     return(
       <div>
         <div className='navbar'>
-          {this.props.user ?
+          {this.props.user && this.props.user.username !== "Guest" ?
             <div className='left' id='username' onMouseOver={() => this.showHiddenStats()} onMouseOut={() => this.hideHiddenStats()}> {this.props.user.username.toUpperCase()} </div>
             : null
           }
@@ -37,29 +38,50 @@ class Nav extends React.Component {
             </div>
             : null
           }
-          {this.props.user ?
+          {this.props.user && this.props.user.username !== "Guest" ?
             <div className='left'>
               Hands Played: {this.props.user.current_streak}
             </div>
             : null
           }
-          {this.props.user ?
+          {this.props.user && this.props.user.username !== "Guest" ?
             <button className='right' onClick={this.logout}>
               Logout
             </button>
             :
-            <a href='login' className='right'>
+            <NavLink exact to='login' className='right' activeStyle={{
+                fontWeight: "bold",
+                color: "black",
+                backgroundColor: 'white'
+              }} onClick={this.logout}>
               Login
-            </a>
+            </NavLink>
           }
-          <a href="/rules" className='right'>
+          <NavLink exact to="/rules" className='right' activeStyle={{
+              fontWeight: "bold",
+              color: "black",
+              backgroundColor: 'white'
+            }}>
             Rules
-          </a>
-          <a href="/" className="right">
+          </NavLink>
+
+          <NavLink exact to="/about" className='right' activeStyle={{
+              fontWeight: "bold",
+              color: "black",
+              backgroundColor: 'white'
+            }}>
+            About
+          </NavLink>
+
+          <NavLink exact to="/" className="right" activeStyle={{
+              fontWeight: "bold",
+              color: "black",
+              backgroundColor: 'white'
+            }}>
             Home
-          </a>
+          </NavLink>
         </div>
-        {this.props.user ?
+        {this.props.user && this.props.user.username !== "Guest" ?
           <table id='hover-stats' style={{display: "none", fontFamily: "Phosphate-solid, Impact"}}>
             <thead style={{textDecoration: 'underline'}}>
               <tr>

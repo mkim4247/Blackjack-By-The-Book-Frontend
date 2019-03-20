@@ -8,12 +8,13 @@ import Login from './components/Login'
 import Home from './components/Home'
 import Create from './components/Create'
 import Rules from './components/Rules'
+import About from './components/About'
 
 class App extends Component {
 
   componentDidMount(){
     let token = localStorage.getItem('token')
-    
+
     if(token){
       this.props.checkingToken(token)
     }
@@ -29,7 +30,7 @@ class App extends Component {
               )} />
             <Route exact path='/login' render={ () => (
               this.props.user ?
-              <Redirect to="/" /> : <Login />
+                  <Redirect to="/" /> : <Login />
               )} />
             <Route exact path='/new' render={ () => (
                 this.props.user ?
@@ -37,6 +38,9 @@ class App extends Component {
               )} />
             <Route exact path='/rules' render={ () => (
                 <Rules />
+              )} />
+            <Route exact path='/about' render={ () => (
+                <About />
               )} />
         </Switch>
       </div>

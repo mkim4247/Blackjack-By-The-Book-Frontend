@@ -9,25 +9,48 @@ body {
 }
 
 #login {
-  background-image: url('./images/feltbackground.svg');
+  background-image: url('./images/rulesbackground.svg');
   height: 100vh;
-  width: 100vw;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-size: 100% 100%;
   background-color: black;
+  background-repeat: no-repeat;
   display: grid;
   grid-template-columns: 25% 50% 25%;
   grid-template-rows: 25% 50% 25%;
   grid-template-areas:
-    ". . ."
+    ". header ."
     ". form ."
-    ". . .";
+    "lower lower lower";
   justify-items: center;
   align-items: center;
+  text-align: center;
+  min-height: 500px;
+  min-width: 600px;
 }
 
-#inner-login {
+#login-parent {
   grid-area: form;
+}
+
+#login h1 {
+  grid-area: header;
+  font-family: Phosphate-solid, Impact;
+  font-size: 600%;
+  padding-top: 50px;
+  color: white;
+  text-shadow: 10px 10px 10px black;
+}
+
+#login-parent h2 {
+  font-family: Phosphate-solid, Impact;
+  color: white;
+  text-shadow: 5px 5px 5px black;
+}
+
+#upper-login-div {
+  border: 5px solid white;
+  padding: 5px;
+  box-shadow: 5px 5px 5px black;
 }
 
 #login-form {
@@ -35,14 +58,16 @@ body {
   text-align: center;
   color: white;
   text-shadow: 5px 5px 5px black;
+  border: 5px solid white;
+  box-shadow: 5px 5px 5px black;
 }
 
 #login-form div {
-  margin: 20px;
-  font-size: 150%;
+  margin: 10px;
+  font-size: 100%;
 }
 
-#login-form button {
+#login button {
   border-radius: 20%;
   border: 3px solid black;
   width: 4.5em;
@@ -52,19 +77,26 @@ body {
   font-family: Phosphate-solid, Impact;
 }
 
-#login-form button:hover {
+#login button:hover {
   background-color: black;
   border: 3px solid white;
   color: white;
 }
 
+#lower-login-div {
+  grid-area: lower;
+}
+
 #login-form input {
   border-radius: 5%;
   text-align: center;
+  box-shadow: 5px 5px 5px black;
+  margin-top: 5px;
+  font-family: Phosphate-solid, Impact;
 }
 
 #rules {
-  background-image: url('./images/feltbackground.svg');
+  background-image: url('./images/rulesbackground.svg');
   background-size: cover;
   background-repeat: no-repeat;
   border: 3px solid black;
@@ -73,6 +105,7 @@ body {
   padding-right: 50px;
   padding-top: 20px;
   font-family: Phosphate-solid, Impact;
+  overflow: scroll;
 }
 
 #table {
@@ -272,7 +305,7 @@ body {
   color: white;
   top: 0;
   width: 100%;
-  border-bottom: 2px solid white;
+  border-bottom: 3px solid white;
   overflow: hidden;
   font-family: Phosphate-solid, Impact;
 }
@@ -325,7 +358,7 @@ body {
   position: fixed;
   bottom: 0;
   width: 100%;
-  border-top: 2px solid white;
+  border-top: 3px solid white;
   font-family: Phosphate-solid, Impact;
 }
 
@@ -348,6 +381,11 @@ body {
 .footer button:hover {
   background-color: #4CAF50;
   color: white;
+}
+
+#username:hover {
+  color: black;
+  background-color: white;
 }
 
 #hover-stats {
