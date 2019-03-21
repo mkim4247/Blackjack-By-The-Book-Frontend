@@ -15,21 +15,21 @@ body {
   background-color: black;
   background-repeat: no-repeat;
   display: grid;
-  grid-template-columns: 25% 50% 25%;
+  grid-template-columns: 12.5% 12.5% 50% 12.5 12.5%;
   grid-template-rows: 25% 50% 25%;
   grid-template-areas:
-    ". header ."
-    ". form ."
-    "lower lower lower";
-  justify-items: center;
+    ". header header header ."
+    ". form form form ."
+    ". . lower . .";
   align-items: center;
   text-align: center;
   min-height: 500px;
   min-width: 600px;
 }
 
-#login-parent {
+#inner-login {
   grid-area: form;
+  justify-self: center;
 }
 
 #login h1 {
@@ -41,16 +41,33 @@ body {
   text-shadow: 10px 10px 10px black;
 }
 
-#login-parent h2 {
+#login h2 {
   font-family: Phosphate-solid, Impact;
   color: white;
   text-shadow: 5px 5px 5px black;
 }
 
-#upper-login-div {
+#upper-login {
   border: 5px solid white;
   padding: 5px;
   box-shadow: 5px 5px 5px black;
+}
+
+#upper-login a {
+  border: 3px solid black;
+  border-radius: 15%;
+  padding: 5px;
+  box-shadow: 5px 5px 5px black;
+  background-color: white;
+  font-family: Phosphate-solid, Impact;
+  color: black;
+  text-shadow: none;
+}
+
+#upper-login a:hover {
+  background-color: black;
+  border: 3px solid white;
+  color: white;
 }
 
 #login-form {
@@ -75,6 +92,7 @@ body {
   background-color: white;
   color: black;
   font-family: Phosphate-solid, Impact;
+  box-shadow: 5px 5px 5px black;
 }
 
 #login button:hover {
@@ -83,8 +101,36 @@ body {
   color: white;
 }
 
-#lower-login-div {
+#lower-login {
   grid-area: lower;
+  padding: 5px;
+  margin: 5px;
+}
+
+#inner-lower div{
+  padding-bottom: 10px;
+  color: white;
+  font-family: Phosphate-solid, Impact;
+  text-align: center;
+  color: white;
+  text-shadow: 5px 5px 5px black;
+  font-size: 16px;
+}
+
+#inner-lower span {
+  border: 3px solid black;
+  border-radius: 15%;
+  padding: 5px;
+  box-shadow: 5px 5px 5px black;
+  background-color: white;
+  font-family: Phosphate-solid, Impact;
+  display: inline-block;
+}
+
+#inner-lower span:hover {
+  background-color: black;
+  border: 3px solid white;
+  color: white;
 }
 
 #login-form input {

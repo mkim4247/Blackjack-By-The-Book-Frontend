@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { creatingNewUser } from '../redux/actions'
+import Nav from './Nav'
 
 class Create extends React.Component {
   constructor(props){
@@ -23,24 +24,36 @@ class Create extends React.Component {
 
   render(){
     return(
+      <div>
+        <Nav />
       <div id='login'>
-        <div id='upper-login-div'>
-          <form id='login-form' onSubmit={this.handleSubmit}>
-            <div>
-              <label htmlFor='name'> Username: </label>
-              <br/>
-              <input type='text' name='username' onChange={this.handleChange}/>
-            </div>
-            <div>
-              <label htmlFor='password'> Password: </label>
-              <br/>
-              <input type='password' name='password' onChange={this.handleChange}/>
-            </div>
-            <div>
-              <button onClick={this.handleSubmit}> Login </button>
-            </div>
-          </form>
+        <h1> BLACKJACK </h1>
+        <div id='inner-login'>
+          <h2>
+            Create Account:
+          </h2>
+          <div id='upper-login'>
+            <form id='login-form' onSubmit={this.handleSubmit}>
+              <div>
+                <label htmlFor='name'> Username: </label>
+                <br/>
+                <input type='text' name='username' onChange={this.handleChange}/>
+              </div>
+              <div>
+                <label htmlFor='password'> Password: </label>
+                <br/>
+                <input type='password' name='password' onChange={this.handleChange}/>
+              </div>
+              <div>
+                <button onClick={this.handleSubmit}> Submit </button>
+              </div>
+
+            </form>
+          </div>
+
         </div>
+      </div>
+
       </div>
     )
   }

@@ -73,13 +73,17 @@ class Nav extends React.Component {
             About
           </NavLink>
 
-          <NavLink exact to="/" className="right" activeStyle={{
-              fontWeight: "bold",
-              color: "black",
-              backgroundColor: 'white'
-            }}>
-            Home
-          </NavLink>
+          {this.props.user ?
+            <NavLink exact to="/" className="right" activeStyle={{
+                fontWeight: "bold",
+                color: "black",
+                backgroundColor: 'white'
+              }}>
+              Home
+            </NavLink>
+            : null
+          }
+
         </div>
         {this.props.user && this.props.user.username !== "Guest" ?
           <table id='hover-stats' style={{display: "none", fontFamily: "Phosphate-solid, Impact"}}>

@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { settingUser, guestLogin } from '../redux/actions'
 import { NavLink } from 'react-router-dom'
+import Nav from './Nav'
 
 class Login extends React.Component {
   constructor(props){
@@ -25,13 +26,15 @@ class Login extends React.Component {
 
   render(){
     return(
+      <div>
+      <Nav />
       <div id='login'>
         <h1> BLACKJACK </h1>
-        <div id='login-parent'>
+        <div id='inner-login'>
           <h2>
             Login:
           </h2>
-          <div id='upper-login-div'>
+          <div id='upper-login'>
             <form id='login-form' onSubmit={this.handleSubmit}>
               <div>
                 <label htmlFor='name'> Username: </label>
@@ -46,24 +49,35 @@ class Login extends React.Component {
               <div>
                 <button onClick={this.handleSubmit}> Login </button>
               </div>
+
+              <div>
+                OR
+              </div>
+              <div style={{padding: '10px'}}>
+              <NavLink to='/new'>
+                CREATE ACCOUNT
+              </NavLink>
+              </div>
             </form>
+          </div>
+
+        </div>
+
+        <div id='lower-login'>
+          <div id='inner-lower'>
+            <div>
+            SIGN IN AS GUEST
+            </div>
+            <span onClick={this.props.guestLogin}>
+              PLAY
+            </span>
+
           </div>
         </div>
 
-        <div id='lower-login-div'>
-          <button onClick={this.props.guestLogin}>
-            PLAY AS GUEST
-          </button>
-          <span>
-            OR
-          </span>
-          <NavLink to='/new'>
-            CREATE ACCOUNT
-          </NavLink>
-        </div>
-
-
       </div>
+    </div>
+
     )
   }
 
