@@ -154,6 +154,22 @@ body {
   overflow: scroll;
 }
 
+#rules h1 {
+  font-family: Phosphate-solid, Impact;
+  text-align: center;
+  font-size: 300%;
+  text-shadow: 5px 5px 5px black;
+}
+
+#inner-rules {
+  margin: 100px;
+  margin-top: 25px;
+  border: 5px solid white;
+  padding: 25px;
+  box-shadow: 5px 5px 5px black;
+  text-shadow: 3px 3px 3px black;
+}
+
 #table {
   display: grid;
   grid-template-columns: 20% 60% 20%;

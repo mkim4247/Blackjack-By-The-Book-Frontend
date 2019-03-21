@@ -7,108 +7,84 @@ class Rules extends React.Component {
       <div>
       <Nav />
       <div id='rules'>
-        <div>
-          <h1 style={{fontFamily: 'Phosphate-solid, Impact', textAlign: 'center'}}>
-            How to Play:
-          </h1>
+        <h1>
+          How to Play:
+        </h1>
 
-          <div>
-            Blackjack is played between players and a dealer. Each player compares their cards against the dealer in turn, but not against other players. The goal is to beat the dealer in one of the following ways:
-          <ul>
-            <li>
-              Getting a Blackjack (21 points) with your first two cards (an Ace and either a 10 or Facecard). If the dealer also has a Blackjack, it's a tie.
-            </li>
-            <li>
-              Ending with a final score higher than the dealer, without going over 21 points (busting).
-            </li>
-            <li>
-              Letting the dealer draw additional cards and going over 21 points.
-            </li>
-          </ul>
-        </div>
-
-          <div>
-          At the start of the round, each player is dealt two cards. The dealer is also dealt two cards and will usually only show one face up, with the other face down.
-        <br/>
-          The value of cards from 2 through 10 is their numerical value. Facecards (Jack, Queen, and King) are worth 10, while Aces can be worth either 1 or 11. The value of a player's hand is the sum of these card values.
-        <br/>
-           After the initial cards have been dealt, players have several options:
-        <br/>
-        <ul>
-          <li>
-            Hit: Draw another card to improve your hand.
-            <br/>
-            Usually signaled by tapping the table with your finger or waving your hand toward your body.
-          </li>
-          <li>
-            Stand/Stay: Choose not to take any additional cards and end your turn.
-            <br/>
-            Usually signaled by waving your hand horizontally
-          </li>
-          <li>
-            Double Down: In exchange for committing to stay after receiving only one more card, you may increase your initial bet by up to 100%. Some games do not permit increasing the bet by amounts other than 100%.
-            <br/>
-            Usually signaled by placing additional chips beside the original bet and pointing with one finger.
-          </li>
-          <li>
-            Split: If the first two cards in a hand have the same value, you may split them into two separate hands by placing a second bet equal to the first. The dealer will draw an additional card for each new hand, placing one bet with each hand. You then play out the two hands in turn, with each treated independently: you win or lose their wager separately.
-            <br/>
-            There may be some restrictions when splitting:
+        <div id='inner-rules'>
+            In Blackjack, players take turns comparing their cards against the dealer, but not against other players. The goal is to beat the dealer in one of the following ways:
             <ul>
               <li>
-                Doubling and further splitting may not be allowed.
+                Getting a Blackjack (21 points) with your first two cards (an Ace and either a 10 or Facecard). If the dealer also has a Blackjack, it's a tie.
               </li>
               <li>
-                An Ace and 10 value card is not considered a "natural" Blackjack. It is counted as a regular 21. Additionally, hitting after splitting aces is usually not allowed.
+                Ending with a final score higher than the dealer, without going over 21 points (busting).
+              </li>
+              <li>
+                Letting the dealer draw additional cards and going over 21 points.
               </li>
             </ul>
+
+          <div>
+            At the start of each round, players and the dealer are each dealt two cards.
+
+            Cards from 2 through 10 are worth their numerical value; Facecards (Jack, Queen, and King) are worth 10; and Aces can be worth either 1 or 11. The value of a player's hand is the sum of these card values.
+
+            After the initial cards have been dealt, players have several options:
+            <ul>
+              <li>
+                Hit: Draw another card to increase your hand's value.
+              </li>
+              <li>
+                Stand/Stay: Choose to not take any more cards and end your turn.
+              </li>
+              <li>
+                Double Down: In exchange for increasing your initial bet by up to 100%, you must stay after receiving only one more card.
+              </li>
+              <li>
+                Split: If the first two cards in a hand have the same value, you may split them into two separate hands. You receive an additional card for each new hand, but must place a second bet equal to the initial bet on your second hand. You then play out the two hands in turn, with each treated independently: you win or lose their wager separately.
+                <br/>
+                There may be some restrictions when splitting:
+                <ul>
+                  <li>
+                    Doubling and further splitting may not be allowed.
+                  </li>
+                  <li>
+                    An Ace and 10 value card is not considered a "natural" Blackjack. It is counted as a regular 21. Additionally, hitting after splitting aces is usually not allowed.
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                Surrender: Most casinos will allow this option. It is only available as your first action after the initial deal. When you surrender, the house takes half of your bet and returns the other half. This ends your stake in the hand.
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            Once all the players have gone, the dealer takes their turn, revealing their facedown card and resolving their hand. The dealer must hit until the cards total 17 or more points, unless all the players have either busted or received Blackjacks.
+
             <br/>
-            Usually signaled by placing additional chips next to the original bet and pointing with two fingers spread into a V formation.
-          </li>
+            At most tables the dealer also hits on "soft" 17, or a hand containing an Ace and one or more other cards totaling six. In general, a hand with an Ace valued as 11 is called "soft," meaning that it will not bust by taking another card because the value of the Ace will become 1 to prevent the hand from exceeding 21. Otherwise, the hand is called "hard."
 
-          <li>
-            Surrender: Most casinos will allow this option. It is only available as your first action of a hand. When you surrender, the house takes half of your bet and returns the other half. This ends your stake in the hand.
             <br/>
-            The request to surrender is made verbally, there is no standard hand signal.
-          </li>
-        </ul>
-        <br/>
-        After a player's turn has ended, play proceeds to the next player, clockwise around the table. When the last hand has finished being played, the dealer reveals their "hole" card, and stands or draws additional cards according to the rules of the game for the dealer. Once the outcome of the dealer's hand is established, any hands with bets remaining on the table are resolved. Bets on losing hands are forfeited, bets on a push are left on the table, and winners are paid out.
+            Once the dealer has finished their turn according to the game's rules, any remaining player hands are settled. Bets on losing hands are forfeited, bets on a "push" are left on the table, and winners are paid out.
+          </div>
 
-        Once all the players have completed their hands, it is the dealer’s turn. The dealer hand will not be completed if all players have either busted or received blackjacks. The dealer then reveals the hidden card and must hit until the cards total 17 or more points. (At most tables the dealer also hits on a "soft" 17, i.e. a hand containing an ace and one or more other cards totaling six.) Players win by not busting and having a total higher than the dealer, or not busting and having the dealer bust, or getting a blackjack without the dealer getting a blackjack. If the player and dealer have the same total (not counting blackjacks), this is called a "push", and the player typically does not win or lose money on that hand. Otherwise, the dealer wins.
+          <div>
+            Players win by not busting and having a total higher than the dealer, by not busting and letting the dealer bust, or by getting a Blackjack without the dealer getting a Blackjack. If the player and dealer have the same total, this is called a "push", and the player typically does not win or lose money on that hand. Otherwise, the dealer wins.
+          </div>
 
-      </div>
+          <div>
+            Insurance:
+            <div>
+              If the dealer's face up card is an Ace, players are offered the option of taking "insurance" before the dealer checks the facedown card. Insurance is a side bet that the dealer has Blackjack, and is treated independently of the main wager. It pays 2:1, meaning that the player receives two dollars for every dollar bet. Players may bet up to half the value of their original bet on insurance.
+            </div>
+          </div>
 
-
-      <div>
-        Insurance:
-        <br/>
-
-        <div>
-          If the dealer's face up card is an Ace, the player is offered the option of taking "insurance" before the dealer checks the facedown card. Insurance is a side bet that the dealer has Blackjack, and is treated independently of the main wager. It pays 2:1, meaning that the player receives two dollars for every dollar bet.
         </div>
-
-
-      </div>
-      The idea is that the dealer's second card has a fairly high probability (nearly one-third) to be ten-valued, giving the dealer blackjack and disappointment for the player. It is attractive (although not necessarily wise) for the player to insure against the possibility of a dealer blackjack by making a maximum "insurance" bet, in which case the "insurance proceeds" will make up for the concomitant loss on the original bet. The player may add up to half the value of their original bet to the insurance and these extra chips are placed on a portion of the table usually marked "Insurance pays 2 to 1".
-
-      Players with a blackjack may also take insurance, and in taking maximum insurance they commit themselves to winning an amount exactly equal to their main wager, regardless of the dealer's outcome. Fully insuring a blackjack against blackjack is thus referred to as "taking even money", and paid out immediately, before the dealer's hand is resolved; the players do not need to place more chips for the insurance wager.
-
-      Insurance bets are expected to lose money in the long run, because the dealer is likely to have blackjack less than one-third of the time. However the insurance outcome is strongly anti-correlated with that of the main wager, and if the player's priority is to reduce variation, they might choose to pay for this.
-
-      Furthermore, the insurance bet is susceptible to advantage play. It is advantageous to make an insurance bet whenever the hole card has more than a chance of one in three of being a ten. Advantage play techniques can sometimes identify such situations. In a multi-hand, face-up, single deck game, it is possible to establish whether insurance is a good bet simply by observing the other cards on the table after the deal; even if there are just 2 player hands exposed, and neither of their two initial cards is a ten, then 16 in 47 of the remaining cards are tens, which is larger than 1 in 3, so insurance is a profitable bet. This is an elementary example of the family of advantage play techniques known as card counting.
-
-      Bets to insure against blackjack are slightly less likely to be advantageous than insurance bets in general, since the ten in the player's blackjack makes it less likely that the dealer has blackjack too.[6]
-
-
-A hand with an ace valued as 11 is called "soft", meaning that the hand will not bust by taking an additional card; the value of the ace will become one to prevent the hand from exceeding 21. Otherwise, the hand is "hard"
-
-
-        Blackjack is usually played with one or more decks of 52 cards.
       </div>
     </div>
-
-      </div>
     )
   }
 

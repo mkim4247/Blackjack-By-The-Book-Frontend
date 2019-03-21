@@ -19,7 +19,8 @@ class Create extends React.Component {
   }
 
   handleSubmit = event => {
-    this.props.settingUser(this.state)
+    event.preventDefault()
+    this.props.creatingNewUser(this.state)
   }
 
   render(){
