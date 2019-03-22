@@ -6,30 +6,29 @@ class Rules extends React.Component {
     return(
       <div>
       <Nav />
-      <div id='rules'>
-        <h1>
+      <div className='rules'>
+        <h1 style={{color: '#FEDD47'}}>
           How to Play:
         </h1>
 
-        <div id='inner-rules'>
+        <div className='inner-rules'>
             In Blackjack, players take turns comparing their cards against the dealer, but not against other players. The goal is to beat the dealer in one of the following ways:
             <ul>
               <li>
-                Getting a Blackjack (21 points) with your first two cards (an Ace and either a 10 or Facecard). If the dealer also has a Blackjack, it's a tie.
+                Get a Blackjack (21 points) with your first two cards (an Ace and either a 10 or Facecard). If the dealer also has a Blackjack, it's a tie.
               </li>
               <li>
-                Ending with a final score higher than the dealer, without going over 21 points (busting).
+                End with a final score higher than the dealer, without going over 21 points (busting).
               </li>
               <li>
-                Letting the dealer draw additional cards and going over 21 points.
+                Let the dealer draw additional cards and go over 21 points.
               </li>
             </ul>
-
+            <hr/>
           <div>
-            At the start of each round, players and the dealer are each dealt two cards.
-
-            Cards from 2 through 10 are worth their numerical value; Facecards (Jack, Queen, and King) are worth 10; and Aces can be worth either 1 or 11. The value of a player's hand is the sum of these card values.
-
+            At the start of each round, players and the dealer are each dealt two cards. Cards from 2 through 10 are worth their numerical value; Facecards (Jack, Queen, and King) are worth 10; and Aces can be worth either 1 or 11. The value of a player's hand is the sum of these card values.
+            <br/>
+            <br/>
             After the initial cards have been dealt, players have several options:
             <ul>
               <li>
@@ -60,26 +59,41 @@ class Rules extends React.Component {
               </li>
             </ul>
           </div>
-
+          <hr/>
           <div>
             Once all the players have gone, the dealer takes their turn, revealing their facedown card and resolving their hand. The dealer must hit until the cards total 17 or more points, unless all the players have either busted or received Blackjacks.
-
-            <br/>
+            <ul>
+            <li>
             At most tables the dealer also hits on "soft" 17, or a hand containing an Ace and one or more other cards totaling six. In general, a hand with an Ace valued as 11 is called "soft," meaning that it will not bust by taking another card because the value of the Ace will become 1 to prevent the hand from exceeding 21. Otherwise, the hand is called "hard."
+            </li>
+            </ul>
+            <hr/>
 
-            <br/>
             Once the dealer has finished their turn according to the game's rules, any remaining player hands are settled. Bets on losing hands are forfeited, bets on a "push" are left on the table, and winners are paid out.
           </div>
-
+          <br/>
           <div>
             Players win by not busting and having a total higher than the dealer, by not busting and letting the dealer bust, or by getting a Blackjack without the dealer getting a Blackjack. If the player and dealer have the same total, this is called a "push", and the player typically does not win or lose money on that hand. Otherwise, the dealer wins.
           </div>
-
+          <hr/>
           <div>
             Insurance:
+            <br/>
             <div>
               If the dealer's face up card is an Ace, players are offered the option of taking "insurance" before the dealer checks the facedown card. Insurance is a side bet that the dealer has Blackjack, and is treated independently of the main wager. It pays 2:1, meaning that the player receives two dollars for every dollar bet. Players may bet up to half the value of their original bet on insurance.
             </div>
+          </div>
+          <hr/>
+
+          <div>
+            Resources:
+
+
+
+
+
+
+
           </div>
 
         </div>

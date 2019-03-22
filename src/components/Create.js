@@ -28,11 +28,18 @@ class Create extends React.Component {
       <div>
         <Nav />
       <div id='login'>
-        <h1> BLACKJACK </h1>
+        <div id='login-title'>
+          <div>
+            BLACKJACK
+          </div>
+        <div style={{fontSize: '400%'}}>
+          By the Book
+        </div>
+        </div>
         <div id='inner-login'>
-          <h2>
+          <h3>
             Create Account:
-          </h2>
+          </h3>
           <div id='upper-login'>
             <form id='login-form' onSubmit={this.handleSubmit}>
               <div>

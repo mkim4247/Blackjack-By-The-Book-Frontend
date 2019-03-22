@@ -57,13 +57,6 @@ class Nav extends React.Component {
               Login
             </NavLink>
           }
-          <NavLink exact to="/rules" className='right' activeStyle={{
-              fontWeight: "bold",
-              color: "black",
-              backgroundColor: 'white'
-            }}>
-            Rules
-          </NavLink>
 
           <NavLink exact to="/about" className='right' activeStyle={{
               fontWeight: "bold",
@@ -72,6 +65,16 @@ class Nav extends React.Component {
             }}>
             About
           </NavLink>
+          
+          <NavLink exact to="/rules" className='right' activeStyle={{
+              fontWeight: "bold",
+              color: "black",
+              backgroundColor: 'white'
+            }}>
+            Rules
+          </NavLink>
+
+
 
           {this.props.user ?
             <NavLink exact to="/" className="right" activeStyle={{
