@@ -1,3 +1,6 @@
+const RAILS_API = 'http://localhost:4247/api/v1/'
+const DOC_API = 'https://deckofcardsapi.com/api/deck/'
+
 /* USER RELATED ACTIONS*/
 export const setUser = user => {
   return { type: "SET_USER", user }
@@ -5,7 +8,7 @@ export const setUser = user => {
 
 export const settingUser = user => {
   return dispatch => {
-    fetch('http://localhost:4247/api/v1/login', {
+    fetch(RAILS_API + 'login', {
       method: "POST",
       headers: {
         "Content-type": "application/json"
@@ -30,7 +33,7 @@ export const settingUser = user => {
 
 export const creatingNewUser = user => {
   return dispatch => {
-    fetch(`http://localhost:4247/api/v1/users`, {
+    fetch(RAILS_API + 'users', {
       method:"POST",
       headers: {
         "Content-Type": "application/json"
@@ -53,7 +56,7 @@ export const creatingNewUser = user => {
 
 export const checkingToken = token => {
   return dispatch => {
-    fetch(`http://localhost:4247/api/v1/profile`, {
+    fetch(RAILS_API + 'profile', {
     method: "GET",
     headers: {
       "Authentication": `Bearer ${token}`
@@ -76,7 +79,7 @@ export const checkingToken = token => {
 
 export const guestLogin = () => {
   return dispatch => {
-    fetch('http://localhost:4247/api/v1/guest', {
+    fetch(RAILS_API + 'guest', {
       method: "POST",
       headers: {
         "Content-type": "application/json"
@@ -99,7 +102,7 @@ const fetchedDeck = deckId => {
 /* DEFAULT FOR GAME IS 6 DECKS */
 export const fetchingDeck = () => {
   return dispatch => {
-    fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
+    fetch(DOC_API + 'new/shuffle/?deck_count=6')
     .then(res => res.json())
     .then(deck => {
       console.log(`Deck Set`)
@@ -123,23 +126,28 @@ export const dealingCards = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
 
-    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`)
+    fetch(DOC_API + `${deckId}/draw/?count=4`)
     .then(res => res.json())
     .then(deck => {
       /* AUTO SHUFFLE DECK IF ~HALFWAY THROUGH BEFORE DEALING CARDS*/
 
       if(deck.remaining < 160){
-        fetch(`https://deckofcardsapi.com/api/deck/${deckId}/shuffle/`)
+        alert('Shuffling Deck')
+        fetch(DOC_API + `${deckId}/shuffle/`)
         .then(res => res.json())
         .then(deck => {
           console.log('Deck shuffled')
-          fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`)
-          .then(res => res.json())
-          .then(deck => {
-            /* RESET COUNT ON SHUFFLE */
-            dispatch(resetCount())
-            dispatch(dealingActions(deck))
-          })
+          setTimeout(() => {
+
+            fetch(DOC_API + `${deckId}/draw/?count=4`)
+            .then(res => res.json())
+            .then(deck => {
+              /* RESET COUNT ON SHUFFLE */
+              dispatch(resetCount())
+              alert('Dealing Cards')
+              dispatch(dealingActions(deck))
+            })
+          }, 1500 )
         })
       }
       else {
@@ -159,6 +167,7 @@ const dealingActions = deck => {
     let bet = getStore().bet
 
     /* SPLIT UP FETCHED CARDS BTWN PLAYER AND DEALER */
+
     let cards = [deck.cards[0], deck.cards[1]]
     let playerScore = assignHandValue(cards).score
 
@@ -189,7 +198,7 @@ export const addToStreak = () => {
 
     /* COMPARE CURRENT STREAK WITH LONGEST, UPDATE USER RECORD AS FIT */
     if(newStreak > user.longest_streak){
-      fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-type": "application/json"
@@ -205,7 +214,7 @@ export const addToStreak = () => {
       })
     }
     else if(newStreak <= user.longest_streak){
-      fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-type": "application/json"
@@ -233,7 +242,7 @@ export const hittingPlayerCards = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
 
-    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+    fetch(DOC_API + `${deckId}/draw/?count=1`)
     .then(res => res.json())
     .then(deck => {
       console.log('Player hits...')
@@ -265,7 +274,7 @@ export const hittingDealerCards = () => {
     /* DEALER HITS IF LESS THAN 17 */
     // if(dealerScore < 17 && !dealerHand.find( card => card.value === "ACE" )){
     if(dealerScore <= 17 && assignHandValue(dealerHand).soft){
-      fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+      fetch(DOC_API + `${deckId}/draw/?count=1`)
       .then(res => res.json())
       .then(deck => {
         console.log("Dealer Hits")
@@ -281,7 +290,7 @@ export const hittingDealerCards = () => {
     }
     // else if(dealerScore <= 17 && dealerHand.find( card => card.value === "ACE")){
     else if(dealerScore < 17){
-      fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+      fetch(DOC_API + `${deckId}/draw/?count=1`)
       .then(res => res.json())
       .then(deck => {
         console.log("Dealer Hits")
@@ -389,7 +398,7 @@ const winningBlackJack = () => {
     let addedWin = user.wins + 1
 
     if(newPot > user.largest_pot){
-      fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-type": "application/json"
@@ -418,7 +427,7 @@ const winningBlackJack = () => {
       })
     }
     else if(newPot <= user.largest_pot){
-      fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-type": "application/json"
@@ -485,7 +494,7 @@ const checkDealerFaceUp = () => {
     /* shouldnt ask for insurance if player has winning BJ */
 
     /* OFFER INSURANCE IF DEALER SHOWING ACE */
-    if(dealerHand[0].value === "ACE" && !playerHand.find( card => card.value === "ACE" && playerHand.score < 21)){
+    if(dealerHand[0].value === "ACE" && playerHand.score < 21){
       dispatch(askForInsurance())
     }
   }
@@ -504,7 +513,7 @@ export const takeInsurance = () => {
     let insurance = Math.ceil(playerHand.bet/2)
     let user = getStore().user
 
-    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+    fetch(RAILS_API + `users/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-type": "application/json"
@@ -565,7 +574,7 @@ const insuranceWon = () => {
     let newPot = user.pot + winnings
 
     if(newPot > user.largest_pot){
-      fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-type": "application/json"
@@ -581,7 +590,7 @@ const insuranceWon = () => {
       })
     }
     else if(newPot <= user.largest_pot){
-      fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-type": "application/json"
@@ -609,7 +618,7 @@ export const surrenderingPlayer = () => {
     let hand = playerHand[index]
     let result = "SURRENDER"
 
-    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+    fetch(RAILS_API + `users/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-type": "application/json"
@@ -656,7 +665,7 @@ const showDealer = () => {
     /* ADD FACEDOWN CARD TO CURRENT COUNT */
     let uncountedCard = [dealerHand[1]]
     dispatch(countingCards(uncountedCard))
-    setTimeout( () => dispatch({ type: "DEALER_MOVE" }), 1000)
+    setTimeout( () => dispatch({ type: "DEALER_MOVE" }), 1000 )
   }
 }
 
@@ -753,7 +762,7 @@ export const doublingPlayer = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
 
-    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+    fetch(DOC_API + `${deckId}/draw/?count=1`)
     .then(res => res.json())
     .then(deck => {
       console.log('Player hits...')
@@ -771,6 +780,7 @@ export const doublingPlayer = () => {
       /* SUBTRACT DOUBLE DOWN BET FROM POT, PASS THROUGH NEW DOUBLED BET THROUGH TO REDUCER TO ASSIGN TO HAND */
       dispatch(placingBet(currentBet))
       dispatch(doublePlayer(cards, score, index, bet))
+
       /* CHECK FOR BUST AND ADD TO COUNT */
       dispatch(checkPlayerBust())
       dispatch(countingCards(deck.cards))
@@ -794,7 +804,7 @@ export const splittingPlayerCards = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
 
-    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`)
+    fetch(DOC_API + `${deckId}/draw/?count=2`)
     .then( res => res.json() )
     .then( deck => {
       console.log('Player splits...')
@@ -850,7 +860,7 @@ export const placingBet = bet => {
     /* PASSES THROUGH TO INITIAL BET STATE */
     dispatch(placeBet(bet))
     /* UPDATE USER'S POT */
-    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+    fetch(RAILS_API + `users/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-type": "application/json"
@@ -880,7 +890,7 @@ export const playerPush = playerHand => {
     let user = getStore().user
     let result = "PUSH"
 
-    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+    fetch(RAILS_API + `users/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-type": "application/json"
@@ -908,7 +918,7 @@ export const playerWins = (winnings, wins) => {
     let newPot = user.pot + winnings
 
     if(newPot > user.largest_pot){
-      fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-type": "application/json"
@@ -924,7 +934,7 @@ export const playerWins = (winnings, wins) => {
       })
     }
     else if(newPot <= user.largest_pot){
-      fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+      fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-type": "application/json"
@@ -959,7 +969,7 @@ const shuffleDeck = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
 
-    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/shuffle/`)
+    fetch(DOC_API + `${deckId}/shuffle/`)
     .then(res => res.json())
     .then(deck => {
       console.log('Deck shuffled')
@@ -973,7 +983,7 @@ export const restartGame = () => {
   return (dispatch, getStore) => {
     let user = getStore().user
 
-    fetch(`http://localhost:4247/api/v1/users/${user.id}`, {
+    fetch(RAILS_API + `users/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-type": "application/json"
