@@ -12,9 +12,9 @@ class About extends React.Component {
         </h1>
 
           <div className='inner-rules'>
-            Blackjack By the Book was created to let users learn or practice basic strategy.
+            Blackjack By the Book was created to let users learn and/or practice basic strategy.
             <br/>
-
+            <br/>
             This game uses 6 decks of cards and has the dealer hit on Soft 17, like most casinos. The recommended advice is based on both of these conditions. The game also calculates a running count using the HiLo method. Users may choose to hide or show the count and advice whenever they choose. Once around half the deck has been played, it will automatically reshuffle and the count resets.
             <br/>
             <br/>
