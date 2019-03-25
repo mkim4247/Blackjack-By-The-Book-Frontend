@@ -356,6 +356,7 @@ body {
 }
 
 .control-btns {
+  position: relative;
   border-radius: 20%;
   border: 3px solid black;
   width: 6.5em;
@@ -364,6 +365,7 @@ body {
   color: white;
   font-family: Phosphate-solid, Impact;
   margin: 0.5em;
+  z-index: 1000;
 }
 
 .control-btns:hover{

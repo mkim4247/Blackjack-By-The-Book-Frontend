@@ -14,6 +14,7 @@ class RoundControls extends React.Component {
     }
   }
 
+
   render(){
     return (
       <div id='extra-box'>
@@ -34,6 +35,7 @@ class RoundControls extends React.Component {
           </button>
           : null
         }
+
       </div>
     )
   }

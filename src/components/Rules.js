@@ -85,17 +85,6 @@ class Rules extends React.Component {
           </div>
           <hr/>
 
-          <div>
-            Resources:
-
-
-
-
-
-
-
-          </div>
-
         </div>
       </div>
     </div>

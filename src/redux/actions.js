@@ -1,5 +1,6 @@
 const RAILS_API = 'http://localhost:4247/api/v1/'
 const DOC_API = 'https://deckofcardsapi.com/api/deck/'
+const HEADERS = { "Content-type": "application/json" }
 
 /* USER RELATED ACTIONS*/
 export const setUser = user => {
@@ -10,9 +11,7 @@ export const settingUser = user => {
   return dispatch => {
     fetch(RAILS_API + 'login', {
       method: "POST",
-      headers: {
-        "Content-type": "application/json"
-      },
+      headers: HEADERS,
       body: JSON.stringify(user)
     })
     .then(res => res.json())
@@ -35,9 +34,7 @@ export const creatingNewUser = user => {
   return dispatch => {
     fetch(RAILS_API + 'users', {
       method:"POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: HEADERS,
       body: JSON.stringify({ user })
     })
     .then(res => res.json())
@@ -81,9 +78,7 @@ export const guestLogin = () => {
   return dispatch => {
     fetch(RAILS_API + 'guest', {
       method: "POST",
-      headers: {
-        "Content-type": "application/json"
-      }
+      headers: HEADERS
     })
     .then(res => res.json())
     .then(data => {
@@ -167,7 +162,6 @@ const dealingActions = deck => {
     let bet = getStore().bet
 
     /* SPLIT UP FETCHED CARDS BTWN PLAYER AND DEALER */
-
     let cards = [deck.cards[0], deck.cards[1]]
     let playerScore = assignHandValue(cards).score
 
@@ -200,9 +194,7 @@ export const addToStreak = () => {
     if(newStreak > user.longest_streak){
       fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
-        headers: {
-          "Content-type": "application/json"
-        },
+        headers: HEADERS,
         body: JSON.stringify({
           games_played: addedGame,
           current_streak: newStreak,
@@ -216,9 +208,7 @@ export const addToStreak = () => {
     else if(newStreak <= user.longest_streak){
       fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
-        headers: {
-          "Content-type": "application/json"
-        },
+        headers: HEADERS,
         body: JSON.stringify({
           games_played: addedGame,
           current_streak: newStreak
@@ -400,9 +390,7 @@ const winningBlackJack = () => {
     if(newPot > user.largest_pot){
       fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
-        headers: {
-          "Content-type": "application/json"
-        },
+        headers: HEADERS,
         body: JSON.stringify({
           wins: addedWin,
           pot: newPot,
@@ -429,9 +417,7 @@ const winningBlackJack = () => {
     else if(newPot <= user.largest_pot){
       fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
-        headers: {
-          "Content-type": "application/json"
-        },
+        headers: HEADERS,
         body: JSON.stringify({
           wins: addedWin,
           pot: newPot
@@ -490,11 +476,10 @@ const checkDealerFaceUp = () => {
     let dealerHand = getStore().dealerHand.cards
     let index = getStore().currentHandIndex
     let hand = getStore().playerHand[index]
-    let playerHand = hand.cards
     /* shouldnt ask for insurance if player has winning BJ */
 
     /* OFFER INSURANCE IF DEALER SHOWING ACE */
-    if(dealerHand[0].value === "ACE" && playerHand.score < 21){
+    if(dealerHand[0].value === "ACE" && hand.score < 21){
       dispatch(askForInsurance())
     }
   }
@@ -515,9 +500,7 @@ export const takeInsurance = () => {
 
     fetch(RAILS_API + `users/${user.id}`, {
       method: "PATCH",
-      headers: {
-        "Content-type": "application/json"
-      },
+      headers: HEADERS,
       body: JSON.stringify({ pot: user.pot - insurance })
     })
     .then(res => res.json())
@@ -576,9 +559,7 @@ const insuranceWon = () => {
     if(newPot > user.largest_pot){
       fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
-        headers: {
-          "Content-type": "application/json"
-        },
+        headers: HEADERS,
         body: JSON.stringify({
           pot: newPot,
           largest_pot: newPot
@@ -592,9 +573,7 @@ const insuranceWon = () => {
     else if(newPot <= user.largest_pot){
       fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
-        headers: {
-          "Content-type": "application/json"
-        },
+        headers: HEADERS,
         body: JSON.stringify({
           pot: newPot
          })
@@ -620,9 +599,7 @@ export const surrenderingPlayer = () => {
 
     fetch(RAILS_API + `users/${user.id}`, {
       method: "PATCH",
-      headers: {
-        "Content-type": "application/json"
-      },
+      headers: HEADERS,
       body: JSON.stringify({ pot: user.pot + amount })
     })
     .then(res => res.json())
@@ -665,7 +642,7 @@ const showDealer = () => {
     /* ADD FACEDOWN CARD TO CURRENT COUNT */
     let uncountedCard = [dealerHand[1]]
     dispatch(countingCards(uncountedCard))
-    setTimeout( () => dispatch({ type: "DEALER_MOVE" }), 1000 )
+    setTimeout( () => dispatch({ type: "DEALER_MOVE" }), 500 )
   }
 }
 
@@ -769,7 +746,8 @@ export const doublingPlayer = () => {
 
       /* SIMILAR TO HIT ACTION; COPY CURRENT HAND AND ADD NEW CARD, THEN PASS NEW HAND THROUGH */
       let index = getStore().currentHandIndex
-      let playerHand = getStore().playerHand[index]
+      let hand = getStore().playerHand
+      let playerHand = hand[index]
       let cards = playerHand.cards.slice()
       cards.push(deck.cards[0])
       let score = assignHandValue(cards).score
@@ -782,12 +760,21 @@ export const doublingPlayer = () => {
       dispatch(doublePlayer(cards, score, index, bet))
 
       /* CHECK FOR BUST AND ADD TO COUNT */
-      dispatch(checkPlayerBust())
       dispatch(countingCards(deck.cards))
-      /* PLAYER ONLY GETS ONE CARD WHEN DOUBLING, SO MAKE STAY AFTER */
-      if(!playerHand.result){
-        dispatch(playerStay())
+      if(score <= 21){
+        if(index < hand.length - 1){
+          dispatch(advanceIndex())
+        }
+        else {
+          dispatch({ type: "DEALER_MOVE" })
+          dispatch(showDealer())
+          dispatch(dealerMove())
+        }
       }
+      else {
+        dispatch(checkPlayerBust())
+      }
+      /* PLAYER ONLY GETS ONE CARD WHEN DOUBLING, SO MAKE STAY AFTER */
     })
   }
 }
@@ -818,7 +805,6 @@ export const splittingPlayerCards = () => {
       let splitHand2 = [oldHand[1], deck.cards[1]]
       let score = [assignHandValue(splitHand1).score, assignHandValue(splitHand2).score]
       let cards = [splitHand1, splitHand2]
-
 
       dispatch(placingBet(bet))
       dispatch(splitPlayerCards( cards, score, index, bet ))
@@ -862,9 +848,7 @@ export const placingBet = bet => {
     /* UPDATE USER'S POT */
     fetch(RAILS_API + `users/${user.id}`, {
       method: "PATCH",
-      headers: {
-        "Content-type": "application/json"
-      },
+      headers: HEADERS,
       body: JSON.stringify({ pot: newPot })
     })
     .then(res => res.json())
@@ -892,9 +876,7 @@ export const playerPush = playerHand => {
 
     fetch(RAILS_API + `users/${user.id}`, {
       method: "PATCH",
-      headers: {
-        "Content-type": "application/json"
-      },
+      headers: HEADERS,
       body: JSON.stringify({ pot: user.pot + bet })
     })
     .then(res => res.json())
@@ -920,9 +902,7 @@ export const playerWins = (winnings, wins) => {
     if(newPot > user.largest_pot){
       fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
-        headers: {
-          "Content-type": "application/json"
-        },
+        headers: HEADERS,
         body: JSON.stringify({
           wins: user.wins + wins,
           pot: newPot,
@@ -936,9 +916,7 @@ export const playerWins = (winnings, wins) => {
     else if(newPot <= user.largest_pot){
       fetch(RAILS_API + `users/${user.id}`, {
         method: "PATCH",
-        headers: {
-          "Content-type": "application/json"
-        },
+        headers: HEADERS,
         body: JSON.stringify({
           wins: user.wins + wins,
           pot: newPot })
@@ -961,10 +939,6 @@ const checkPlayerPot = () => {
   }
 }
 
-const endGame = () => {
-  return { type: "GAME_OVER" }
-}
-
 const shuffleDeck = () => {
   return (dispatch, getStore) => {
     let deckId = getStore().deckId
@@ -985,9 +959,7 @@ export const restartGame = () => {
 
     fetch(RAILS_API + `users/${user.id}`, {
       method: "PATCH",
-      headers: {
-        "Content-type": "application/json"
-      },
+      headers: HEADERS,
       body: JSON.stringify({ pot: 100, current_streak: 0 })
     })
     .then(res => res.json())
@@ -1001,6 +973,10 @@ export const restartGame = () => {
 
 const startNewGame = () => {
   return { type: "NEW_GAME" }
+}
+
+const endGame = () => {
+  return { type: "GAME_OVER" }
 }
 
 export const toggleStrategy = () => {
