@@ -24,7 +24,13 @@ class Nav extends React.Component {
       <div>
         <div className='navbar'>
           {this.props.user && this.props.user.username !== "Guest" ?
-            <div className='left' id='username' onMouseOver={() => this.showHiddenStats()} onMouseOut={() => this.hideHiddenStats()}> {this.props.user.username.toUpperCase()} </div>
+            <div
+              className='left'
+              id='username'
+              onMouseOver={() => this.showHiddenStats()}
+              onMouseOut={() => this.hideHiddenStats()}>
+                {this.props.user.username.toUpperCase()}
+            </div>
             : null
           }
           {this.props.user ?
@@ -34,62 +40,81 @@ class Nav extends React.Component {
                 :
                 {color: 'red'}}
               className='left'>
-              Pot: ${this.props.user.pot}
+                Pot: ${this.props.user.pot}
             </div>
             : null
           }
           {this.props.user && this.props.user.username !== "Guest" ?
-            <div className='left'>
-              Hands Played: {this.props.user.current_streak}
+            <div
+              className='left'>
+                Hands Played: {this.props.user.current_streak}
             </div>
             : null
           }
           {this.props.user && this.props.user.username !== "Guest" ?
-            <button className='right' onClick={this.logout}>
-              Logout
+            <button
+              className='right'
+              onClick={this.logout}>
+                Logout
             </button>
             :
-            <NavLink exact to='login' className='right' activeStyle={{
+            <NavLink
+              exact
+              to='login'
+              className='right'
+              activeStyle={{
                 fontWeight: "bold",
                 color: "black",
                 backgroundColor: 'white'
-              }} onClick={this.logout}>
-              Login
+              }}
+              onClick={this.logout}>
+                Login
             </NavLink>
           }
-
-          <NavLink exact to="/about" className='right' activeStyle={{
+          <NavLink
+            exact
+            to="/about"
+            className='right'
+            activeStyle={{
               fontWeight: "bold",
               color: "black",
               backgroundColor: 'white'
             }}>
-            About
+              About
           </NavLink>
-          
-          <NavLink exact to="/rules" className='right' activeStyle={{
+          <NavLink
+            exact
+            to="/rules"
+            className='right'
+            activeStyle={{
               fontWeight: "bold",
               color: "black",
               backgroundColor: 'white'
             }}>
-            Rules
+              Rules
           </NavLink>
-
-
-
           {this.props.user ?
-            <NavLink exact to="/" className="right" activeStyle={{
+            <NavLink
+              exact
+              to="/"
+              className="right"
+              activeStyle={{
                 fontWeight: "bold",
                 color: "black",
                 backgroundColor: 'white'
               }}>
-              Home
+                Home
             </NavLink>
             : null
           }
-
         </div>
         {this.props.user && this.props.user.username !== "Guest" ?
-          <table id='hover-stats' style={{display: "none", fontFamily: "Phosphate-solid, Impact"}}>
+          <table
+            id='hover-stats'
+            style={{
+              display: "none",
+              fontFamily: "Phosphate-solid, Impact"
+            }}>
             <thead style={{textDecoration: 'underline'}}>
               <tr>
                 <th>

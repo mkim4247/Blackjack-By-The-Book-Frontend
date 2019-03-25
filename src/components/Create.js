@@ -27,41 +27,41 @@ class Create extends React.Component {
     return(
       <div>
         <Nav />
-      <div id='login'>
-        <div id='login-title'>
-          <div>
-            BLACKJACK
-          </div>
-        <div style={{fontSize: '400%'}}>
-          By the Book
-        </div>
-        </div>
-        <div id='inner-login'>
-          <h3>
-            Create Account:
-          </h3>
-          <div id='upper-login'>
-            <form id='login-form' onSubmit={this.handleSubmit}>
-              <div>
-                <label htmlFor='name'> Username: </label>
-                <br/>
-                <input type='text' name='username' onChange={this.handleChange}/>
-              </div>
-              <div>
-                <label htmlFor='password'> Password: </label>
-                <br/>
-                <input type='password' name='password' onChange={this.handleChange}/>
-              </div>
-              <div>
-                <button onClick={this.handleSubmit}> Submit </button>
-              </div>
-
-            </form>
+        <div id='login'>
+          <div id='login-title'>
+            <div>
+              BLACKJACK
+            </div>
+            <div style={{fontSize: '400%'}}>
+              By the Book
+            </div>
           </div>
 
+          <div id='inner-login'>
+            <h3>
+              Create Account:
+            </h3>
+            <div id='upper-login'>
+              <form id='login-form' onSubmit={this.handleSubmit}>
+                <div>
+                  <label htmlFor='name'> Username: </label>
+                  <br/>
+                  <input type='text' name='username' onChange={this.handleChange}/>
+                </div>
+                <div>
+                  <label htmlFor='password'> Password: </label>
+                  <br/>
+                  <input type='password' name='password' onChange={this.handleChange}/>
+                </div>
+                <div>
+                  <button onClick={this.handleSubmit}>
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-      </div>
-
       </div>
     )
   }

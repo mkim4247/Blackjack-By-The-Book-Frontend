@@ -7,11 +7,15 @@ class TurnControls extends React.Component {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
       return (
         <span>
-          <button className='control-btns' onClick={this.props.hittingPlayerCards}>
-            Hit
+          <button
+            className='control-btns'
+            onClick={this.props.hittingPlayerCards}>
+              Hit
           </button>
-          <button className='control-btns' onClick={this.props.playerStay}>
-            Stay
+          <button
+            className='control-btns'
+            onClick={this.props.playerStay}>
+              Stay
           </button>
         </span>
       )
@@ -21,8 +25,10 @@ class TurnControls extends React.Component {
   showDouble = () => {
     if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2 && this.props.playerHand[this.props.index].bet <= this.props.user.pot){
       return (
-        <button className='control-btns' onClick={this.props.doublingPlayer}>
-          Double
+        <button
+          className='control-btns'
+          onClick={this.props.doublingPlayer}>
+            Double
         </button>
       )
     }
@@ -33,8 +39,10 @@ class TurnControls extends React.Component {
       if(this.props.playerHand[this.props.index].cards[0].value === this.props.playerHand[this.props.index].cards[1].value || (this.props.playerHand[this.props.index].score === 20 && !this.props.playerHand[this.props.index].cards.find( card => card.value === "ACE"))
       ){
         return (
-          <button className='control-btns' onClick={this.props.splittingPlayerCards}>
-            Split
+          <button
+            className='control-btns'
+            onClick={this.props.splittingPlayerCards}>
+              Split
           </button>
         )
       }
@@ -58,11 +66,15 @@ class TurnControls extends React.Component {
               Take Insurance for ${Math.ceil(this.props.bet/2)} ?
             </div>
             <div className='btns-div'>
-              <button className='control-btns' onClick={this.props.takeInsurance}>
-                Take
+              <button
+                className='control-btns'
+                onClick={this.props.takeInsurance}>
+                  Take
               </button>
-              <button className='control-btns' onClick={this.props.passInsurance}>
-                Pass
+              <button
+                className='control-btns'
+                onClick={this.props.passInsurance}>
+                  Pass
               </button>
             </div>
           </div>

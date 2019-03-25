@@ -38,8 +38,10 @@ class PlayerHand extends React.Component {
       <span id='player-hand'>
         {this.showCards()}
         {this.props.hand.result ?
-          <div id="player-result" className={this.toggleResultClass()}>
-            {this.props.hand.result}
+          <div
+            id="player-result"
+            className={this.toggleResultClass()}>
+              {this.props.hand.result}
           </div>
           : null
         }

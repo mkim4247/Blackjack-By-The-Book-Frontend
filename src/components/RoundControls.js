@@ -7,8 +7,10 @@ class RoundControls extends React.Component {
   showSurrender = () => {
     if(this.props.playerHand.length < 2 && this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2 && !this.props.showDealer && this.props.roundResult !== "End"){
       return (
-        <button className='control-btns' onClick={this.props.surrenderingPlayer}>
-          Surrender
+        <button
+          className='control-btns'
+          onClick={this.props.surrenderingPlayer}>
+            Surrender
         </button>
       )
     }
@@ -19,8 +21,10 @@ class RoundControls extends React.Component {
     return (
       <div id='extra-box'>
         {this.props.bet > 0 && this.props.roundResult !== "Deal" && this.props.deckId ?
-          <button className='control-btns' onClick={this.props.dealingCards}>
-            Deal
+          <button
+            className='control-btns'
+            onClick={this.props.dealingCards}>
+              Deal
           </button>
           :
           null
@@ -30,12 +34,13 @@ class RoundControls extends React.Component {
           : null
         }
         {this.props.gameOver ?
-          <button className='control-btns' onClick={this.props.restartGame}>
-            New Game
+          <button
+            className='control-btns'
+            onClick={this.props.restartGame}>
+              New Game
           </button>
           : null
         }
-
       </div>
     )
   }

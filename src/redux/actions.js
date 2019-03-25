@@ -24,6 +24,7 @@ export const settingUser = user => {
         dispatch(setUser(data.user_info))
         localStorage.setItem('token', data.token)
 
+        /* render NEW GAME button if pot = 0 */
         dispatch(checkPlayerPot())
       }
     })
@@ -74,6 +75,7 @@ export const checkingToken = token => {
   }
 }
 
+/* fetching to guest route, will always start at 100 pot */
 export const guestLogin = () => {
   return dispatch => {
     fetch(RAILS_API + 'guest', {
@@ -82,7 +84,7 @@ export const guestLogin = () => {
     })
     .then(res => res.json())
     .then(data => {
-      console.log('Logged in as Guest', data)
+      console.log('Logged in as Guest')
       localStorage.setItem('token', data.token)
       dispatch(setUser(data.user_info))
     })
@@ -331,7 +333,6 @@ const checkPlayerBust = () => {
         dispatch(resetBet())
         dispatch(checkPlayerPot())
       }
-
     }
   }
 }
@@ -814,10 +815,8 @@ export const splittingPlayerCards = () => {
 
       /* IF SPLIT ACES, NOT ALLOWED FURTHER ACTIONS */
       if(oldHand[0].value === "ACE"){
-        setTimeout( () => {
-          dispatch(showDealer())
-          dispatch(dealerMove())
-        }, 1000)
+        dispatch(showDealer())
+        dispatch(dealerMove())
       }
     })
   }
@@ -929,6 +928,7 @@ export const playerWins = (winnings, wins) => {
   }
 }
 
+/* IF POT = 0, THEN RENDER NEW GAME BUTTON */
 const checkPlayerPot = () => {
   return (dispatch, getStore) => {
     let user = getStore().user
@@ -953,6 +953,7 @@ const shuffleDeck = () => {
   }
 }
 
+/* RESET USER POT TO 100 AND STREAK TO 0 */
 export const restartGame = () => {
   return (dispatch, getStore) => {
     let user = getStore().user
