@@ -165,7 +165,6 @@ const dealingActions = deck => {
     /* SPLIT UP FETCHED CARDS BTWN PLAYER AND DEALER */
     let cards = [deck.cards[0], deck.cards[1]]
     let playerScore = assignHandValue(cards).score
-    deck.cards[2].value = "ACE"
     let dealerCards = [deck.cards[2], deck.cards[3]]
     let dealerScore = assignHandValue(dealerCards).score
 
