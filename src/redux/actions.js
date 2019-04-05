@@ -104,7 +104,6 @@ export const fetchingDeck = () => {
     .then(deck => {
       console.log(`Deck Set`)
       dispatch(fetchedDeck(deck.deck_id))
-      dispatch(resetCount())
     })
   }
 }
