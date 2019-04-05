@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { creatingNewUser } from '../redux/actions'
 import Nav from './Nav'
+import { NavLink } from 'react-router-dom'
 
 class Create extends React.Component {
   constructor(props){
@@ -57,6 +58,14 @@ class Create extends React.Component {
                   <button onClick={this.handleSubmit}>
                     Submit
                   </button>
+                </div>
+                <div>
+                  OR
+                </div>
+                <div style={{padding: '10px'}}>
+                  <NavLink to='/login'>
+                    BACK TO LOGIN
+                  </NavLink>
                 </div>
               </form>
             </div>

@@ -30,11 +30,12 @@ const dealerHandReducer = (state={ cards: [], score: null }, action) => {
         cards: action.cards,
         score: action.score
       }
-
     case "RESET_COUNT":
-      let newState = { cards: [], score: null }
+      let newState = {
+        cards: [],
+        score: null
+      }
       return newState
-
     default:
       return state
   }
@@ -61,7 +62,8 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: n
       return handCopy
     case "DOUBLE_PLAYER":
       handCopy = [...state]
-      handCopy[action.index] = { ...state[action.index],
+      handCopy[action.index] = {
+        ...state[action.index],
         cards: action.cards,
         score: action.score,
         bet: action.bet
@@ -82,7 +84,6 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: n
           result: null
         }]
       return firstHalf.concat(split).concat(secondHalf)
-
     case "SET_RESULT":
       handCopy = state.map( hand => {
         if(hand === action.hand){
@@ -95,21 +96,23 @@ const playerHandReducer = (state=[{ cards: [], score: null, bet: null, result: n
       })
       return handCopy
     case "RESET_COUNT":
-      let newState = [{ cards: [], score: null, bet: null, result: null }]
+      let newState = [{
+        cards: [],
+        score: null,
+        bet: null,
+        result: null }]
       return newState
-
     default:
       return state
   }
 }
 
 const currentHandReducer = (state=0, action) => {
-  let next;
   switch(action.type){
     case "DEAL_PLAYER_CARDS":
       return 0
     case "ADVANCE_INDEX":
-      next = ++state
+      let next = ++state
       return next
     default:
       return state

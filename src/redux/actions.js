@@ -127,7 +127,7 @@ export const dealingCards = () => {
     .then(res => res.json())
     .then(deck => {
       /* AUTO SHUFFLE DECK IF ~HALFWAY THROUGH BEFORE DEALING CARDS*/
-
+      console.log(deck.remaining)
       if(deck.remaining < 160){
         alert('Shuffling Deck')
         fetch(DOC_API + `${deckId}/shuffle/`)
@@ -135,7 +135,6 @@ export const dealingCards = () => {
         .then(deck => {
           console.log('Deck shuffled')
           setTimeout(() => {
-
             fetch(DOC_API + `${deckId}/draw/?count=4`)
             .then(res => res.json())
             .then(deck => {
@@ -155,7 +154,7 @@ export const dealingCards = () => {
   }
 }
 
-const resetCount = () => {
+export const resetCount = () => {
   return { type: "RESET_COUNT" }
 }
 
@@ -166,7 +165,7 @@ const dealingActions = deck => {
     /* SPLIT UP FETCHED CARDS BTWN PLAYER AND DEALER */
     let cards = [deck.cards[0], deck.cards[1]]
     let playerScore = assignHandValue(cards).score
-
+    deck.cards[2].value = "ACE"
     let dealerCards = [deck.cards[2], deck.cards[3]]
     let dealerScore = assignHandValue(dealerCards).score
 
@@ -477,14 +476,23 @@ const checkDealerFaceUp = () => {
     let dealerHand = getStore().dealerHand.cards
     let index = getStore().currentHandIndex
     let hand = getStore().playerHand[index]
-    /* shouldnt ask for insurance if player has winning BJ */
+    let insurance = Math.ceil(hand.bet/2)
+    let user = getStore().user
+
+    /* shouldnt ask for insurance if player has winning BJ OR if player doesnt have enough money */
 
     /* OFFER INSURANCE IF DEALER SHOWING ACE */
     if(dealerHand[0].value === "ACE" && hand.score < 21){
-      dispatch(askForInsurance())
+      if(user.pot >= insurance){
+        dispatch(askForInsurance())
+      }
+      else {
+        dispatch(resolveDealerAce())
+      }
     }
   }
 }
+
 /* TURNS ON INSURANCE BUTTON */
 export const askForInsurance = () => {
   return { type: "ASK_PLAYER" }
@@ -670,7 +678,7 @@ export const dealerMove = () => {
         setTimeout( () => {
            dispatch(hittingDealerCards())
            dispatch(dealerMove())
-         }, 1000)
+        }, 1000)
       }
     }
     else {

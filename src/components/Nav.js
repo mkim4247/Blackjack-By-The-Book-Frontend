@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setUser } from '../redux/actions'
+import { setUser, resetCount } from '../redux/actions'
 import { NavLink } from 'react-router-dom'
 
 class Nav extends React.Component {
   logout = () => {
     this.props.setUser(null);
+    this.props.resetCount()
     localStorage.clear()
   }
 
@@ -153,4 +154,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { setUser })(Nav)
+export default connect(mapStateToProps, { setUser, resetCount })(Nav)

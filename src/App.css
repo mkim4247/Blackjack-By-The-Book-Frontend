@@ -23,7 +23,7 @@ body {
     ". . lower . .";
   align-items: center;
   text-align: center;
-  min-height: 500px;
+  min-height: 600px;
   min-width: 600px;
 }
 
@@ -48,6 +48,7 @@ body {
 }
 
 #login h3 {
+  font-size: 200%;
   font-family: Phosphate-solid, Impact;
   color: white;
   text-shadow: 5px 5px 5px black;
@@ -159,6 +160,9 @@ body {
   overflow: scroll;
   font-size: 16px;
   line-height: 1.5em;
+  background-color: black;
+  min-width: 700px;
+  min-height: 700px;
 }
 
 .rules h1 {
