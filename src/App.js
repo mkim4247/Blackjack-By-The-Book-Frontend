@@ -9,6 +9,7 @@ import Home from './components/Home'
 import Create from './components/Create'
 import Rules from './components/Rules'
 import About from './components/About'
+import NotFound from './components/NotFound'
 
 class App extends Component {
 
@@ -42,6 +43,7 @@ class App extends Component {
             <Route exact path='/about' render={ () => (
                 <About />
               )} />
+            <Route component={NotFound}/>
         </Switch>
       </div>
     );
