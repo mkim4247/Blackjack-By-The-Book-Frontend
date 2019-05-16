@@ -1,4 +1,5 @@
 const RAILS_API = 'http://localhost:4247/api/v1/'
+const HEROKU_API = 'https://blackjack-by-the-book-backend.herokuapp.com/'
 const DOC_API = 'https://deckofcardsapi.com/api/deck/'
 const HEADERS = { "Content-type": "application/json" }
 
@@ -9,7 +10,7 @@ export const setUser = user => {
 
 export const settingUser = user => {
   return dispatch => {
-    fetch(RAILS_API + 'login', {
+    fetch(HEROKU_API + 'login', {
       method: "POST",
       headers: HEADERS,
       body: JSON.stringify(user)
@@ -33,7 +34,7 @@ export const settingUser = user => {
 
 export const creatingNewUser = user => {
   return dispatch => {
-    fetch(RAILS_API + 'users', {
+    fetch(HEROKU_API + 'users', {
       method:"POST",
       headers: HEADERS,
       body: JSON.stringify({ user })
@@ -54,7 +55,7 @@ export const creatingNewUser = user => {
 
 export const checkingToken = token => {
   return dispatch => {
-    fetch(RAILS_API + 'profile', {
+    fetch(HEROKU_API + 'profile', {
     method: "GET",
     headers: {
       "Authentication": `Bearer ${token}`
@@ -78,7 +79,7 @@ export const checkingToken = token => {
 /* fetching to guest route, will always start at 100 pot */
 export const guestLogin = () => {
   return dispatch => {
-    fetch(RAILS_API + 'guest', {
+    fetch(HEROKU_API + 'guest', {
       method: "POST",
       headers: HEADERS
     })
@@ -191,7 +192,7 @@ export const addToStreak = () => {
 
     /* COMPARE CURRENT STREAK WITH LONGEST, UPDATE USER RECORD AS FIT */
     if(newStreak > user.longest_streak){
-      fetch(RAILS_API + `users/${user.id}`, {
+      fetch(HEROKU_API + `users/${user.id}`, {
         method: "PATCH",
         headers: HEADERS,
         body: JSON.stringify({
@@ -205,7 +206,7 @@ export const addToStreak = () => {
       })
     }
     else if(newStreak <= user.longest_streak){
-      fetch(RAILS_API + `users/${user.id}`, {
+      fetch(HEROKU_API + `users/${user.id}`, {
         method: "PATCH",
         headers: HEADERS,
         body: JSON.stringify({
@@ -386,7 +387,7 @@ const winningBlackJack = () => {
     let addedWin = user.wins + 1
 
     if(newPot > user.largest_pot){
-      fetch(RAILS_API + `users/${user.id}`, {
+      fetch(HEROKU_API + `users/${user.id}`, {
         method: "PATCH",
         headers: HEADERS,
         body: JSON.stringify({
@@ -413,7 +414,7 @@ const winningBlackJack = () => {
       })
     }
     else if(newPot <= user.largest_pot){
-      fetch(RAILS_API + `users/${user.id}`, {
+      fetch(HEROKU_API + `users/${user.id}`, {
         method: "PATCH",
         headers: HEADERS,
         body: JSON.stringify({
@@ -505,7 +506,7 @@ export const takeInsurance = () => {
     let insurance = Math.ceil(playerHand.bet/2)
     let user = getStore().user
 
-    fetch(RAILS_API + `users/${user.id}`, {
+    fetch(HEROKU_API + `users/${user.id}`, {
       method: "PATCH",
       headers: HEADERS,
       body: JSON.stringify({ pot: user.pot - insurance })
@@ -564,7 +565,7 @@ const insuranceWon = () => {
     let newPot = user.pot + winnings
 
     if(newPot > user.largest_pot){
-      fetch(RAILS_API + `users/${user.id}`, {
+      fetch(HEROKU_API + `users/${user.id}`, {
         method: "PATCH",
         headers: HEADERS,
         body: JSON.stringify({
@@ -578,7 +579,7 @@ const insuranceWon = () => {
       })
     }
     else if(newPot <= user.largest_pot){
-      fetch(RAILS_API + `users/${user.id}`, {
+      fetch(HEROKU_API + `users/${user.id}`, {
         method: "PATCH",
         headers: HEADERS,
         body: JSON.stringify({
@@ -604,7 +605,7 @@ export const surrenderingPlayer = () => {
     let hand = playerHand[index]
     let result = "SURRENDER"
 
-    fetch(RAILS_API + `users/${user.id}`, {
+    fetch(HEROKU_API + `users/${user.id}`, {
       method: "PATCH",
       headers: HEADERS,
       body: JSON.stringify({ pot: user.pot + amount })
@@ -851,7 +852,7 @@ export const placingBet = bet => {
     /* PASSES THROUGH TO INITIAL BET STATE */
     dispatch(placeBet(bet))
     /* UPDATE USER'S POT */
-    fetch(RAILS_API + `users/${user.id}`, {
+    fetch(HEROKU_API + `users/${user.id}`, {
       method: "PATCH",
       headers: HEADERS,
       body: JSON.stringify({ pot: newPot })
@@ -879,7 +880,7 @@ export const playerPush = playerHand => {
     let user = getStore().user
     let result = "PUSH"
 
-    fetch(RAILS_API + `users/${user.id}`, {
+    fetch(HEROKU_API + `users/${user.id}`, {
       method: "PATCH",
       headers: HEADERS,
       body: JSON.stringify({ pot: user.pot + bet })
@@ -905,7 +906,7 @@ export const playerWins = (winnings, wins) => {
     let newPot = user.pot + winnings
 
     if(newPot > user.largest_pot){
-      fetch(RAILS_API + `users/${user.id}`, {
+      fetch(HEROKU_API + `users/${user.id}`, {
         method: "PATCH",
         headers: HEADERS,
         body: JSON.stringify({
@@ -919,7 +920,7 @@ export const playerWins = (winnings, wins) => {
       })
     }
     else if(newPot <= user.largest_pot){
-      fetch(RAILS_API + `users/${user.id}`, {
+      fetch(HEROKU_API + `users/${user.id}`, {
         method: "PATCH",
         headers: HEADERS,
         body: JSON.stringify({
@@ -964,7 +965,7 @@ export const restartGame = () => {
   return (dispatch, getStore) => {
     let user = getStore().user
 
-    fetch(RAILS_API + `users/${user.id}`, {
+    fetch(HEROKU_API + `users/${user.id}`, {
       method: "PATCH",
       headers: HEADERS,
       body: JSON.stringify({ pot: 100, current_streak: 0 })
