@@ -1,7 +1,7 @@
 const RAILS_API = 'http://localhost:4247/api/v1/'
 const HEROKU_API = 'https://blackjack-by-the-book-backend.herokuapp.com/api/v1/'
 const DOC_API = 'https://deckofcardsapi.com/api/deck/'
-const HEADERS = { "Content-type": "application/json" }
+const HEADERS = { "Content-type": "application/json", Accept: "application/json" }
 
 /* USER RELATED ACTIONS*/
 export const setUser = user => {
