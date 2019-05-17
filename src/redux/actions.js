@@ -1,7 +1,7 @@
 const RAILS_API = 'http://localhost:4247/api/v1/'
 const HEROKU_API = 'https://blackjack-by-the-book-backend.herokuapp.com/api/v1/'
 const DOC_API = 'https://deckofcardsapi.com/api/deck/'
-const HEADERS = { "Content-type": "application/json", Accept: "application/json" }
+const HEADERS = { "Content-type": "application/json", "Accept": "application/json" }
 
 /* USER RELATED ACTIONS*/
 export const setUser = user => {
@@ -58,7 +58,8 @@ export const checkingToken = token => {
     fetch(HEROKU_API + 'profile', {
     method: "GET",
     headers: {
-      "Authentication": `Bearer ${token}`
+      "Authentication": `Bearer ${token}`,
+      Accept: "application/json"
       }
     })
     .then(res => res.json())
@@ -85,7 +86,7 @@ export const guestLogin = () => {
     })
     .then(res => res.json())
     .then(data => {
-      console.log('Logged in as Guest')
+      console.log('Logged in as Guest', data)
       localStorage.setItem('token', data.token)
       dispatch(setUser(data.user_info))
     })
