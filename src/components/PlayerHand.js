@@ -1,8 +1,8 @@
 import React from 'react'
 
-class PlayerHand extends React.Component {
-  showCards = () => {
-    return this.props.hand.cards.map( (card, index) => {
+const PlayerHand = props => {
+  const showCards = () => {
+    return props.hand.cards.map( (card, index) => {
       return <img
         key={index}
         id={`playerCard-${index}`}
@@ -14,8 +14,8 @@ class PlayerHand extends React.Component {
     )
   }
 
-  toggleResultClass = () => {
-    switch(this.props.hand.result){
+  const toggleResultClass = () => {
+    switch(props.hand.result){
       case "LOSE":
         return "losing-hand"
       case "WIN":
@@ -33,21 +33,19 @@ class PlayerHand extends React.Component {
     }
   }
 
-  render(){
-    return(
-      <span id='player-hand'>
-        {this.showCards()}
-        {this.props.hand.result ?
-          <div
-            id="player-result"
-            className={this.toggleResultClass()}>
-              {this.props.hand.result}
-          </div>
-          : null
-        }
-      </span>
-    )
-  }
+  return(
+    <span id='player-hand'>
+      {this.showCards()}
+      {props.hand.result ?
+        <div
+          id="player-result"
+          className={this.toggleResultClass()}>
+            {props.hand.result}
+        </div>
+        : null
+      }
+    </span>
+  )
 }
 
 export default PlayerHand
