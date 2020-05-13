@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-class Info extends React.Component {
-  renderStrategy = () => {
-    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
+const Info = props => {
+  const renderStrategy = () => {
+    if(props.playerHand[props.index] && props.playerHand[props.index].cards.length > 0){
       return (
         <table id='inner-strategy'>
           <tbody>
@@ -12,10 +12,10 @@ class Info extends React.Component {
                 Dealer:
               </td>
               <td>
-                {this.props.showDealer ?
-                  this.props.dealerHand.score
+                {props.showDealer ?
+                  props.dealerHand.score
                   :
-                  this.props.dealerHand.cards[0].value
+                  props.dealerHand.cards[0].value
                 }
               </td>
             </tr>
@@ -24,7 +24,7 @@ class Info extends React.Component {
                 Player:
               </td>
               <td>
-                {this.props.playerHand[this.props.index].score}
+                {props.playerHand[props.index].score}
               </td>
             </tr>
           </tbody>
@@ -32,19 +32,12 @@ class Info extends React.Component {
       )
     }
   }
-  // <br/>
-  // {this.props.playerHand[this.props.index].score < 21 && !this.props.showDealer ?
-    // <span> <hr/> Advice: {this.checkTable()} </span>
-    // : null
-  // }
 
-  render(){
-    return(
-      <div id='strategy-box'>
-        {this.renderStrategy()}
-      </div>
-    )
-  }
+  return(
+    <div id='strategy-box'>
+      {this.renderStrategy()}
+    </div>
+  )
 }
 
 const mapStateToProps = state => {

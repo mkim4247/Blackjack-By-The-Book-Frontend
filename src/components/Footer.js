@@ -3,19 +3,19 @@ import { connect } from 'react-redux'
 import { toggleStrategy } from '../redux/actions'
 import { hardTotal, softTotal, pairs } from '../StrategyHash'
 
-class Footer extends React.Component {
-  checkCount = () => {
-    if(this.props.count > 0){
+const Footer = props => {
+  const checkCount = () => {
+    if(props.count > 0){
       return "Bet HIGH"
     }
-    else if(this.props.count < 0){
+    else if(props.count < 0){
       return "Bet LOW"
     }
   }
 
-  checkTable = () => {
-    let currentHand = this.props.playerHand[this.props.index]
-    let dealerCard = this.props.dealerHand.cards[0]
+  const checkTable = () => {
+    let currentHand = props.playerHand[this.props.index]
+    let dealerCard = props.dealerHand.cards[0]
 
     if(currentHand.cards[0].value === currentHand.cards[1].value){
       return pairs[dealerCard.value][currentHand.cards[0].value]
@@ -29,42 +29,43 @@ class Footer extends React.Component {
     }
    }
 
-  render(){
-    return(
-      <div className='footer'>
-        <div className='left'
-          style={ this.props.bet > 0 ?
+  return(
+    <div className='footer'>
+      <div className='left'
+        style={
+          props.bet > 0 ?
             {color: 'lightGreen'}
             :
             {color: 'yellow'}}>
-          Bet Size: {this.props.bet}
-        </div>
-        <div className='left'>
-          {this.props.showStrategy ?
-            "Count: " + this.props.count
-            : null
-          }
-        </div>
-        <div className='left'>
-          {this.props.showStrategy ? this.props.roundResult === "End" ?
-            this.checkCount()
-            :
-            this.props.playerHand[this.props.index].score < 21 && !this.props.showDealer ?
-              "Advice: " + this.checkTable()
-              : null
-            : null
-          }
-        </div>
-        <button className='right' onClick={this.props.toggleStrategy}>
-          {this.props.showStrategy ?
-            "Hide Strategy"
-            :
-            "Show Strategy"
-          }
-        </button>
+        Bet Size: {props.bet}
       </div>
-    )
-  }
+      <div className='left'>
+        {props.showStrategy ?
+          "Count: " + this.props.count
+          : null
+        }
+      </div>
+      <div className='left'>
+        {props.showStrategy ? props.roundResult === "End" ?
+          this.checkCount()
+          :
+          props.playerHand[props.index].score < 21 && !props.showDealer ?
+            "Advice: " + this.checkTable()
+            : null
+          : null
+        }
+      </div>
+      <button
+        className='right'
+        onClick={props.toggleStrategy}>
+        {props.showStrategy ?
+          "Hide Strategy"
+          :
+          "Show Strategy"
+        }
+      </button>
+    </div>
+  )
 }
 
 const mapStateToProps = state => {
