@@ -5,7 +5,6 @@ import TurnControls from './TurnControls'
 import Info from './Info'
 import Bet from './Bet'
 import Pot from './Pot'
-// import Count from './Count'
 import RoundControls from './RoundControls'
 import Footer from './Footer'
 
@@ -23,7 +22,5 @@ const TableContainer = () => {
     </div>
   )
 }
-
-/* REMOVED <COUNT/> FROM TOP OF RENDER */
 
 export default TableContainer

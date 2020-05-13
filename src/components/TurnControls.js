@@ -2,19 +2,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards, takeInsurance, passInsurance } from '../redux/actions'
 
-class TurnControls extends React.Component {
-  showHitAndStay = () => {
-    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length > 0){
+const TurnControls = props => {
+  const showHitAndStay = () => {
+    if(props.playerHand[props.index] && props.playerHand[props.index].cards.length > 0){
       return (
         <span>
           <button
             className='control-btns'
-            onClick={this.props.hittingPlayerCards}>
+            onClick={props.hittingPlayerCards}>
               Hit
           </button>
           <button
             className='control-btns'
-            onClick={this.props.playerStay}>
+            onClick={props.playerStay}>
               Stay
           </button>
         </span>
@@ -22,26 +22,26 @@ class TurnControls extends React.Component {
     }
   }
 
-  showDouble = () => {
-    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2 && this.props.playerHand[this.props.index].bet <= this.props.user.pot){
+  const showDouble = () => {
+    if(props.playerHand[props.index] && props.playerHand[props.index].cards.length === 2 && props.playerHand[props.index].bet <= props.user.pot){
       return (
         <button
           className='control-btns'
-          onClick={this.props.doublingPlayer}>
+          onClick={props.doublingPlayer}>
             Double
         </button>
       )
     }
   }
 
-  showSplit = () => {
-    if(this.props.playerHand[this.props.index] && this.props.playerHand[this.props.index].cards.length === 2 && this.props.playerHand[this.props.index].bet <= this.props.user.pot){
-      if(this.props.playerHand[this.props.index].cards[0].value === this.props.playerHand[this.props.index].cards[1].value || (this.props.playerHand[this.props.index].score === 20 && !this.props.playerHand[this.props.index].cards.find( card => card.value === "ACE"))
+  const showSplit = () => {
+    if(props.playerHand[props.index] && props.playerHand[props.index].cards.length === 2 && props.playerHand[props.index].bet <= props.user.pot){
+      if(props.playerHand[props.index].cards[0].value === props.playerHand[props.index].cards[1].value || (props.playerHand[props.index].score === 20 && !props.playerHand[props.index].cards.find( card => card.value === "ACE"))
       ){
         return (
           <button
             className='control-btns'
-            onClick={this.props.splittingPlayerCards}>
+            onClick={props.splittingPlayerCards}>
               Split
           </button>
         )
@@ -49,46 +49,44 @@ class TurnControls extends React.Component {
     }
   }
 
-  render(){
-    return(
-      <div id='controls'>
-        {!this.props.showDealer && this.props.roundResult === "Deal" && this.props.insurance !== "ask" ?
-          <span>
-            {this.showDouble()}
-            {this.showHitAndStay()}
-            {this.showSplit()}
-          </span>
-        : null
-        }
-        {this.props.insurance === 'ask' ?
-          <div>
-            <div className='insurance-box'>
-              Take Insurance for ${Math.ceil(this.props.bet/2)} ?
-            </div>
-            <div className='btns-div'>
-              <button
-                className='control-btns'
-                onClick={this.props.takeInsurance}>
-                  Take
-              </button>
-              <button
-                className='control-btns'
-                onClick={this.props.passInsurance}>
-                  Pass
-              </button>
-            </div>
-          </div>
-          : null
-        }
-        {!this.props.gameOver && this.props.bet === 0 ?
+  return(
+    <div id='controls'>
+      {!props.showDealer && props.roundResult === "Deal" && props.insurance !== "ask" ?
+        <span>
+          {this.showDouble()}
+          {this.showHitAndStay()}
+          {this.showSplit()}
+        </span>
+      : null
+      }
+      {props.insurance === 'ask' ?
+        <div>
           <div className='insurance-box'>
-            Place Bet
+            Take Insurance for ${Math.ceil(props.bet/2)} ?
           </div>
-          : null
-        }
-      </div>
-    )
-  }
+          <div className='btns-div'>
+            <button
+              className='control-btns'
+              onClick={props.takeInsurance}>
+                Take
+            </button>
+            <button
+              className='control-btns'
+              onClick={props.passInsurance}>
+                Pass
+            </button>
+          </div>
+        </div>
+        : null
+      }
+      {!props.gameOver && props.bet === 0 ?
+        <div className='insurance-box'>
+          Place Bet
+        </div>
+        : null
+      }
+    </div>
+  )
 }
 
 const mapStateToProps = state => {
