@@ -12,7 +12,6 @@ import About from './components/About'
 import NotFound from './components/NotFound'
 
 class App extends Component {
-
   componentDidMount(){
     let token = localStorage.getItem('token')
 
