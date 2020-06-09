@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { creatingNewUser } from '../redux/actions'
 import Nav from './Nav'
 import { NavLink } from 'react-router-dom'
+import PropTypes from 'prop-types';
 
 class Create extends React.Component {
   constructor(props){

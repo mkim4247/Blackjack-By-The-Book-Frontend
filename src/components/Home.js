@@ -3,6 +3,7 @@ import Nav from './Nav'
 import TableContainer from './TableContainer'
 import { connect } from 'react-redux'
 import { fetchingDeck } from '../redux/actions'
+import PropTypes from 'prop-types';
 
 class Home extends React.Component {
   componentDidMount(){

@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { setUser, resetCount } from '../redux/actions'
 import { NavLink } from 'react-router-dom'
+import PropTypes from 'prop-types';
 
 const Nav = props => {
   const logout = () => {

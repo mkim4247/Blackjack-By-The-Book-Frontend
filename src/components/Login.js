@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { settingUser, guestLogin } from '../redux/actions'
 import { NavLink } from 'react-router-dom'
 import Nav from './Nav'
+import PropTypes from 'prop-types';
 
 class Login extends React.Component {
   constructor(props){

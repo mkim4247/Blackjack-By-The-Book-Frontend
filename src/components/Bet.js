@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { placingBet } from '../redux/actions'
+import PropTypes from 'prop-types';
 
 const Bet = props => {
   const increaseBet = event => {

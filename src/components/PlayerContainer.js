@@ -1,6 +1,7 @@
 import React from 'react'
 import PlayerHand from './PlayerHand'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
 
 const PlayerContainer = props => {
   return(

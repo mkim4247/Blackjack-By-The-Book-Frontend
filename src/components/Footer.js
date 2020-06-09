@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { toggleStrategy } from '../redux/actions'
 import { hardTotal, softTotal, pairs } from '../StrategyHash'
+import PropTypes from 'prop-types';
 
 const Footer = props => {
   const checkCount = () => {

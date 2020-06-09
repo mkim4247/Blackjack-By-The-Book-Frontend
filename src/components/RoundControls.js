@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { dealingCards, surrenderingPlayer, restartGame } from '../redux/actions'
+import PropTypes from 'prop-types';
 
 const RoundControls = props => {
   /* can only surrender on initial deal (not after splitting) */

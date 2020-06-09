@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards, takeInsurance, passInsurance } from '../redux/actions'
+import PropTypes from 'prop-types';
 
 const TurnControls = props => {
   const showHitAndStay = () => {
