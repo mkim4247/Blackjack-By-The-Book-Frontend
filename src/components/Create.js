@@ -78,3 +78,13 @@ class Create extends React.Component {
 }
 
 export default connect(null, { creatingNewUser })(Create)
+
+
+CalendarContainer.defaultProps = {
+  reservations: [{start: '', end:'', title: ''}]
+}
+
+CalendarContainer.propTypes = {
+  reservations: PropTypes.array,
+  selectingTimeSlot: PropTypes.func
+}

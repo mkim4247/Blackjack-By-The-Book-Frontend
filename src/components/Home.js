@@ -21,3 +21,12 @@ class Home extends React.Component {
 }
 
 export default connect(null, { fetchingDeck })(Home)
+
+CalendarContainer.defaultProps = {
+  reservations: [{start: '', end:'', title: ''}]
+}
+
+CalendarContainer.propTypes = {
+  reservations: PropTypes.array,
+  selectingTimeSlot: PropTypes.func
+}

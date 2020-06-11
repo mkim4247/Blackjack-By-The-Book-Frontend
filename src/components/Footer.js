@@ -83,3 +83,13 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, { toggleStrategy })(Footer)
+
+
+CalendarContainer.defaultProps = {
+  reservations: [{start: '', end:'', title: ''}]
+}
+
+CalendarContainer.propTypes = {
+  reservations: PropTypes.array,
+  selectingTimeSlot: PropTypes.func
+}
