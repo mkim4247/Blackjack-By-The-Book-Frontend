@@ -25,3 +25,13 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps)(PlayerContainer)
+
+
+CalendarContainer.defaultProps = {
+  reservations: [{start: '', end:'', title: ''}]
+}
+
+CalendarContainer.propTypes = {
+  reservations: PropTypes.array,
+  selectingTimeSlot: PropTypes.func
+}

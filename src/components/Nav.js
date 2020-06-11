@@ -154,3 +154,13 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, { setUser, resetCount })(Nav)
+
+
+CalendarContainer.defaultProps = {
+  reservations: [{start: '', end:'', title: ''}]
+}
+
+CalendarContainer.propTypes = {
+  reservations: PropTypes.array,
+  selectingTimeSlot: PropTypes.func
+}
