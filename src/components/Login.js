@@ -89,11 +89,11 @@ class Login extends React.Component {
 export default connect(null, { settingUser, guestLogin })(Login)
 
 
-CalendarContainer.defaultProps = {
+Login.defaultProps = {
   reservations: [{start: '', end:'', title: ''}]
 }
 
-CalendarContainer.propTypes = {
+Login.propTypes = {
   reservations: PropTypes.array,
   selectingTimeSlot: PropTypes.func
 }
