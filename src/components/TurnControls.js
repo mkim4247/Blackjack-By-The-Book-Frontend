@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { hittingPlayerCards, playerStay, doublingPlayer, splittingPlayerCards, takeInsurance, passInsurance } from '../redux/actions'
-import PropTypes from 'prop-types';
+
 
 const TurnControls = props => {
   const showHitAndStay = () => {
@@ -115,11 +115,11 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(TurnControls)
 
-CalendarContainer.defaultProps = {
+TurnControls.defaultProps = {
   reservations: [{start: '', end:'', title: ''}]
 }
 
-CalendarContainer.propTypes = {
+TurnControls.propTypes = {
   reservations: PropTypes.array,
   selectingTimeSlot: PropTypes.func
 }

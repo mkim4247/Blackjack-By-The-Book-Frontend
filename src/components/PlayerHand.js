@@ -51,11 +51,11 @@ const PlayerHand = props => {
 
 export default PlayerHand
 
-CalendarContainer.defaultProps = {
+PlayerHand.defaultProps = {
   reservations: [{start: '', end:'', title: ''}]
 }
 
-CalendarContainer.propTypes = {
+PlayerHand.propTypes = {
   reservations: PropTypes.array,
   selectingTimeSlot: PropTypes.func
 }

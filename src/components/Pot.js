@@ -111,11 +111,11 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, { placingBet })(Pot)
 
 
-CalendarContainer.defaultProps = {
+Pot.defaultProps = {
   reservations: [{start: '', end:'', title: ''}]
 }
 
-CalendarContainer.propTypes = {
+Pot.propTypes = {
   reservations: PropTypes.array,
   selectingTimeSlot: PropTypes.func
 }

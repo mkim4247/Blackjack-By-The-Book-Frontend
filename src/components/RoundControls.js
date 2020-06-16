@@ -68,11 +68,11 @@ const mapDispatchToProps = dispatch => {
 export default connect(mapStateToProps, mapDispatchToProps)(RoundControls)
 
 
-CalendarContainer.defaultProps = {
+RoundControls.defaultProps = {
   reservations: [{start: '', end:'', title: ''}]
 }
 
-CalendarContainer.propTypes = {
+RoundControls.propTypes = {
   reservations: PropTypes.array,
   selectingTimeSlot: PropTypes.func
 }
