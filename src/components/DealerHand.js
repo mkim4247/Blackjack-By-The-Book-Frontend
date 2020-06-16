@@ -48,11 +48,11 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps)(DealerHand)
 
 
-CalendarContainer.defaultProps = {
+DealerHand.defaultProps = {
   reservations: [{start: '', end:'', title: ''}]
 }
 
-CalendarContainer.propTypes = {
+DealerHand.propTypes = {
   reservations: PropTypes.array,
   selectingTimeSlot: PropTypes.func
 }
