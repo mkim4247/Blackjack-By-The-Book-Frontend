@@ -12,7 +12,8 @@ export const setUser = user => {
 
 export const settingUser = user => {
   return dispatch => {
-    fetch(HEROKU_API + 'login', {
+    // fetch(HEROKU_API + 'login', {
+    fetch(RAILS_API + 'login', {
       method: "POST",
       headers: HEADERS,
       body: JSON.stringify(user)
@@ -36,7 +37,8 @@ export const settingUser = user => {
 
 export const creatingNewUser = user => {
   return dispatch => {
-    fetch(HEROKU_API + 'users', {
+    // fetch(HEROKU_API + 'users', {
+    fetch(RAILS_API + 'users', {
       method:"POST",
       headers: HEADERS,
       body: JSON.stringify({ user })
@@ -57,7 +59,8 @@ export const creatingNewUser = user => {
 
 export const checkingToken = token => {
   return dispatch => {
-    fetch(HEROKU_API + 'profile', {
+    fetch(RAILS_API + 'profile', {
+    // fetch(HEROKU_API + 'profile', {
     method: "GET",
     headers: {
       "Authentication": `Bearer ${token}`,
@@ -82,7 +85,8 @@ export const checkingToken = token => {
 /* fetching to guest route, will always start at 100 pot */
 export const guestLogin = () => {
   return dispatch => {
-    fetch(HEROKU_API + 'guest', {
+    // fetch(HEROKU_API + 'guest', {
+    fetch(RAILS_API + 'guest', {
       method: "POST",
       headers: HEADERS
     })

@@ -1,104 +1,99 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { placingBet } from '../redux/actions'
-import PropTypes from 'prop-types';
+import React from "react";
+import { connect } from "react-redux";
+import { placingBet } from "../redux/actions";
+import PropTypes from "prop-types";
 
-const Bet = props => {
-  const increaseBet = event => {
+const Bet = (props) => {
+  const increaseBet = (event) => {
     let amount = parseInt(event.currentTarget.value);
-    if(props.user.pot >= amount){
-      props.placingBet(amount)
+    if (props.user.pot >= amount) {
+      props.placingBet(amount);
+    } else {
+      return <div id="extra-box">Insufficient Funds</div>;
     }
-    else {
-      return(
-        <div id='extra-box'>
-          Insufficient Funds
-        </div>
-      )
-    }
-  }
+  };
 
-  return(
-    <div id='bet-box'>
-      {props.roundResult !== "Deal" ?
+  return (
+    <div id="bet-box">
+      {props.roundResult !== "Deal" ? (
         <div>
           <div>
-            {props.user.pot >= 1 ?
+            {props.user.pot >= 1 ? (
               <input
-                className='betting-chips'
+                className="betting-chips"
                 type="image"
-                src={require('../images/greenchip.svg')}
-                onClick={this.increaseBet}
-                value='1'
-                alt='Green Chip/1'/>
-              : null
-            }
-            {props.user.pot >=5 ?
+                src={require("../images/greenchip.svg")}
+                onClick={increaseBet}
+                value="1"
+                alt="Green Chip/1"
+              />
+            ) : null}
+            {props.user.pot >= 5 ? (
               <input
-                className='betting-chips'
+                className="betting-chips"
                 type="image"
-                src={require('../images/redchip.svg')}
-                onClick={this.increaseBet}
-                value='5'
-                alt='Red Chip/5'/>
-              : null
-            }
+                src={require("../images/redchip.svg")}
+                onClick={increaseBet}
+                value="5"
+                alt="Red Chip/5"
+              />
+            ) : null}
           </div>
           <div>
-            {props.user.pot >= 25 ?
+            {props.user.pot >= 25 ? (
               <input
-                className='betting-chips'
+                className="betting-chips"
                 type="image"
-                src={require('../images/lightbluechip.svg')}
-                onClick={this.increaseBet}
-                value='25'
-                alt='Light Blue Chip/25'/>
-              : null
-            }
-            {props.user.pot >= 100 ?
+                src={require("../images/lightbluechip.svg")}
+                onClick={increaseBet}
+                value="25"
+                alt="Light Blue Chip/25"
+              />
+            ) : null}
+            {props.user.pot >= 100 ? (
               <input
-                className='betting-chips'
+                className="betting-chips"
                 type="image"
-                src={require('../images/blackchip.svg')}
-                onClick={this.increaseBet}
-                value='100'
-                alt='Black Chip/100'/>
-              : null
-            }
+                src={require("../images/blackchip.svg")}
+                onClick={increaseBet}
+                value="100"
+                alt="Black Chip/100"
+              />
+            ) : null}
           </div>
-          {props.user.pot > 1 ?
+          {props.user.pot > 1 ? (
             <input
-              className='betting-chips'
+              className="betting-chips"
               type="image"
-              src={require('../images/whitechip.svg')}
-              onClick={this.increaseBet}
+              src={require("../images/whitechip.svg")}
+              onClick={increaseBet}
               value={props.user.pot}
-              alt='White Chip/All in'/>
-            : null
-          }
+              alt="White Chip/All in"
+            />
+          ) : null}
         </div>
-        : null
-      }
+      ) : null}
     </div>
-  )
-}
+  );
+};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     user: state.user,
-    roundResult: state.roundResult
-  }
-}
+    roundResult: state.roundResult,
+  };
+};
 
-export default connect(mapStateToProps, { placingBet })(Bet)
-
-
+export default connect(
+  mapStateToProps,
+  { placingBet }
+)(Bet);
 
 Bet.defaultProps = {
-  reservations: [{start: '', end:'', title: ''}]
-}
+  reservations: [{ start: "", end: "", title: "" }],
+};
 
 Bet.propTypes = {
   reservations: PropTypes.array,
-  selectingTimeSlot: PropTypes.func
-}
+  selectingTimeSlot: PropTypes.func,
+};

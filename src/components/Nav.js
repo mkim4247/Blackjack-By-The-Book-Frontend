@@ -68,7 +68,7 @@ const Nav = props => {
               color: "black",
               backgroundColor: 'white'
             }}
-            onClick={this.logout}>
+            onClick={logout}>
               Login
           </NavLink>
         }
