@@ -1,90 +1,88 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { creatingNewUser } from '../redux/actions'
-import Nav from './Nav'
-import { NavLink } from 'react-router-dom'
-import PropTypes from 'prop-types';
+import React from "react";
+import { connect } from "react-redux";
+import { creatingNewUser } from "../redux/actions";
+import Nav from "./Nav";
+import { NavLink } from "react-router-dom";
+import PropTypes from "prop-types";
 
 class Create extends React.Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       username: "",
       password: "",
-    }
+    };
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
-      [event.currentTarget.name]: event.currentTarget.value
-    })
-  }
+      [event.currentTarget.name]: event.currentTarget.value,
+    });
+  };
 
-  handleSubmit = event => {
-    event.preventDefault()
-    this.props.creatingNewUser(this.state)
-  }
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.props.creatingNewUser(this.state);
+  };
 
-  render(){
-    return(
+  render() {
+    return (
       <div>
         <Nav />
-        <div id='login'>
-          <div id='login-title'>
-            <div>
-              BLACKJACK
-            </div>
-            <div style={{fontSize: '400%'}}>
-              By the Book
-            </div>
+        <div id="login">
+          <div id="login-title">
+            <div>BLACKJACK</div>
+            <div style={{ fontSize: "400%" }}>By the Book</div>
           </div>
 
-          <div id='inner-login'>
-            <h3>
-              Create Account:
-            </h3>
-            <div id='upper-login'>
-              <form id='login-form' onSubmit={this.handleSubmit}>
+          <div id="inner-login">
+            <h3>Create Account:</h3>
+            <div id="upper-login">
+              <form id="login-form" onSubmit={this.handleSubmit}>
                 <div>
-                  <label htmlFor='name'> Username: </label>
-                  <br/>
-                  <input type='text' name='username' onChange={this.handleChange}/>
+                  <label htmlFor="name"> Username: </label>
+                  <br />
+                  <input
+                    type="text"
+                    name="username"
+                    onChange={this.handleChange}
+                  />
                 </div>
                 <div>
-                  <label htmlFor='password'> Password: </label>
-                  <br/>
-                  <input type='password' name='password' onChange={this.handleChange}/>
+                  <label htmlFor="password"> Password: </label>
+                  <br />
+                  <input
+                    type="password"
+                    name="password"
+                    onChange={this.handleChange}
+                  />
                 </div>
                 <div>
-                  <button onClick={this.handleSubmit}>
-                    Submit
-                  </button>
+                  <button onClick={this.handleSubmit}>Submit</button>
                 </div>
-                <div>
-                  OR
-                </div>
-                <div style={{padding: '10px'}}>
-                  <NavLink to='/login'>
-                    BACK TO LOGIN
-                  </NavLink>
+                <div>OR</div>
+                <div style={{ padding: "10px" }}>
+                  <NavLink to="/login">BACK TO LOGIN</NavLink>
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default connect(null, { creatingNewUser })(Create)
-
+export default connect(
+  null,
+  { creatingNewUser }
+)(Create);
 
 Create.defaultProps = {
-  reservations: [{start: '', end:'', title: ''}]
-}
+  reservations: [{ start: "", end: "", title: "" }],
+};
 
 Create.propTypes = {
   reservations: PropTypes.array,
-  selectingTimeSlot: PropTypes.func
-}
+  selectingTimeSlot: PropTypes.func,
+};

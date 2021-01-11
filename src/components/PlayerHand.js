@@ -1,61 +1,59 @@
-import React from 'react'
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-const PlayerHand = props => {
+const PlayerHand = (props) => {
   const showCards = () => {
-    return props.hand.cards.map( (card, index) => {
-      return <img
-        key={index}
-        id={`playerCard-${index}`}
-        className='cards'
-        src={card.image}
-        alt={card.value}
+    return props.hand.cards.map((card, index) => {
+      return (
+        <img
+          key={index}
+          id={`playerCard-${index}`}
+          className="cards"
+          src={card.image}
+          alt={card.value}
         />
-      }
-    )
-  }
+      );
+    });
+  };
 
   const toggleResultClass = () => {
-    switch(props.hand.result){
+    switch (props.hand.result) {
       case "LOSE":
-        return "losing-hand"
+        return "losing-hand";
       case "WIN":
-        return "winning-hand"
+        return "winning-hand";
       case "PUSH":
-        return "push-hand"
+        return "push-hand";
       case "BUST":
-        return "bust-hand"
+        return "bust-hand";
       case "BLACKJACK":
-        return "blackjack-hand"
+        return "blackjack-hand";
       case "SURRENDER":
-        return "surrender-hand"
+        return "surrender-hand";
       default:
-        return null
+        return null;
     }
-  }
+  };
 
-  return(
-    <span id='player-hand'>
+  return (
+    <span id="player-hand">
       {this.showCards()}
-      {props.hand.result ?
-        <div
-          id="player-result"
-          className={this.toggleResultClass()}>
-            {props.hand.result}
+      {props.hand.result ? (
+        <div id="player-result" className={this.toggleResultClass()}>
+          {props.hand.result}
         </div>
-        : null
-      }
+      ) : null}
     </span>
-  )
-}
+  );
+};
 
-export default PlayerHand
+export default PlayerHand;
 
 PlayerHand.defaultProps = {
-  reservations: [{start: '', end:'', title: ''}]
-}
+  reservations: [{ start: "", end: "", title: "" }],
+};
 
 PlayerHand.propTypes = {
   reservations: PropTypes.array,
-  selectingTimeSlot: PropTypes.func
-}
+  selectingTimeSlot: PropTypes.func,
+};

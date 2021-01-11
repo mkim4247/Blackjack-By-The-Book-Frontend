@@ -1,37 +1,34 @@
-import React from 'react'
-import PlayerHand from './PlayerHand'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types';
+import React from "react";
+import PlayerHand from "./PlayerHand";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-const PlayerContainer = props => {
-  return(
-    <span id='player-container'>
-      {props.playerHand[0].cards.length > 0 ?
-        props.playerHand.map( (hand, index) => {
-          return <PlayerHand hand={hand} key={index} />
-          }
-        )
-        : null
-      }
+const PlayerContainer = (props) => {
+  return (
+    <span id="player-container">
+      {props.playerHand[0].cards.length > 0
+        ? props.playerHand.map((hand, index) => {
+            return <PlayerHand hand={hand} key={index} />;
+          })
+        : null}
     </span>
-  )
-}
+  );
+};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     playerHand: state.playerHand,
-    user: state.user
-  }
-}
+    user: state.user,
+  };
+};
 
-export default connect(mapStateToProps)(PlayerContainer)
-
+export default connect(mapStateToProps)(PlayerContainer);
 
 PlayerContainer.defaultProps = {
-  reservations: [{start: '', end:'', title: ''}]
-}
+  reservations: [{ start: "", end: "", title: "" }],
+};
 
 PlayerContainer.propTypes = {
   reservations: PropTypes.array,
-  selectingTimeSlot: PropTypes.func
-}
+  selectingTimeSlot: PropTypes.func,
+};

@@ -1,12 +1,12 @@
-import React from 'react'
-import DealerHand from './DealerHand'
+import React from "react";
+import DealerHand from "./DealerHand";
 
 const DealerContainer = () => {
-  return(
-    <div id='dealer-container'>
+  return (
+    <div id="dealer-container">
       <DealerHand />
     </div>
-  )
-}
+  );
+};
 
-export default DealerContainer
+export default DealerContainer;
